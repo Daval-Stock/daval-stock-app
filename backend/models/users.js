@@ -24,12 +24,12 @@ var userSchema = new mongoose.Schema({
     enum: ["admin", "user"],
     default: "user",
   },
-  sites: [
-    {
-      type: mongoose.schema.Types.ObjectId,
-      ref: "Site",
-    },
-  ],
+  //   sites: [
+  //       {
+  //         type: mongoose.schema.Types.ObjectId,
+  //         ref: "Site",
+  //       },
+  //     ],
 });
 
 //Export the model
