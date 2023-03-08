@@ -1,26 +1,19 @@
 // imports
-require("dotenv").config();
+require("dotenv").config({ path: "./config/.env" });
 const express = require("express");
-const mongoose = require("mongoose");
 const session = require("express-session");
-
+const default_route = require("./routes/default_route");
+const users_routes = require("./routes/users_routes");
+const products_routes = require("./routes/products_routes")
+const bodyParser = require("body-parser");
+require("./config/db");
 const app = express();
 const PORT = process.env.PORT || 3000;
-const URI = process.env.DB_URI;
-
-// database connection
-const promise = mongoose.connect(URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-promise.then(() => {
-  console.log("Connected on the database!");
-});
-mongoose.set("strictQuery", false);
 
 // middleware
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
 app.use(
   session({
     secret: "my secret key",
@@ -36,8 +29,11 @@ app.use((req, res, next) => {
 });
 
 // route prefix
-app.use("/", require("./routes/default_route"));
-app.use("/users", require("./routes/users_routes"));
+app.use("/", default_route);
+app.use("/users", users_routes);
+
+//route pour produits 
+app.use("/products", products_routes)
 
 // static pages
 app.use(express.static("uploads"));
