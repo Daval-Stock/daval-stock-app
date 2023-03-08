@@ -4,13 +4,15 @@ const express = require("express");
 const session = require("express-session");
 const default_route = require("./routes/default_route");
 const users_routes = require("./routes/users_routes");
+const bodyParser = require("body-parser");
 require("./config/db");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // middleware
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
 app.use(
   session({
     secret: "my secret key",
