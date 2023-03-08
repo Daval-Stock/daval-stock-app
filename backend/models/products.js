@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 let Schema = mongoose.schema;
 
 
-let productSchema = new Schema({
+let productSchema = new mongoose.Schema({
 
     name: {
         type: String,
@@ -14,16 +14,16 @@ let productSchema = new Schema({
         required:true
     },
     
-    supplier: {
+    /*  supplier: {
         type:Schema.Types.ObjectId,
         ref: 'Supplier'
-    },
+    }, */
 
     stock:[{
-        site:{
+        /* site:{
             type:Schema.Types.ObjectId,
             ref: 'Site'
-        },
+        } */
         quantity:{
             type: Number,
             default: 0
