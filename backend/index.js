@@ -4,6 +4,7 @@ const express = require("express");
 const session = require("express-session");
 const default_route = require("./routes/default_route");
 const users_routes = require("./routes/users_routes");
+const products_routes = require("./routes/products_routes")
 require("./config/db");
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -28,6 +29,9 @@ app.use((req, res, next) => {
 // route prefix
 app.use("/", default_route);
 app.use("/users", users_routes);
+
+//route pour produits 
+app.use("/products", products_routes)
 
 // static pages
 app.use(express.static("uploads"));

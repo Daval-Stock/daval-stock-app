@@ -31,4 +31,4 @@ let productSchema = new Schema({
     }]
 });
 
-module.exjports =   mongoose.model('Product', productSchema)
+module.exports =   mongoose.model('Product', productSchema)
