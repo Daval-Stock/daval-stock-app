@@ -11,4 +11,9 @@ router.get('/', productController.getProducts);
 // Récupérer un produit spécifique
 router.get('/:id', productController.getProductById);
 
+//Modifier un produit
+router.put('/:id',productController.updateProduct);
+
+//route pour supprimer un produit
+router.delete('/:id',productController.updateProduct);
 module.exports= router;
