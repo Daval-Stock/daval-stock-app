@@ -6,6 +6,8 @@ const default_route = require("./routes/default_route");
 const users_routes = require("./routes/users_routes");
 const products_routes = require("./routes/products_routes");
 const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
+
 const { notFound, errorHandler } = require("./middleware/errorHandler");
 require("./config/db");
 const app = express();
@@ -14,7 +16,7 @@ const PORT = process.env.PORT || 3000;
 // middleware
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
+app.use(cookieParser());
 app.use(
   session({
     secret: "my secret key",
