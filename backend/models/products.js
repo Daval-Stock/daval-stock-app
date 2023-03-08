@@ -13,17 +13,17 @@ let productSchema = new Schema({
         type: String,
         required:true
     },
-    
+    /* 
     supplier: {
         type:Schema.Types.ObjectId,
         ref: 'Supplier'
-    },
+    }, */
 
     stock:[{
-        site:{
+      /*   site:{
             type:Schema.Types.ObjectId,
             ref: 'Site'
-        },
+        }, */
         quantity:{
             type: Number,
             default: 0
