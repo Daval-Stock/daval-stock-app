@@ -2,9 +2,15 @@ const Product = require('../models/products');
 //pour ajouter un produit
 const createProduct = async (req, res) => {
   try {
-    const product = new Product(req.body);
-    await product.save();
-    return res.status(201).json(product);
+    const productname = req.body.name;
+    if(!productname){
+        const product = new Product(req.body);
+        await product.save();
+        return res.status(201).json(product);
+    }
+    else {
+        res.json({success:false, message:"product name already exist "})
+    }
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: 'Unable to create product.' });
