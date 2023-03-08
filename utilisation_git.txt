@@ -1,0 +1,7 @@
+git add .
+git config --global user.name DG-Elom
+git config --global user.email elom.gnaglo@gmail.com
+git commit -m "Debut du projet"
+git branch -M main
+git remote add origin https://github.com/alaminediassy/daval-stock-app.git
+git push -u origin main
