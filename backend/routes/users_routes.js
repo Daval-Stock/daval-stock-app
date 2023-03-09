@@ -10,13 +10,17 @@ const {
   loginUserCtrl,
   blockUser,
   unblockUser,
+  handleRefreshToken,
+  logout,
 } = require("../controllers/users_ctrl");
 const { authMiddleware, isAdmin } = require("../middleware/authMiddleware");
 
-router.get("/all-user", getAllUsers);
-router.get("/:id", authMiddleware, isAdmin, getUserById);
 router.post("/register", createUser);
 router.post("/login", loginUserCtrl);
+router.get("/all-user", getAllUsers);
+router.get("/refresh", handleRefreshToken);
+router.get("/logout", logout);
+router.get("/:id", authMiddleware, isAdmin, getUserById);
 router.delete("/delete/:id", deleteUser);
 router.put("/edit-user", authMiddleware, updateUser);
 router.put("/block-user/:id", authMiddleware, isAdmin, blockUser);
