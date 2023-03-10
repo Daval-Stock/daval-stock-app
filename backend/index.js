@@ -5,8 +5,10 @@ const session = require("express-session");
 const default_route = require("./routes/default_route");
 const users_routes = require("./routes/users_routes");
 const products_routes = require("./routes/products_routes");
-const orders_routes = require("./routes/orders_routes");
 const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
+const orders_routes = require("./routes/orders_routes");
+const { notFound, errorHandler } = require("./middleware/errorHandler");
 require("./config/db");
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -14,7 +16,7 @@ const PORT = process.env.PORT || 3000;
 // middleware
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
+app.use(cookieParser());
 app.use(
   session({
     secret: "my secret key",
@@ -33,12 +35,17 @@ app.use((req, res, next) => {
 app.use("/", default_route);
 app.use("/users", users_routes);
 
+
 //route pour produits 
+app.use("/products", products_routes);
+//route pour produits
 app.use("/products", products_routes);
 
 //route commandes
 app.use("/orders", orders_routes);
 
+app.use(notFound);
+app.use(errorHandler);
 // static pages
 app.use(express.static("uploads"));
 
