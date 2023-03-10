@@ -13,6 +13,9 @@ require("./config/db");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// cors
+const cors = require('cors');
+
 // middleware
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -24,6 +27,9 @@ app.use(
     resave: false,
   })
 );
+
+// Use this after the variable declaration
+app.use(cors());
 
 app.use((req, res, next) => {
   res.locals.message = req.session.message;

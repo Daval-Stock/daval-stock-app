@@ -5,9 +5,10 @@ function UsersUI() {
     const [users, setUsers] = useState([]);
 
     useEffect(() => {
-        axios.get('http://localhost:3000/api/users')
+        axios.get('http://localhost:3000/users/all-user')
             .then(response => {
                 setUsers(response.data);
+                console.log(response);
             })
             .catch(error => {
                 console.log(error);
