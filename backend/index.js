@@ -4,7 +4,8 @@ const express = require("express");
 const session = require("express-session");
 const default_route = require("./routes/default_route");
 const users_routes = require("./routes/users_routes");
-const products_routes = require("./routes/products_routes")
+const products_routes = require("./routes/products_routes");
+const orders_routes = require("./routes/orders_routes");
 const bodyParser = require("body-parser");
 require("./config/db");
 const app = express();
@@ -33,7 +34,10 @@ app.use("/", default_route);
 app.use("/users", users_routes);
 
 //route pour produits 
-app.use("/products", products_routes)
+app.use("/products", products_routes);
+
+//route commandes
+app.use("/orders", orders_routes);
 
 // static pages
 app.use(express.static("uploads"));

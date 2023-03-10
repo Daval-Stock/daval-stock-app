@@ -3,14 +3,12 @@ const Product = require('../models/products');
 const createProduct = async (req, res) => {
   try {
     const productname = req.body.name;
-    if(!productname){
+    const siteName = req.body.site;
+   
         const product = new Product(req.body);
         await product.save();
         return res.status(201).json(product);
-    }
-    else {
-        res.json({success:false, message:"product name already exist "})
-    }
+   
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: 'Unable to create product.' });
@@ -77,3 +75,5 @@ const  deleteProduct = async (req, res) => {
   };
 
 module.exports = {createProduct, getProductById, getProducts,updateProduct, deleteProduct}
+
+
