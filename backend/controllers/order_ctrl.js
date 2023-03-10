@@ -41,7 +41,7 @@ const updateOrder = async (req, res) => {
   try {
     const order = await Order.findByIdAndUpdate(req.params.id, req.body, { new: true }).populate("products");
     // Check if order is confirmed and update stock levels accordingly
-    //la conditions 
+    //la conditions ci-dessous ne fonctionne pas très bien
     if (order.order_status === 'Delivered') {
       const products = order.products;
       for (const product of products) {
