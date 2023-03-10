@@ -7,7 +7,7 @@ const users_routes = require("./routes/users_routes");
 const products_routes = require("./routes/products_routes");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
-
+const orders_routes = require("./routes/orders_routes");
 const { notFound, errorHandler } = require("./middleware/errorHandler");
 require("./config/db");
 const app = express();
@@ -35,8 +35,14 @@ app.use((req, res, next) => {
 app.use("/", default_route);
 app.use("/users", users_routes);
 
+
+//route pour produits 
+app.use("/products", products_routes);
 //route pour produits
 app.use("/products", products_routes);
+
+//route commandes
+app.use("/orders", orders_routes);
 
 app.use(notFound);
 app.use(errorHandler);
