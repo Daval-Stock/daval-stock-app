@@ -36,10 +36,12 @@ const createOrder = async (req, res) => {
 };
 
 // Update an existing order by ID
+
 const updateOrder = async (req, res) => {
   try {
     const order = await Order.findByIdAndUpdate(req.params.id, req.body, { new: true }).populate("products");
     // Check if order is confirmed and update stock levels accordingly
+    //la conditions 
     if (order.order_status === 'Delivered') {
       const products = order.products;
       for (const product of products) {
