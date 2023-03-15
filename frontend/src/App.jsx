@@ -1,12 +1,11 @@
 import React from "react";
-import Navbar from "./Components/Navbar.jsx";
-import UsersUI from "./Components/UsersUI.jsx";
+import ConnexionUI from "./Components/ConnexionUI.jsx";
+import RegisterUI from "./Components/RegisterUI.jsx";
 
 const App = () => {
   return (
     <div>
-      <Navbar/>
-      <UsersUI />
+      <RegisterUI/>
     </div>
   );
 };
