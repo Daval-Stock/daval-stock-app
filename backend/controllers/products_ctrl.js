@@ -15,7 +15,7 @@ const createProduct = asyncHandler( async (req, res) => {
   // Handle Image upload
   let fileData = {};
   if (req.file) {
-    // Save image to cloudinary
+    // Save image to cloudinarryj
     let uploadedFile;
     try {
       uploadedFile = await cloudinary.uploader.upload(req.file.path, {
