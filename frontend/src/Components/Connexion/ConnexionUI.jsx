@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 export default function ConnexionUI() {
   return (
@@ -34,7 +35,7 @@ export default function ConnexionUI() {
     <div className="flex items-center justify-center py-4 text-center bg-gray-50 dark:bg-gray-700">
         <span className="text-sm text-gray-600 dark:text-gray-200">Vous n'avez pas de compte ? </span>
 
-        <a href="#" className="mx-2 text-sm font-bold text-blue-500 dark:text-blue-400 hover:underline">S'inscrire</a>
+        <Link to="/RegisterUI" href="#" className="mx-2 text-sm font-bold text-blue-500 dark:text-blue-400 hover:underline">S'inscrire</Link>
     </div>
 </div>
   )

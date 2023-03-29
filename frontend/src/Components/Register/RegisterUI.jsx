@@ -1,8 +1,9 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 export default function RegisterUI() {
   return (
-    <section className="bg-white dark:bg-gray-900">
+    <section className="bg-white dark:bg-gray-900 pb-10">
     <div className="container flex items-center justify-center min-h-screen px-6 mx-auto">
         <form className="w-full max-w-md">
             <div className="flex justify-center mx-auto">
@@ -10,9 +11,9 @@ export default function RegisterUI() {
             </div>
             
             <div className="flex items-center justify-center mt-6">
-                <a href="#" className="w-1/3 pb-4 font-medium text-center text-gray-500 capitalize border-b dark:border-gray-400 dark:text-gray-300">
+                <Link to="/ConnexionUI" href="#" className="w-1/3 pb-4 font-medium text-center text-gray-500 capitalize border-b dark:border-gray-400 dark:text-gray-300">
                     Connexion
-                </a>
+                </Link>
 
                 <a href="#" className="w-1/3 pb-4 font-medium text-center text-gray-800 capitalize border-b-2 border-blue-500 dark:border-blue-400 dark:text-white">
                     S'inscrire
@@ -75,9 +76,9 @@ export default function RegisterUI() {
                 </button>
 
                 <div className="mt-6 text-center ">
-                    <a href="#" className="text-sm text-blue-500 hover:underline dark:text-blue-400">
+                    <Link to="/ConnexionUI" href="#" className="text-sm text-blue-500 hover:underline dark:text-blue-400">
                         Vous avez déjà un compte?
-                    </a>
+                    </Link>
                 </div>
             </div>
         </form>
