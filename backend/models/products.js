@@ -1,38 +1,43 @@
 const mongoose = require("mongoose");
-let Schema = mongoose.schema;
 
-let productSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true
+let productSchema = new mongoose.Schema(
+  {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "User",
     },
- //cette ligne commenter ci-dessous fait référence à l'unité de gestion de stock qui contient toutes les références les aux produits   
-/*     sku: 'SKU-' + Math.random().toString(36).substring(7)
+    name: {
+      type: String,
+      required: true,
+    },
+    //cette ligne commenter ci-dessous fait référence à l'unité de gestion de stock qui contient toutes les références les aux produits
+    /*     sku: 'SKU-' + Math.random().toString(36).substring(7)
     , */
     sku: {
-        type:String,
-        required :[true, "ce champ est obligatoire"],
-        trim: true,
+      type: String,
+      required: [true, "ce champ est obligatoire"],
+      unique: true,
+      trim: true,
     },
 
     category: {
-        type: String,
-        required:true
+      type: String,
+      required: true,
     },
-    quantity : {
-        type: Number,
-        required:[true, "Please quantity"]
-      },
+    quantity: {
+      type: Number,
+      required: [true, "Please quantity"],
+    },
 
     price: {
-        type: Number,
-        required: true
+      type: Number,
+      required: true,
     },
-    
 
     description: {
-        type: String,
-        required:true
+      type: String,
+      required: true,
     },
     /* 
     supplier: {
@@ -51,19 +56,20 @@ let productSchema = new mongoose.Schema({
         }
     }],*/
     image: {
-        type:Object,
-        default:{},
+      type: Object,
+      default: {},
     },
-   /*  supplier: {
+    /*  supplier: {
         type: String
       },
     site: {
         type: String
       } */
-},{
+  },
+  {
     //jfdj
-timestamps:true,
-}
+    timestamps: true,
+  }
 );
 
 module.exports = mongoose.model("Product", productSchema);

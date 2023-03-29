@@ -5,7 +5,8 @@
 @tailwind utilities;
 
 :root{
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Lato', sans-serif;
+
 }
 
 body{

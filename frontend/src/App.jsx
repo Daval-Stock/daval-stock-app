@@ -1,15 +1,17 @@
 import React from "react";
-import UsersUI from "./Components/UsersUI.jsx";
+import ConnexionUI from "./Components/ConnexionUI.jsx";
+import Navbar from "./Components/Navbar.jsx";
+import RegisterUI from "./Components/RegisterUI.jsx";
+import Sidebar from "./Components/Sidebar/Sidebar.jsx";
 
 const App = () => {
-  return(
-      <div>
-          <h1>
-            {/* Voici le composant des users */}
-              <UsersUI/>
-          </h1>
-      </div>
-  )
-}
+  return (
+    <div>
+      <Navbar />
+      <RegisterUI/>
+      <Sidebar/>
+    </div>
+  );
+};
 
 export default App;

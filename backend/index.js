@@ -14,7 +14,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // cors
-const cors = require('cors');
+const cors = require("cors");
 
 // middleware
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -41,8 +41,7 @@ app.use((req, res, next) => {
 app.use("/", default_route);
 app.use("/users", users_routes);
 
-
-//route pour produits 
+//route pour produits
 app.use("/products", products_routes);
 //route pour produits
 app.use("/products", products_routes);
