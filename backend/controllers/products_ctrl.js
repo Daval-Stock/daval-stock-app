@@ -59,7 +59,7 @@ const createProduct = asyncHandler( async (req, res) => {
 
 const getProducts   =   asyncHandler( async (req, res) => {
     try {
-      const products = await Product.find({ user: req.user.id }).sort("-createdAt");
+      const products = await Product.find();
       res.status(200).json(products);
     } catch (error) {
       console.log(error);
@@ -94,11 +94,6 @@ const  updateProduct    = asyncHandler (async (req, res) => {
   if (!product) {
     res.status(404);
     throw new Error("Product not found");
-  }
-  // Match product to its user
-  if (product.user.toString() !== req.user.id) {
-    res.status(401);
-    throw new Error("User not authorized");
   }
 
   // Handle Image upload
