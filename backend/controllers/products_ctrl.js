@@ -1,3 +1,4 @@
+
 const Product = require('../models/products');
 const asyncHandler = require("express-async-handler")
 const {fileSizeFormatter} = require("../utils/fileUpload")
@@ -47,14 +48,15 @@ const createProduct = asyncHandler( async (req, res) => {
     image: fileData,
   })
      return res.status(201).json(product);
-   
+
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ error: 'Unable to create product.' });
+    throw new Error("Unable to create product.");
   }
 });
 
 //pour obtenir la liste de tout les produits
+
 const getProducts   =   asyncHandler( async (req, res) => {
     try {
       const products = await Product.find({ user: req.user.id }).sort("-createdAt");
@@ -161,6 +163,4 @@ const  deleteProduct = asyncHandler (async (req, res) => {
     }
   });
 
-module.exports = {createProduct, getProductById, getProducts,updateProduct, deleteProduct}
-
-
+module.exports = {createProduct, getProductById, getProducts,updateProduct, deleteProduct};
