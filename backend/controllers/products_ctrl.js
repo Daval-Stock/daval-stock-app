@@ -71,6 +71,7 @@ const createProduct = asyncHandler(async (req, res) => {
       throw new Error("User Already Exists");
     }
 
+
     return;
   } catch (error) {
     console.error(error);
@@ -118,11 +119,6 @@ const updateProduct = asyncHandler(async (req, res) => {
   if (!product) {
     res.status(404);
     throw new Error("Product not found");
-  }
-  // Match product to its user
-  if (product.user.toString() !== req.user.id) {
-    res.status(401);
-    throw new Error("User not authorized");
   }
 
   // Handle Image upload
