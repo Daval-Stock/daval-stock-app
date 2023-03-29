@@ -2,6 +2,11 @@ const mongoose = require("mongoose");
 let Schema = mongoose.schema;
 
 let productSchema = new mongoose.Schema({
+    user:  {
+        type:mongoose.Schema.Types.ObjectId,
+        required:true,
+        ref: "User",
+    },
     name: {
         type: String,
         required: true
@@ -9,6 +14,26 @@ let productSchema = new mongoose.Schema({
  //cette ligne commenter ci-dessous fait référence à l'unité de gestion de stock qui contient toutes les références les aux produits   
 /*     sku: 'SKU-' + Math.random().toString(36).substring(7)
     , */
+    sku: {
+        type:String,
+        required :[true, "ce champ est obligatoire"],
+        trim: true,
+    },
+
+    category: {
+        type: String,
+        required:true
+    },
+    quantity : {
+        type: Number,
+        required:[true, "Please quantity"]
+      },
+
+    price: {
+        type: Number,
+        required: true
+    },
+    
 
     description: {
         type: String,
@@ -30,28 +55,20 @@ let productSchema = new mongoose.Schema({
             default: 0
         }
     }],*/
-    price: {
-        type: Number,
-        required: true
+    image: {
+        type:Object,
+        default:{},
     },
-    category: {
-        type: String,
-        required:true
-    },
-    supplier: {
+   /*  supplier: {
         type: String
       },
     site: {
         type: String
-      },
-    stock_level: {
-        type: Number,
-        default:0
-      },
-    min_stock_level: {
-        type: Number,
-        default:0
-      }
-});
+      } */
+},{
+    //jfdj
+timestamps:true,
+}
+);
 
 module.exports = mongoose.model("Product", productSchema);
