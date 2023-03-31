@@ -28,11 +28,11 @@ export default function ConnexionUI() {
         </div>
 
         <h3 className="mt-3 text-xl font-medium text-center text-gray-600 dark:text-gray-200">
-          Bienvenue Chez Daval Stock
+          Se connecter
         </h3>
 
         <p className="mt-1 text-center text-gray-500 dark:text-gray-400">
-          Connectez vous facillement
+          en seulement deux clics
         </p>
 
         <form>
