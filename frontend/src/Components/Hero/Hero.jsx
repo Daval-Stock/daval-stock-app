@@ -1,14 +1,12 @@
 import { useState } from 'react'
 import { Dialog } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
-import logoDaval from "../../assets/logoDaval.png"
-import { Link } from 'react-router-dom'
 
 const navigation = [
-  { name: 'Accueil', href: '/' },
-  { name: 'A propos', href: '/About' },
-  { name: 'Services', href: '/Services' },
-  { name: 'Contact', href: '/Contact' },
+  { name: 'Accueil', href: '#' },
+  { name: 'A propos', href: '#' },
+  { name: 'Services', href: '#' },
+  { name: 'Contact', href: '#' },
 ]
 
 export default function Hero() {
@@ -19,14 +17,14 @@ export default function Hero() {
       <header className="absolute inset-x-0 top-0 z-50">
         <nav className="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
           <div className="flex lg:flex-1">
-            <Link to="/" href="#" className="-m-1.5 p-1.5">
+            <a href="#" className="-m-1.5 p-1.5">
               <span className="sr-only">Your Company</span>
               <img
                 className="h-8 w-auto"
-                src={logoDaval}
+                src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
                 alt=""
               />
-            </Link>
+            </a>
           </div>
           <div className="flex lg:hidden">
             <button
@@ -46,9 +44,9 @@ export default function Hero() {
             ))}
           </div>
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-            <Link to="/ConnexionUI" href="#" className="rounded-md bg-blue-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+            <a href="#" className="rounded-md bg-blue-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
               Se connecter 
-            </Link>
+            </a>
           </div>
         </nav>
         <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
@@ -126,9 +124,9 @@ export default function Hero() {
             <div className="mt-10 flex items-center justify-center gap-x-6">
               <a
                 href="#"
-                className="rounded-md bg-blue-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
-                Aller plus loin avec un Démo
+                Pour Aller plus loin avec un Démo
               </a>
             </div>
           </div>
