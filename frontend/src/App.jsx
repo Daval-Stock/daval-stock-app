@@ -10,6 +10,7 @@ import UsersUI from "./Components/Users/UsersUI"
 import About from "./Components/About/About.jsx";
 import Services from "./Components/Services/Services.jsx";
 import Contact from "./Components/Contact/Contact.jsx";
+import Footer from "./Components/Footer/Footer.jsx";
 
 
 const App = () => {
