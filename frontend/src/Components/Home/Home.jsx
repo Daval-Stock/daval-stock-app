@@ -22,7 +22,9 @@ export default function Home() {
             />
           </div>
           <div className="mx-auto max-w-3xl py-32 sm:py-16 lg:py-56">
-            <div className="hidden sm:mb-8 sm:flex sm:justify-center"></div>
+            <div className="hidden sm:mb-8 sm:flex sm:justify-center">
+              <img src="" alt="" />
+            </div>
             <div className="text-center">
               <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
                 Bienvenue sur l'application Daval Stock
