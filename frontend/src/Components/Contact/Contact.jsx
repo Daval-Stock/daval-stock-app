@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import { Switch } from '@headlessui/react'
 import Navbar from '../Navbar/Navbar'
 
@@ -199,7 +198,7 @@ export default function Contact() {
               </Switch>
             </div>
             <Switch.Label className="text-sm leading-6 text-gray-600">
-            En sélectionnant ceci, vous acceptez notre{' '}
+            En cochant ceci, vous acceptez notre{' '}
               <a href="#" className="font-semibold text-indigo-600">
               politique de&nbsp;confidentialité
               </a>
