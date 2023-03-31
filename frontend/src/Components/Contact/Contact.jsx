@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import { Switch } from '@headlessui/react'
 import Navbar from '../Navbar/Navbar'
+import FooterLink from '../Footer/FooterLink' 
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
+
 
 export default function Contact() {
   const [agreed, setAgreed] = useState(false)
@@ -216,7 +218,7 @@ export default function Contact() {
         </div>
       </form>
     </div>
-
+    <FooterLink/>
     </>
     
   )
