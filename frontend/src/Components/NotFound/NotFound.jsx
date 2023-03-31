@@ -1,23 +1,27 @@
 import React from 'react'
-import {BiArrowBack} from 'react-icons/all'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 export default function NotFound() {
-    //Initialisation de la naviagtion
-    const navigate = useNavigate()
-    //Fonction pour retourner à la page d'accueil en cas d'erreur
-    const goHome = () =>{
-        navigate("/")
-    }
 
-
-  return (
-    <div className="text-center text-2xl">
-      <h1 className="pt-10 pb-10 text-red-500">Wops, Cette page n'existe pas</h1>
-      <button onClick={goHome} type="button" className="text-gray-900 bg-gray-100 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-500 mr-2 mb-2">
-        <BiArrowBack className="w-4 h-4 mr-2 -ml-1 text-[#626890]"/>
-        Retour à l'accueil
-        </button>
-    </div>
-  )
-}
+    return (
+      <>
+        <main className="grid min-h-full place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8">
+          <div className="text-center">
+            <p className="text-base font-semibold text-indigo-600">404</p>
+            <h1 className="mt-4 text-3xl font-bold tracking-tight text-gray-900 sm:text-5xl">Cette page n'exise pas</h1>
+            <p className="mt-6 text-base leading-7 text-gray-600">Désolé, nous n'avons pas pu trouver la page que vous recherchez.</p>
+            <div className="mt-10 flex items-center justify-center gap-x-6">
+              <Link
+                to="/"
+                className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              >
+                <span aria-hidden="true">&larr;</span>
+                Retour à la page d'accueil
+              </Link>
+              
+            </div>
+          </div>
+        </main>
+      </>
+    )
+  }

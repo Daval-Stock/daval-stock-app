@@ -5,6 +5,8 @@ import {
 } from "react-icons/all.js"
 import { Link } from 'react-router-dom'
 import Navbar from '../Navbar/Navbar'
+import logoDaval from '../../assets/logoDaval.png'
+import alamine from '../../assets/alamine.png'
 
 
 export default function Sidebar({shhowNavbar}) {
@@ -21,17 +23,17 @@ export default function Sidebar({shhowNavbar}) {
                     <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
                     </svg>
                 </button>
-                <a href="#" className="flex ml-2 md:mr-24">
-                <img src="" className="h-8 mr-3" alt="" />
+                <Link to="/" className="flex ml-2 md:mr-24">
+                <img src={logoDaval} className="h-8 mr-3" alt="" />
                 <span className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">Daval Stock</span>
-                </a>
+                </Link>
             </div>
             <div className="flex items-center">
                 <div className="flex items-center ml-3">
                     <div>
                     <button type="button" className="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" aria-expanded="false" data-dropdown-toggle="dropdown-user">
                         <span className="sr-only">Open user menu</span>
-                        <img className="w-8 h-8 rounded-full" src="#" alt="user photo"/>
+                        <img className="w-8 h-8 rounded-full" src={alamine} alt="user photo"/>
                     </button>
                     </div>
                     <div className="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600" id="dropdown-user">

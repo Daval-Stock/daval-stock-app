@@ -10,17 +10,14 @@ import UsersUI from "./Components/Users/UsersUI"
 import About from "./Components/About/About.jsx";
 import Services from "./Components/Services/Services.jsx";
 import Contact from "./Components/Contact/Contact.jsx";
-import Footer from "./Components/Footer/Footer.jsx";
-
 
 const App = () => {
-  const [showNavbar, setShowNavbar] = React.useState(true);
+  
   return (
     <div>
-      <Navbar/>
       <Routes>
         <Route path="/" element={<Home/>} />
-        <Route path="/Sidebar" element={<Sidebar showNavbar={showNavbar}/>} /> 
+        <Route path="/Sidebar" element={<Sidebar/>} /> 
         <Route path="/ConnexionUI" element={<ConnexionUI/>} />
         <Route path="/RegisterUI" element={<RegisterUI/>} />
         <Route path="/About" element={<About/>} />

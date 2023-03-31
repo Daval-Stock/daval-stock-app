@@ -2,10 +2,12 @@ import React from "react";
 import { Link } from "react-router-dom";
 import logoDaval from "../../assets/logoDaval.png"
 import FooterLink from "../Footer/FooterLink";
+import Navbar from "../Navbar/Navbar";
 
 export default function ConnexionUI() {
   return (
     <>
+    <Navbar/>
     <div className="relative isolate px-6 pt-32 lg:px-16">
         <div
           className="absolute inset-x-0 top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"

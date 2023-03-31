@@ -1,9 +1,12 @@
 import React from "react";
 import Footer from "../Footer/Footer";
+import Navbar from "../Navbar/Navbar";
+import { Link } from "react-router-dom";
 
 export default function Home() {
   return (
     <>
+      <Navbar/>
       <div className="bg-white">
         <div className="relative isolate px-6 pt-14 lg:px-8">
           <div
@@ -18,7 +21,7 @@ export default function Home() {
               }}
             />
           </div>
-          <div className="mx-auto max-w-3xl py-32 sm:py-16 lg:py-24">
+          <div className="mx-auto max-w-3xl py-32 sm:py-16 lg:py-56">
             <div className="hidden sm:mb-8 sm:flex sm:justify-center"></div>
             <div className="text-center">
               <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
@@ -30,12 +33,12 @@ export default function Home() {
                 réapprovisionnement et les ventes.
               </p>
               <div className="mt-10 flex items-center justify-center gap-x-6">
-                <a
-                  href="#"
+                <Link
+                  to="/Sidebar"
                   className="rounded-md bg-blue-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 >
-                  Aller plus loin avec un Démo
-                </a>
+                  Découvrez le Tableau de Bord
+                </Link>
               </div>
             </div>
           </div>
