@@ -51,6 +51,7 @@ app.use("/orders", orders_routes);
 
 app.use(notFound);
 app.use(errorHandler);
+
 // static pages
 app.use(express.static("uploads"));
 

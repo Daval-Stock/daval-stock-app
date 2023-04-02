@@ -1,10 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import FooterLink from "../Footer/FooterLink";
+import Navbar from "../Navbar/Navbar";
 
 export default function RegisterUI() {
   return (
     <>
+    <Navbar/>
         <div className="relative isolate px-6 pt-12 lg:px-16">
       <div
         className="absolute inset-x-0 top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
