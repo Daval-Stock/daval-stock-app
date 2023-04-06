@@ -10,6 +10,12 @@ function classNames(...classes) {
 
 export default function Contact() {
   const [agreed, setAgreed] = useState(false)
+
+  const addContact = e => {
+    e.preventDefault();
+  }
+
+  
   return (
     <>
     <Navbar/>
@@ -33,7 +39,11 @@ export default function Contact() {
         Nous sommes impatients de recevoir votre message via notre formulaire de contact !
         </p>
       </div>
-      <form action="#" method="POST" className="mx-auto mt-16 max-w-xl sm:mt-20">
+      <form 
+      action="#"
+      onSubmit={e => addContact(e)}
+      method="POST" 
+      className="mx-auto mt-16 max-w-xl sm:mt-20">
         <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
           <div>
             <label htmlFor="first-name" className="block text-sm font-semibold leading-6 text-gray-900">
@@ -45,7 +55,7 @@ export default function Contact() {
                 name="first-name"
                 id="first-name"
                 autoComplete="given-name"
-                className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
               />
             </div>
           </div>
@@ -59,7 +69,7 @@ export default function Contact() {
                 name="last-name"
                 id="last-name"
                 autoComplete="family-name"
-                className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
               />
             </div>
           </div>
@@ -72,8 +82,9 @@ export default function Contact() {
                 type="text"
                 name="company"
                 id="company"
+                placeholder="7, Rue des casseaux 75005 Paris"
                 autoComplete="organization"
-                className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
               />
             </div>
           </div>
@@ -84,10 +95,11 @@ export default function Contact() {
             <div className="mt-2.5">
               <input
                 type="email"
+                placeholder="exemple@gmail.com"
                 name="email"
                 id="email"
                 autoComplete="email"
-                className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
               />
             </div>
           </div>
@@ -103,7 +115,7 @@ export default function Contact() {
                 <select
                   id="country"
                   name="country"
-                  className="h-full rounded-md border-0 bg-transparent bg-none py-0 pl-4 pr-9 text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+                  className="h-full rounded-md border-0 bg-transparent bg-none py-0 pl-4 pr-9 text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm"
                 >
                   
                     <option value="">--Choisir un pays--</option>
@@ -161,7 +173,7 @@ export default function Contact() {
                 name="phone-number"
                 id="phone-number"
                 autoComplete="tel"
-                className="block w-full rounded-md border-0 px-3.5 py-2 pl-80 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                className="block w-full rounded-md border-0 px-3.5 py-2 pl-80 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
               />
             </div>
           </div>
@@ -174,7 +186,7 @@ export default function Contact() {
                 name="message"
                 id="message"
                 rows={4}
-                className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
                 defaultValue={''}
               />
             </div>
@@ -185,8 +197,8 @@ export default function Contact() {
                 checked={agreed}
                 onChange={setAgreed}
                 className={classNames(
-                  agreed ? 'bg-indigo-600' : 'bg-gray-200',
-                  'flex w-8 flex-none cursor-pointer rounded-full p-px ring-1 ring-inset ring-gray-900/5 transition-colors duration-200 ease-in-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
+                  agreed ? 'bg-blue-600' : 'bg-gray-200',
+                  'flex w-8 flex-none cursor-pointer rounded-full p-px ring-1 ring-inset ring-gray-900/5 transition-colors duration-200 ease-in-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600'
                 )}
               >
                 <span className="sr-only">Agree to policies</span>
@@ -201,7 +213,7 @@ export default function Contact() {
             </div>
             <Switch.Label className="text-sm leading-6 text-gray-600">
             En cochant ceci, vous acceptez notre{' '}
-              <a href="#" className="font-semibold text-indigo-600">
+              <a href="#" className="font-semibold text-blue-600">
               politique de&nbsp;confidentialité
               </a>
               .
@@ -211,7 +223,7 @@ export default function Contact() {
         <div className="mt-10">
           <button
             type="submit"
-            className="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            className="block w-full rounded-md bg-blue-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
           >
             Envoyer
           </button>

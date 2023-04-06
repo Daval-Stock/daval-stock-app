@@ -5,11 +5,11 @@ import Sidebar from "./Components/Sidebar/Sidebar.jsx";
 import { Routes, Route } from "react-router-dom";
 import Home from "./Components/Home/Home.jsx";
 import NotFound from "./Components/NotFound/NotFound.jsx";
-import Navbar from "./Components/Navbar/Navbar.jsx";
 import UsersUI from "./Components/Users/UsersUI"
 import About from "./Components/About/About.jsx";
 import Services from "./Components/Services/Services.jsx";
 import Contact from "./Components/Contact/Contact.jsx";
+import Articles from "./Components/Articles/Articles.jsx";
 
 const App = () => {
   
@@ -24,6 +24,7 @@ const App = () => {
         <Route path="/Services" element={<Services/>} />
         <Route path="/Contact" element={<Contact/>} />
         <Route path="/UsersUI" element={<UsersUI/>} />
+        <Route path="/Articles" element={<Articles/>} />
         <Route path="*" element={<NotFound/>} />
       </Routes>
     </div>
