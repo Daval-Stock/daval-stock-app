@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { Link } from "react-router-dom";
 
 import {
@@ -12,12 +13,25 @@ import Navbar from "../Navbar/Navbar";
 import logoDaval from "../../assets/logoDaval.png";
 import alamine from "../../assets/alamine.png";
 
-function Articles({ showNavbar }) {
+function Users({ shhowNavbar }) {
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/users/all-user")
+      .then((response) => {
+        setUsers(response.data);
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   return (
     <>
       <div>
-        {showNavbar && <Navbar />}
+        {shhowNavbar && <Navbar />}
         <nav className="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
           <div className="px-3 py-3 lg:px-5 lg:pl-3">
             <div className="flex items-center justify-between">
@@ -181,7 +195,7 @@ function Articles({ showNavbar }) {
                 </a>
               </Link>
 
-              <Link to="/Product">
+              <li>
                 <a
                   href="#"
                   className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
@@ -203,7 +217,7 @@ function Articles({ showNavbar }) {
                     Produits
                   </span>
                 </a>
-              </Link>
+              </li>
               <li>
                 <a
                   href="#"
@@ -290,8 +304,46 @@ function Articles({ showNavbar }) {
 
         <div className="p-4 sm:ml-64">
           <div className="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14">
-            
-            <h2>Liste des articles</h2>
+            <div class="items-center justify-between m-10">
+              <div class="relative overflow-x-auto">
+                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                  <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                      <th scope="col" class="px-6 py-3">
+                        Prénom et Nom
+                      </th>
+                      <th scope="col" class="px-6 py-3">
+                        Email
+                      </th>
+                      <th scope="col" class="px-6 py-3">
+                        Téléphone
+                      </th>
+                      <th scope="col" class="px-6 py-3">
+                        Rôle
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {users.map((user) => (
+                      <tr
+                        key={user.id}
+                        className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                      >
+                        <th
+                          scope="row"
+                          class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                        >
+                          {user.name}
+                        </th>
+                        <td class="px-6 py-4">{user.email}</td>
+                        <td class="px-6 py-4">{user.mobile}</td>
+                        <td class="px-6 py-4">{user.role}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -299,4 +351,4 @@ function Articles({ showNavbar }) {
   );
 }
 
-export default Articles;
+export default Users;

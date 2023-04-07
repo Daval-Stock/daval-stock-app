@@ -12,7 +12,7 @@ import Navbar from "../Navbar/Navbar";
 import logoDaval from "../../assets/logoDaval.png";
 import alamine from "../../assets/alamine.png";
 
-function Articles({ showNavbar }) {
+function Order({ showNavbar }) {
 
   return (
     <>
@@ -204,7 +204,7 @@ function Articles({ showNavbar }) {
                   </span>
                 </a>
               </Link>
-              <li>
+              <Link to="/Order">
                 <a
                   href="#"
                   className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
@@ -214,8 +214,8 @@ function Articles({ showNavbar }) {
                     Commandes
                   </span>
                 </a>
-              </li>
-              <li>
+              </Link>
+              <Link to="/Invoice">
                 <a
                   href="#"
                   className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
@@ -225,8 +225,8 @@ function Articles({ showNavbar }) {
                     Factures
                   </span>
                 </a>
-              </li>
-              <li>
+              </Link>
+              <Link to="/Tracking">
                 <a
                   href="#"
                   className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
@@ -236,9 +236,9 @@ function Articles({ showNavbar }) {
                     Etat du stock
                   </span>
                 </a>
-              </li>
+              </Link>
 
-              <li>
+              <Link to="/Setting">
                 <a
                   href="#"
                   className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
@@ -260,8 +260,8 @@ function Articles({ showNavbar }) {
                     Réglages
                   </span>
                 </a>
-              </li>
-              <li>
+              </Link>
+              <Link to="/SignOut">
                 <a
                   href="#"
                   className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
@@ -283,7 +283,7 @@ function Articles({ showNavbar }) {
                     Deconnexion
                   </span>
                 </a>
-              </li>
+              </Link>
             </ul>
           </div>
         </aside>
@@ -291,7 +291,7 @@ function Articles({ showNavbar }) {
         <div className="p-4 sm:ml-64">
           <div className="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14">
             
-            <h2>Liste des articles</h2>
+            <h2>Liste des Commandes</h2>
           </div>
         </div>
       </div>
@@ -299,4 +299,4 @@ function Articles({ showNavbar }) {
   );
 }
 
-export default Articles;
+export default Order;

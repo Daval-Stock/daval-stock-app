@@ -7,7 +7,6 @@ import { Link } from 'react-router-dom'
 import Navbar from '../Navbar/Navbar'
 import logoDaval from '../../assets/logoDaval.png'
 import alamine from '../../assets/alamine.png'
-import FooterLink from '../Footer/FooterLink'
 
 
 export default function Sidebar({shhowNavbar}) {
