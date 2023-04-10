@@ -1,11 +1,15 @@
-import React from "react";
+import React, {useContext } from "react";
 import Footer from "../Footer/Footer";
 import Navbar from "../Navbar/Navbar";
 import { Link } from "react-router-dom";
+import UserProfile from '../Users/UserProfile';
+import UserContext from '../Users/UserContext';
+
 
 export default function Home() {
-  
+  const userProfile = useContext(UserContext);
   return (
+    
     <>
       <Navbar/>
       <div className="bg-white">
@@ -28,7 +32,7 @@ export default function Home() {
             </div>
             <div className="text-center">
               <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-                Bienvenue sur l'application Daval Stock
+                Bienvenue {<UserProfile />} sur l'application Daval Stock
               </h1>
               <p className="mt-6 text-lg leading-8 text-gray-600">
                 L'application conçue pour aider la pharmacie de la paix à suivre

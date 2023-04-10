@@ -1,14 +1,17 @@
 import React, { useState } from "react";
-import axios from "axios";
+import axiosInstance from '../axiosInstance';
 import { Link } from "react-router-dom";
 import logoDaval from "../../assets/logoDaval.png";
-import FooterLink from "../Footer/FooterLink";
+import Footer from "../Footer/Footer";
 import Navbar from "../Navbar/Navbar";
+import { useNavigate } from 'react-router-dom';
 
 export default function ConnexionUI() {
   // State pour stocker les valeurs du formulaire et les erreurs
   const [formValues, setFormValues] = useState({ email: "", password: "" });
   const [formErrors, setFormErrors] = useState({ email: "", password: "" });
+  const navigateTo = useNavigate();
+  
 
   // Fonction de validation qui vérifie si les champs requis sont remplis et retourne un objet contenant les erreurs s'il y en a
   const validateForm = () => {
@@ -34,16 +37,19 @@ export default function ConnexionUI() {
     e.preventDefault();
     if (validateForm()) {
       // Envoyer les données du formulaire au serveur
-      axios
-        .post("/api/login", { email: formValues.email, password: formValues.password })
+      axiosInstance
+        .post("users/login", { email: formValues.email, password: formValues.password })
         .then((response) => {
           // Traitement de la réponse du serveur
           console.log(response.data);
+          const token = response.data.token;
+          localStorage.setItem('authToken', token);
+          navigateTo('/');
         })
         .catch((error) => {
-          // Traitement des erreurs
-          console.log(error);
-        });
+  console.log("Axios error: ", error);
+  console.log("Axios error response: ", error.response);
+});
     }
   };
 
@@ -56,7 +62,7 @@ export default function ConnexionUI() {
     }));
   };
 
-
+  
   return (
     <>
       <Navbar />
@@ -146,7 +152,7 @@ export default function ConnexionUI() {
           </div>
         </div>
       </div>
-      <FooterLink />
+      <Footer />
     </>
   );
 }

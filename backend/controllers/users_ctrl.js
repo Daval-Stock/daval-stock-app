@@ -110,6 +110,19 @@ const getUserById = asyncHandler(async (req, res) => {
   }
 });
 
+const userProfile = asyncHandler(async (req, res) => {
+  try {
+    // Récupérez l'utilisateur depuis la requête (ajouté par le middleware d'authentification)
+    const user = req.user;
+
+    // Renvoyez les informations de l'utilisateur
+    res.json(user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Erreur serveur" });
+  }
+});
+
 const updateUser = asyncHandler(async (req, res) => {
   const { _id } = req.user;
   validateMongoDbId(_id);
@@ -190,5 +203,6 @@ module.exports = {
   blockUser,
   unblockUser,
   handleRefreshToken,
+  userProfile,
   logout,
 };

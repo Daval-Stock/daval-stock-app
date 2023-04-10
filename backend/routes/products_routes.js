@@ -14,7 +14,7 @@ const { authMiddleware, isAdmin } = require("../middleware/authMiddleware");
 router.post("/createProduct", authMiddleware, createProduct);
 
 // Récupérer tous les produits
-router.get("/", getProducts);
+router.get("/", authMiddleware, getProducts);
 
 // Récupérer un produit spécifique
 router.get("/:id", getProductById);
