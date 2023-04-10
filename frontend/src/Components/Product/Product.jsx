@@ -1,12 +1,14 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
+import FooterLink from "../Footer/FooterLink";
+import Navbar from "../Navbar/Navbar";
 
 export default function Product() {
   const [product, setProduct] = useState([]);
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/products/all-products")
+      .get("http://localhost:3000/products/")
       .then((response) => {
         setProduct(response.data);
         console.log(response);
@@ -17,8 +19,9 @@ export default function Product() {
   }, []);
 
   return (
-    
-    <div>
+    <>
+    {/* <Navbar /> */}
+    <div className="">
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -67,6 +70,8 @@ export default function Product() {
           </tbody>
         </table>
       </div>
+      <FooterLink />
     </div>
+  </>
   );
 }

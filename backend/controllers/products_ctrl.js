@@ -71,7 +71,6 @@ const createProduct = asyncHandler(async (req, res) => {
       throw new Error("User Already Exists");
     }
 
-
     return;
   } catch (error) {
     console.error(error);
@@ -83,9 +82,7 @@ const createProduct = asyncHandler(async (req, res) => {
 
 const getProducts = asyncHandler(async (req, res) => {
   try {
-    const products = await Product.find({ user: req.user.id }).sort(
-      "-createdAt"
-    );
+    const products = await Product.find();
     res.status(200).json(products);
   } catch (error) {
     console.log(error);
