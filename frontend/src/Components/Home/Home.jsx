@@ -13,7 +13,7 @@ export default function Home() {
     <>
       <Navbar/>
       <div className="bg-white">
-        <div className="relative isolate px-6 pt-14 lg:px-8">
+        <div className="relative isolate px-6 pt-8 lg:px-8">
           <div
             className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
             aria-hidden="true"
@@ -26,7 +26,7 @@ export default function Home() {
               }}
             />
           </div>
-          <div className="mx-auto max-w-3xl py-32 sm:py-16 lg:py-56">
+          <div className="mx-auto max-w-3xl py-30 sm:py-16 lg:py-50">
             <div className="hidden sm:mb-8 sm:flex sm:justify-center">
               <img src="" alt="" />
             </div>
