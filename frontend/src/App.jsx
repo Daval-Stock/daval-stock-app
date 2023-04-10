@@ -1,5 +1,6 @@
 import React from "react";
 import ConnexionUI from "./Components/Connexion/ConnexionUI.jsx";
+import LogoutUI from "./Components/Connexion/LogoutUI.jsx";
 import RegisterUI from "./Components/Register/RegisterUI.jsx";
 import Sidebar from "./Components/Sidebar/Sidebar.jsx";
 import { Routes, Route } from "react-router-dom";
@@ -21,6 +22,7 @@ const App = () => {
         <Route path="/" element={<Home/>} />
         <Route path="/Sidebar" element={<Sidebar/>} /> 
         <Route path="/ConnexionUI" element={<ConnexionUI/>} />
+        <Route path="/LogoutUI" element={<LogoutUI/>} />
         <Route path="/RegisterUI" element={<RegisterUI/>} />
         <Route path="/About" element={<About/>} />
         <Route path="/Services" element={<Services/>} />
