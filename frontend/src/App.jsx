@@ -13,6 +13,7 @@ import Contact from "./Components/Contact/Contact.jsx";
 import Articles from "./Components/Articles/Articles.jsx";
 import Product from "./Components/Product/Product.jsx";
 import Order from "./Components/Order/Order.jsx";
+import Dashboard from "./Components/Dashboard/Dashboard.jsx";
 
 const App = () => {
   
@@ -22,6 +23,7 @@ const App = () => {
         <Route path="/" element={<Home/>} />
         <Route path="/Sidebar" element={<Sidebar/>} /> 
         <Route path="/ConnexionUI" element={<ConnexionUI/>} />
+        <Route path="/Dashboard" element={<Dashboard/>} />
         <Route path="/LogoutUI" element={<LogoutUI/>} />
         <Route path="/RegisterUI" element={<RegisterUI/>} />
         <Route path="/About" element={<About/>} />

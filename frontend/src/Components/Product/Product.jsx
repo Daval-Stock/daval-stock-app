@@ -2,6 +2,16 @@ import axiosInstance from '../axiosInstance';
 import React, { useState, useEffect } from "react";
 import FooterLink from "../Footer/FooterLink";
 import Navbar from "../Navbar/Navbar";
+import { Link } from "react-router-dom";
+
+import {
+  RiDashboardFill,
+  CiUser,
+  FiPackage,
+  TbFileInvoice,
+  BsDatabaseCheck,
+} from "react-icons/all.js";
+import Sidebar from '../Sidebar/Sidebar';
 
 export default function Product() {
   const [product, setProduct] = useState([]);
@@ -21,10 +31,13 @@ export default function Product() {
 
   return (
     <>
-    <Navbar /> 
-    <div className="">
-      <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+    <Sidebar /> 
+    
+        <div className="p-4 sm:ml-64">
+          <div className="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14">
+            <div className="items-center justify-between m-10">
+              <div className="relative overflow-x-auto">
+                <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
               <th scope="col" className="px-6 py-3">
@@ -70,9 +83,11 @@ export default function Product() {
             ))}
           </tbody>
         </table>
-      </div>
-      <FooterLink />
-    </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    
   </>
   );
 }
