@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import axiosInstance from '../axiosInstance';
 import { Link } from "react-router-dom";
 
 import {
@@ -17,8 +17,9 @@ function Users({ shhowNavbar }) {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    axios
-      .get("http://localhost:3000/users/all-user")
+    // Utiliser axiosInstance au lieu d'axios
+    axiosInstance
+      .get("/users/all-user")
       .then((response) => {
         setUsers(response.data);
         console.log(response);

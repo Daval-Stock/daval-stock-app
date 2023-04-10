@@ -1,8 +1,11 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Dialog } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import logoDaval from "../../assets/logoDaval.png"
 import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
+
+import UserProfile from '../Users/UserProfile';
 
 const navigation = [
   { name: 'Accueil', href: '/' },
@@ -12,11 +15,11 @@ const navigation = [
 ]
 
 export default function Navbar() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-
-
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const authToken = localStorage.getItem('authToken');
+  
   return (
-    <div classNameName='bg-white'>
+    <div className='bg-white'>
       <header className="absolute inset-x-0 top-0 z-50">
         <nav className="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
           <div className="flex lg:flex-1">
@@ -47,9 +50,24 @@ export default function Navbar() {
             ))}
           </div>
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-            <Link to="/ConnexionUI" href="#" className="rounded-md bg-blue-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-              Se connecter 
-            </Link>
+            {authToken ? (
+              <div className="">
+                <UserProfile />
+        <Link
+          to="/LogoutUI"
+          className="rounded-md bg-blue-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+        >
+          Se déconnecter
+        </Link>
+              </div>
+      ) : (
+        <Link
+          to="/ConnexionUI"
+          className="rounded-md bg-blue-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+        >
+          Se connecter
+        </Link>
+      )}
           </div>
         </nav>
         <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
