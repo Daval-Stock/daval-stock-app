@@ -22,10 +22,11 @@ export default function Footer() {
         element1: "confidentialité",
         element2: "Termes et Conditions",
       },
-  ];
+    ];
   return (
     <footer className="bg-white dark:bg-gray-900">
       <div className="mx-auto w-full l p-4 py-6 lg:py-8">
+    <hr className="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
         <div className="md:flex md:justify-between">
           <div className="mb-6 md:mb-0">
             <Link to="/" className="flex items-center">
@@ -35,7 +36,7 @@ export default function Footer() {
               </span>
             </Link>
           </div>
-          <div className="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
+          <div className="grid grid-cols-2 gap-6 sm:gap-8 sm:grid-cols-3 mr-10 center">
             {footerData.map(({ id, title, element1, element2 }) => {
               return (
                 <div key={id}>
@@ -60,7 +61,6 @@ export default function Footer() {
           </div>
         </div>
         
-        <hr className="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
         <div className="sm:flex sm:items-center sm:justify-between">
           <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">
             © 2023{" "}
