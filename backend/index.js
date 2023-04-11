@@ -12,6 +12,8 @@ const { notFound, errorHandler } = require("./middleware/errorHandler");
 require("./config/db");
 const app = express();
 const PORT = process.env.PORT || 3000;
+const path = require("path");
+const categoryRoutes = require("./routes/categories");  
 
 // cors
 const cors = require("cors");
@@ -42,9 +44,11 @@ app.use("/", default_route);
 app.use("/users", users_routes);
 
 //route pour produits
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/products", products_routes);
-//route pour produits
-app.use("/products", products_routes);
+
+//route pour les catégories
+app.use("/categories", categoryRoutes);
 
 //route commandes
 app.use("/orders", orders_routes);

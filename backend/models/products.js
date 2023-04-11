@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-
 let productSchema = new mongoose.Schema(
   {
     user: {
@@ -15,14 +14,14 @@ let productSchema = new mongoose.Schema(
     /*     sku: 'SKU-' + Math.random().toString(36).substring(7)
     , */
     sku: {
-      type: String,
-      required: [true, "ce champ est obligatoire"],
+      type:String,
       unique: true,
       trim: true,
     },
 
     category: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Category",
       required: true,
     },
     quantity: {
@@ -56,8 +55,10 @@ let productSchema = new mongoose.Schema(
         }
     }],*/
     image: {
-      type: Object,
-      default: {},
+    fileName: String,
+    filePath: String,
+    fileType: String,
+    fileSize: String,
     },
     /*  supplier: {
         type: String

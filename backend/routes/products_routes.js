@@ -9,9 +9,10 @@ const {
   deleteProduct,
 } = require("../controllers/products_ctrl");
 const { authMiddleware, isAdmin } = require("../middleware/authMiddleware");
+const upload = require("../middleware/upload");
 
 // Créer un nouveau produit
-router.post("/createProduct", authMiddleware, createProduct);
+router.post("/createProduct", authMiddleware,upload.single("image"), createProduct);
 
 // Récupérer tous les produits
 <<<<<<< HEAD
