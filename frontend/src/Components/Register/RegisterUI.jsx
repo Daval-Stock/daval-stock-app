@@ -1,9 +1,96 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import FooterLink from "../Footer/FooterLink";
-import Navbar from "../Navbar/Navbar";
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import axiosInstance from '../axiosInstance';
+import Navbar from '../Navbar/Navbar';
+import FooterLink from '../Footer/FooterLink';
+import logoDaval from '../../assets/logoDaval.png';
+
 
 export default function RegisterUI() {
+    const [formValues, setFormValues] = useState({
+    username: '',
+    email: '',
+    mobile: '',
+    password: '',
+    confirmPassword: '',
+  });
+  const [formErrors, setFormErrors] = useState({
+    username: '',
+    email: '',
+    mobile: '',
+    password: '',
+    confirmPassword: '',
+  });
+  const navigateTo = useNavigate();
+
+  const validateForm = () => {
+    let errors = {};
+    let isValid = true;
+
+    if (!formValues.username) {
+      errors.username = "Le nom d'utilisateur est requis";
+      isValid = false;
+    }
+
+    if (!formValues.email) {
+      errors.email = "L'adresse e-mail est requise";
+      isValid = false;
+    }
+
+    if (!formValues.mobile) {
+    errors.mobile = 'Le numéro de téléphone mobile est requis';
+    isValid = false;
+  } else if (!/^(\+33|0)[1-9](\d{2}){4}$/.test(formValues.mobile)) {
+    errors.mobile = 'Le numéro de téléphone mobile est invalide';
+    isValid = false;
+  }
+
+    if (!formValues.password) {
+      errors.password = 'Le mot de passe est requis';
+      isValid = false;
+    }
+
+    if (formValues.password !== formValues.confirmPassword) {
+      errors.confirmPassword = 'Les mots de passe ne correspondent pas';
+      isValid = false;
+    }
+
+    setFormErrors(errors);
+    return isValid;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (validateForm()) {
+      axiosInstance
+        .post('users/register', {
+          name: formValues.username,
+          email: formValues.email,
+          mobile: formValues.mobile,
+          password: formValues.password,
+        })
+        .then((response) => {
+          console.log(response.data);
+          navigateTo('/ConnexionUI');
+        })
+        .catch((error) => {
+          console.log('Axios error:', error);
+          console.log('Axios error response:', error.response);
+          if (error.response && error.response.data) {
+            setFormErrors({ ...formErrors, ...error.response.data.errors });
+          }
+        });
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormValues((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
   return (
     <>
     <Navbar/>
@@ -22,11 +109,11 @@ export default function RegisterUI() {
       </div>
       <section className=" dark:bg-gray-900 pb-10">
         <div className="container flex items-center justify-center min-h-screen px-6 mx-auto">
-          <form className="w-full max-w-md">
+          <form className="w-full max-w-md" onSubmit={handleSubmit}>
             <div className="flex justify-center mx-auto">
               <img
                 className="w-auto h-7 sm:h-8"
-                src="../assets/daval-logo.png"
+                src={logoDaval}
                 alt=""
               />
             </div>
@@ -56,25 +143,29 @@ export default function RegisterUI() {
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
-                  stroke-width="2"
+                  strokeWidth="2"
                 >
                   <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                     d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
                   />
                 </svg>
               </span>
 
               <input
-                type="text"
-                className="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                placeholder="Nom d'utilisateur"
-              />
+  type="text"
+  name="username"
+  value={formValues.username}
+  onChange={handleInputChange}
+  className="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+  placeholder="Nom d'utilisateur"
+/>
+
             </div>
 
             <label
-              for="dropzone-file"
+              htmlFor="dropzone-file"
               className="flex items-center px-3 py-3 mx-auto mt-6 text-center bg-white border-2 border-dashed rounded-lg cursor-pointer dark:border-gray-600 dark:bg-gray-900"
             >
               <svg
@@ -83,11 +174,11 @@ export default function RegisterUI() {
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
-                stroke-width="2"
+                strokeWidth="2"
               >
                 <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
                 />
               </svg>
@@ -105,21 +196,57 @@ export default function RegisterUI() {
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
-                  stroke-width="2"
+                  strokeWidth="2"
                 >
                   <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                     d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                   />
                 </svg>
               </span>
 
               <input
-                type="email"
-                className="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                placeholder="Adresse Email"
-              />
+  type="email"
+  name="email"
+  value={formValues.email}
+  onChange={handleInputChange}
+  className="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+  placeholder="Adresse Email"
+/>
+
+            </div>
+            <div className="relative flex items-center mt-6">
+              <span className="absolute">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-6 h-6 mx-3 text-gray-300 dark:text-gray-500"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3"
+                  />
+                </svg>
+              </span>
+
+              <input
+  type="mobile"
+  name="mobile"
+  value={formValues.mobile}
+  onChange={handleInputChange}
+  className="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+  placeholder="Mobile"
+/>
+{formErrors.mobile && (
+  <p className="mt-2 text-sm text-red-500">{formErrors.mobile}</p>
+)}
+
+
             </div>
 
             <div className="relative flex items-center mt-4">
@@ -130,21 +257,24 @@ export default function RegisterUI() {
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
-                  stroke-width="2"
+                  strokeWidth="2"
                 >
                   <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                     d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
                   />
                 </svg>
               </span>
 
               <input
-                type="password"
-                className="block w-full px-10 py-3 text-gray-700 bg-white border rounded-lg dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                placeholder="Mot de Passe"
-              />
+  type="password"
+  name="password"
+  value={formValues.password}
+  onChange={handleInputChange}
+  className="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+  placeholder="Mot de passe"
+/>
             </div>
 
             <div className="relative flex items-center mt-4">
@@ -155,21 +285,25 @@ export default function RegisterUI() {
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
-                  stroke-width="2"
+                  strokeWidth="2"
                 >
                   <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                     d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
                   />
                 </svg>
               </span>
 
               <input
-                type="password"
-                className="block w-full px-10 py-3 text-gray-700 bg-white border rounded-lg dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                placeholder="Confirmez le mote de passe"
-              />
+  type="password"
+  name="confirmPassword"
+  value={formValues.confirmPassword}
+  onChange={handleInputChange}
+  className="block w-full px-10 py-3 text-gray-700 bg-white border rounded-lg dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+  placeholder="Confirmez le mot de passe"
+/>
+
             </div>
 
             <div className="mt-6">
