@@ -27,7 +27,7 @@ export default function ConnexionUI() {
       errors.password = "Le mot de passe est requis";
       isValid = false;
     }
-
+    console.log(errors);
     setFormErrors(errors);
     return isValid;
   };
@@ -47,6 +47,10 @@ export default function ConnexionUI() {
           navigateTo('/');
         })
         .catch((error) => {
+    let errors = {};
+
+          errors.serverError = "Email ou mot de passe incorrect";
+          setFormErrors(errors);
   console.log("Axios error: ", error);
   console.log("Axios error response: ", error.response);
 });
@@ -94,7 +98,7 @@ export default function ConnexionUI() {
             <p className="mt-1 text-center text-gray-500 dark:text-gray-400">
               en seulement deux clics
             </p>
-
+            {formErrors.serverError}
             <form onSubmit={handleSubmit}>
               <div className="w-full mt-4">
                 <input
