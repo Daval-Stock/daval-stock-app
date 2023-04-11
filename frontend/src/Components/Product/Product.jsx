@@ -16,10 +16,16 @@ import Sidebar from '../Sidebar/Sidebar';
 export default function Product() {
   const [product, setProduct] = useState([]);
 
+<<<<<<< HEAD
    useEffect(() => {
     // Utiliser axiosInstance au lieu d'axios
     axiosInstance
       .get("/products/")
+=======
+  useEffect(() => {
+    axios
+      .get("")
+>>>>>>> main
       .then((response) => {
         setProduct(response.data);
         console.log(response);
