@@ -1,4 +1,4 @@
-const Site = require("../models/Site");
+const Site = require("../models/sites");
 const asyncHandler = require("express-async-handler");
 
 const getSites = asyncHandler(async (req, res) => {
@@ -13,6 +13,7 @@ const getSites = asyncHandler(async (req, res) => {
 
 const createSite = asyncHandler(async (req, res) => {
   const { name } = req.body;
+  console.log(name);
   if (!name) {
     res.status(400);
     throw new Error("Please provide a Site name");
@@ -24,8 +25,8 @@ const createSite = asyncHandler(async (req, res) => {
       res.status(400);
       throw new Error("Site already exists");
     }
-
-    const newSite = new Site();
+    console.log(existingSite)
+    const newSite = new Site(req.body);
     await newSite.save();
     res.status(201).json(newSite);
   } catch (error) {
