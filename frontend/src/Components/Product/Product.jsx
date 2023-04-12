@@ -20,11 +20,11 @@ export default function Product() {
     // Utiliser axiosInstance au lieu d'axios
     axiosInstance
       .get("/products/")
-=======
+
   useEffect(() => {
     axios
       .get("")
->>>>>>> main
+ main
       .then((response) => {
         setProduct(response.data);
         console.log(response);
@@ -95,4 +95,4 @@ export default function Product() {
     
   </>
   );
-}
+};
