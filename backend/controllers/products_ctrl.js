@@ -5,6 +5,7 @@ const User = require("../models/users");
 const Category = require('../models/category'); // Importez le modèle Category
 const fs = require('fs');
 const path = require('path');
+const Sites = require("../models/sites")
 async function getDefaultCategoryId() {
   let defaultCategory = await Category.findOne({ name: "autres" });
   return defaultCategory;
@@ -13,7 +14,7 @@ async function getDefaultCategoryId() {
 
 //pour ajouter un produit
 const createProduct = asyncHandler(async (req, res) => {
-  const { name, quantity, price, description, categoryName } = req.body;
+  const { name, quantity, price, description, categoryName, siteName } = req.body;
 
   if (!name || !quantity || !price || !description) {
     res.status(400);
@@ -40,7 +41,8 @@ const createProduct = asyncHandler(async (req, res) => {
       fileSize: 'unknown',
     };
   }
-
+  console.log(req.body)
+console.log(categoryName)
   const user = await User.findById(req.user.id);
   if (!user) {
     res.status(404);
@@ -48,10 +50,16 @@ const createProduct = asyncHandler(async (req, res) => {
   }
 
   const category = await Category.findOne({ name: categoryName });
-
-
+  console.log(category)
   // Si la catégorie n'est pas trouvée, utilisez la catégorie par défaut
   const categoryId = category ? category._id : await getDefaultCategoryId();
+  
+  //pour voir si un site existe
+  const site = await Sites.findOne({name:siteName});
+ 
+  const siteId = site?._id;
+ console.log(siteId)
+ 
   //create Product
  sku = name.substring(0, 3).toUpperCase() + category.name.substring(0, 3).toUpperCase();
   try {
@@ -67,6 +75,7 @@ const createProduct = asyncHandler(async (req, res) => {
         price,
         description,
         image: fileData,
+        site: siteId
       });
       console.log("Le produit n'existait pas!");
       res.status(201).json({
@@ -79,6 +88,7 @@ const createProduct = asyncHandler(async (req, res) => {
         price: product?.price,
         description: product?.description,
         createAt: product?.createdAt,
+        siteName: product?.site.name,
       });
     } else {
       throw new Error("Product Already Exists");
@@ -95,10 +105,11 @@ const createProduct = asyncHandler(async (req, res) => {
 
 const getProducts = asyncHandler(async (req, res) => {
   try {
-    const products = await Product.find().populate('user').populate('category');
+    const products = await Product.find().populate('user').populate('category').populate('site');
     const formattedProducts = products.map(product => {
       const userName = product.user ? product.user?.name : 'Unknown';
       const categoryName = product.category ? product.category?.name : 'Unknown';
+      const siteName = product.site ? product.site?.name : 'Unknown';
       return {
         _id: product._id,
         userName,
@@ -109,6 +120,7 @@ const getProducts = asyncHandler(async (req, res) => {
         price: product.price,
         description: product.description,
         createdAt: product.createdAt,
+        site: siteName
       };
     });
     res.status(200).json(formattedProducts);
@@ -121,7 +133,7 @@ const getProducts = asyncHandler(async (req, res) => {
 //trouver un produit avec son id
 const getProductById = asyncHandler(async (req, res) => {
   try {
-    const products = await Product.findById(req.params.id).populate('user').populate('category');
+    const products = await Product.findById(req.params.id).populate('user').populate('category').populate('site');
      if (!products) {
       res.status(404).json({ success: false, message: "product not found" });
     } else {
@@ -135,7 +147,9 @@ const getProductById = asyncHandler(async (req, res) => {
         price: products?.price,
         image: products?.image,
         description: products?.description,
+        site: products?.site?.name,
         createAt: products?.createdAt,
+        
       });
     }
   } catch (error) {
@@ -161,6 +175,7 @@ const getProductBySku = asyncHandler(async (req, res) => {
         price: products?.price,
         image: products?.image,
         description: products?.description,
+        site: products?.site?.name,
         createAt: products?.createdAt,
       });
     }
