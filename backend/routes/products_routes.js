@@ -12,14 +12,15 @@ const { authMiddleware, isAdmin } = require("../middleware/authMiddleware");
 const upload = require("../middleware/upload");
 
 // Créer un nouveau produit
-router.post("/createProduct", authMiddleware,upload.single("image"), createProduct);
+router.post(
+  "/createProduct",
+  authMiddleware,
+  upload.single("image"),
+  createProduct
+);
 
 // Récupérer tous les produits
-<<<<<<< HEAD
-router.get("/", authMiddleware, getProducts);
-=======
-router.get("/all-products", getProducts);
->>>>>>> main
+router.get("/all-product", authMiddleware, getProducts);
 
 // Récupérer un produit spécifique
 router.get("/:id", getProductById);
