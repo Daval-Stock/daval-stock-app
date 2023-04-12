@@ -15,7 +15,11 @@ const upload = require("../middleware/upload");
 router.post("/createProduct", authMiddleware,upload.single("image"), createProduct);
 
 // Récupérer tous les produits
-router.get("/", getProducts);
+<<<<<<< HEAD
+router.get("/", authMiddleware, getProducts);
+=======
+router.get("/all-products", getProducts);
+>>>>>>> main
 
 // Récupérer un produit spécifique
 router.get("/:id", getProductById);
