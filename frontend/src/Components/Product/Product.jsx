@@ -1,26 +1,18 @@
 import axiosInstance from '../axiosInstance';
 import React, { useState, useEffect } from "react";
-import FooterLink from "../Footer/FooterLink";
-import Navbar from "../Navbar/Navbar";
-import { Link } from "react-router-dom";
-
-import {
-  RiDashboardFill,
-  CiUser,
-  FiPackage,
-  TbFileInvoice,
-  BsDatabaseCheck,
-} from "react-icons/all.js";
 import Sidebar from '../Sidebar/Sidebar';
+import { RiDeleteBinLine } from 'react-icons/ri';
+import { BiCartAdd } from 'react-icons/bi';
+import { FiEdit } from 'react-icons/fi';
 
 export default function Product() {
   const [product, setProduct] = useState([]);
 
+
    useEffect(() => {
     // Utiliser axiosInstance au lieu d'axios
     axiosInstance
-      .get("/products/")
-      .get("")
+      .get("/products/all-product")
       .then((response) => {
         setProduct(response.data);
         console.log(response);
@@ -38,7 +30,7 @@ export default function Product() {
             <div className="items-center justify-between m-10">
               <div className="relative overflow-x-auto">
                 <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <thead className="text-xs text-center text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
               <th scope="col" className="px-6 py-3">
                 Product name
@@ -55,29 +47,61 @@ export default function Product() {
               <th scope="col" className="px-6 py-3">
                 Description
               </th>
-              <th scope="col" className="px-6 py-3"></th>
+              <th scope="col" className="px-6 py-3">
+                Action
+              </th>
             </tr>
           </thead>
           <tbody>
             {product.map((product) => (
               <tr key={product._id} className="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
                 <th
-                  scope="row"
+                  scope="row" id=""
                   className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                 >
                   {product.name}
                 </th>
-                <td className="px-6 py-4">{product.category}</td>
-                <td className="px-6 py-4">{product.quantity}</td>
-                <td className="px-6 py-4">{product.price}</td>
+                <td className="px-6 py-4 text-center">{product.category}</td>
+                <td className="px-6 py-4 text-center">{product.quantity}</td>
+                <td className="px-6 py-4 text-center">{product.price}</td>
                 <td className="px-6 py-4">{product.description}</td>
                 <td className="px-6 py-4">
-                  <button
-                    href="#"
-                    className="font-medium rounded-full bg-orange-500 px-4 py-2 text-white dark:text-white hover:underline"
-                  >
-                    Action
-                  </button>
+                  <div className="flex">
+                    <button className="text-blue-600 text-2xl mr-2">
+                      <BiCartAdd/>
+                      <span className="absolute top-0 right-0 px-1 py-0.5 bg-gray-200 text-sm text-gray-700 opacity-0 hover:opacity-100 transition-opacity">
+                          Ajouter un produit
+                      </span>
+                    </button>
+                    <button className="text-gray-600 text-xl mr-2">
+                      <FiEdit/>
+                    </button>
+                    <button className="text-red-500 text-xl">
+                      <RiDeleteBinLine/>
+                    </button>
+                  </div>
+
+                  {/*{showActions && (
+                    <div className="top-0 right-0 bg-white p-4 border border-gray-300 shadow-md">
+                    <ul>
+                      <li>
+                        <button href="#" className="block py-2 hover:underline">
+                          Supprimer
+                        </button>
+                      </li>
+                      <li>
+                        <button href="#" className="block py-2 hover:underline">
+                          Ajouter
+                        </button>
+                      </li>
+                      <li>
+                        <button href="#" className="block py-2 hover:underline">
+                          Modifier
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
+                  )}*/}
                 </td>
               </tr>
             ))}
@@ -87,7 +111,6 @@ export default function Product() {
             </div>
           </div>
         </div>
-    
   </>
   );
 };
