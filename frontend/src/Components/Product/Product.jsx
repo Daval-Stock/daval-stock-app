@@ -33,7 +33,7 @@ export default function Product() {
           <thead className="text-xs text-center text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
               <th scope="col" className="px-6 py-3">
-                Product name
+                Nom du produit
               </th>
               <th scope="col" className="px-6 py-3">
                 Categories
@@ -81,27 +81,7 @@ export default function Product() {
                     </button>
                   </div>
 
-                  {/*{showActions && (
-                    <div className="top-0 right-0 bg-white p-4 border border-gray-300 shadow-md">
-                    <ul>
-                      <li>
-                        <button href="#" className="block py-2 hover:underline">
-                          Supprimer
-                        </button>
-                      </li>
-                      <li>
-                        <button href="#" className="block py-2 hover:underline">
-                          Ajouter
-                        </button>
-                      </li>
-                      <li>
-                        <button href="#" className="block py-2 hover:underline">
-                          Modifier
-                        </button>
-                      </li>
-                    </ul>
-                  </div>
-                  )}*/}
+              
                 </td>
               </tr>
             ))}
