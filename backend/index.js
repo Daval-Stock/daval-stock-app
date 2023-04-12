@@ -14,9 +14,17 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const path = require("path");
 const categoryRoutes = require("./routes/category_routes");
+const siteRoutes = require("./routes/sites_routes")
 
 // cors
 const cors = require("cors");
+
+
+
+
+
+
+
 
 // middleware
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -49,6 +57,9 @@ app.use("/products", products_routes);
 
 //route pour les catégories
 app.use("/categories", categoryRoutes);
+
+//route pour les sites
+app.use("/sites", siteRoutes);
 
 //route commandes
 app.use("/orders", orders_routes);
