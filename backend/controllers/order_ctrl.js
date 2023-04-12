@@ -1,5 +1,7 @@
 const Product = require('../models/products');
 const Order = require('../models/order');
+const asyncHandler = require('express-async-handler'); // importer asyncHandler
+const Category = require('../models/category'); // importer le modèle Category
 
 // Get all orders
 const getAllOrders = async (req, res) => {
@@ -24,6 +26,22 @@ const getOrderById = async (req, res) => {
 };
 
 // Create a new order
+/* const createOrder = asyncHandler(async (req, res) => {
+  // Verified if category exist
+  const categoryName = req.body;
+  console.log(categoryName)
+  const category = await Category.findOne({ name: categoryName });
+console.log(categoryName)
+async function getDefaultCategoryId() {
+  let defaultCategory = await Category.findOne({ name: "autres" });
+  return defaultCategory;
+}
+const categoryId = category ? category._id : await getDefaultCategoryId();
+
+  const order = new Order(req.body);
+  await order.save();
+  res.send(order);
+}); */
 const createOrder = async (req, res) => {
   try {
     const order = new Order(req.body);
@@ -35,6 +53,8 @@ const createOrder = async (req, res) => {
   }
 };
 
+
+
 // Update an existing order by ID
 
 const updateOrder = async (req, res) => {
@@ -45,10 +65,11 @@ const updateOrder = async (req, res) => {
     if (order.order_status === 'Delivered') {
       const products = order.products;
       for (const product of products) {
-        const quantity = product.stock_level;
-        const productFromDB = await Product.findById(product._id);
+        const quantity = product.quantity;
+        const sku = product.sku;
+        const productFromDB = await Product.findOne({sku:sku});
         if (productFromDB) {
-          productFromDB.stock_level += quantity;
+          productFromDB.quantity += quantity;
           await productFromDB.save();
         } else {
           const newProduct = new Product();

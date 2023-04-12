@@ -7,6 +7,7 @@ const {
   getProducts,
   updateProduct,
   deleteProduct,
+  getProductBySku,
 } = require("../controllers/products_ctrl");
 const { authMiddleware, isAdmin } = require("../middleware/authMiddleware");
 const upload = require("../middleware/upload");
@@ -24,6 +25,9 @@ router.get("/all-product", authMiddleware, getProducts);
 
 // Récupérer un produit spécifique
 router.get("/:id", getProductById);
+
+//récupérer un produit en entrant son sku
+router.get("/sku/:sku", getProductBySku);
 
 //Modifier un produit
 router.put("/update/:id", updateProduct);
