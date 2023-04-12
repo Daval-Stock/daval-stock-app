@@ -4,9 +4,9 @@ const {
   getCategories,
   createCategory,
 } = require("../controllers/categoryController");
-const auth = require("../middlewares/auth");
+const { authMiddleware, isAdmin } = require("../middleware/authMiddleware");
 
-router.get("/", auth, getCategories);
-router.post("/", auth, createCategory);
+router.get("/", getCategories);
+router.post("/", authMiddleware, createCategory);
 
 module.exports = router;

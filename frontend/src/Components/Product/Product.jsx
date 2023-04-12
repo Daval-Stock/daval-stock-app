@@ -20,6 +20,11 @@ export default function Product() {
     // Utiliser axiosInstance au lieu d'axios
     axiosInstance
       .get("/products/")
+=======
+  useEffect(() => {
+    axios
+      .get("")
+>>>>>>> main
       .then((response) => {
         setProduct(response.data);
         console.log(response);
