@@ -13,7 +13,7 @@ require("./config/db");
 const app = express();
 const PORT = process.env.PORT || 3000;
 const path = require("path");
-const categoryRoutes = require("./routes/categories");  
+const categoryRoutes = require("./routes/category_routes");
 
 // cors
 const cors = require("cors");
