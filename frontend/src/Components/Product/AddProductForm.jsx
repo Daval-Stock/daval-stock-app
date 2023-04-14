@@ -3,6 +3,7 @@ import Navbar from "../Navbar/Navbar";
 import FooterLink from "../Footer/FooterLink";
 import axiosInstance from "../axiosInstance";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 export default function AddProductForm() {
     const [categories, setCategories] = useState([]);
@@ -145,36 +146,29 @@ export default function AddProductForm() {
                   </div>
 
                   <div className="col-span-full">
-                    <label
-                      htmlFor="dropzone-file"
-                      className="flex items-center px-3 py-3 mx-auto mt-6 text-center bg-white border-2 border-dashed rounded-lg cursor-pointer dark:border-gray-600 dark:bg-gray-900"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="w-6 h-6 text-gray-300 dark:text-gray-500 text-center"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
-                        />
-                      </svg>
+                  <label
+                htmlFor="dropzone-file"
+                className="flex items-center px-3 py-3 mx-auto mt-6 text-center bg-white border-2 border-dashed rounded-lg cursor-pointer dark:border-gray-600 dark:bg-gray-900"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-6 h-6 text-gray-300 dark:text-gray-500"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
+                  />
+                </svg>
 
-                      <h2 className="text-center mx-3 text-gray-400">ajouter l'image du produit</h2>
+                <h2 className="mx-3 text-gray-400">Photo du produit</h2>
 
-                      <input
-                        id=""
-                        type="file"
-                        className="hidden"
-                        value={image}
-                        onChange={(e) => setImage(e.target.value)}
-                      />
-                      
-                    </label>
+                <input id="dropzone-file" type="file" className="hidden" />
+              </label>
                   </div>
 
                   <div className="col-span-full">
@@ -194,19 +188,21 @@ export default function AddProductForm() {
                       />
                     </div>
                   </div>
-                  <div className="col-span-full">
-                    <button
-                        type="submit"
-                        className="block w-full rounded-md bg-blue-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
-                    >
-                        Envoyer
-                    </button>
+                  
                 </div>
+                <div class="mt-6 flex items-center justify-end gap-x-6">
+                  <Link to="/Product">
+                    <button type="button" class="text-sm font-semibold leading-6 text-gray-900">Annuler</button>
+                  </Link>
+                  <button type="submit" class="rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">Enregistrer</button>
                 </div>
+                <p class="mt-10 text-sm leading-6 text-gray-700">Noter que tous les produits enregistrer seront directement stocké dans la base de donnée. Retrouvez le produits saisi à la page produit du tableau de bord</p>
+
               </div>
             </div>
           </form>
         </div>
+
       </div>
 
       <FooterLink />

@@ -35,12 +35,12 @@ function Users({ shhowNavbar }) {
       <Sidebar />
 
         <div className="p-4 sm:ml-64">
-          <div className="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14">
+          <div className="p-4 border-2 border-blue-300 border-dashed rounded-lg dark:border-gray-700 mt-14">
             <div className="items-center justify-between m-10">
               <div className="relative overflow-x-auto">
-                <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                  <thead className="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
-                    <tr>
+              <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                <thead className="text-xs text-center text-gray-900 uppercase  bg-blue-200 dark:bg-gray-700 dark:text-gray-400">
+                  <tr>
                       <th scope="col" className="px-6 py-3">
                         Prénom et Nom
                       </th>

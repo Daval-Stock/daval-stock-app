@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Switch } from '@headlessui/react'
 import Navbar from '../Navbar/Navbar'
 import FooterLink from '../Footer/FooterLink' 
+import { Link } from 'react-router-dom'
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -213,9 +214,9 @@ export default function Contact() {
             </div>
             <Switch.Label className="text-sm leading-6 text-gray-600">
             En cochant ceci, vous acceptez notre{' '}
-              <a href="#" className="font-semibold text-blue-600">
+              <Link to="/PrivacyPolicy" className="font-semibold text-blue-600">
               politique de&nbsp;confidentialité
-              </a>
+              </Link>
               .
             </Switch.Label>
           </Switch.Group>

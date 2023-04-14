@@ -15,6 +15,7 @@ import Product from "./Components/Product/Product.jsx";
 import Order from "./Components/Order/Order.jsx";
 import Dashboard from "./Components/Dashboard/Dashboard.jsx";
 import AddProductForm from "./Components/Product/AddProductForm.jsx";
+import PrivacyPolicy from "./Components/PrivacyPolicy/PrivacyPolicy.jsx";
 
 const App = () => {
   
@@ -35,6 +36,7 @@ const App = () => {
         <Route path="/AddProductForm" element={<AddProductForm/>} />
         <Route path="/Articles" element={<Articles/>} />
         <Route path="/Order" element={<Order/>} />
+        <Route path="/PrivacyPolicy" element={<PrivacyPolicy/>} /> 
         <Route path="*" element={<NotFound/>} />
       </Routes>
     </div>

@@ -4,6 +4,7 @@ import Navbar from "../Navbar/Navbar";
 import { Link } from "react-router-dom";
 import UserProfile from '../Users/UserProfile';
 import UserContext from '../Users/UserContext';
+import Search from "../Search/Search";
 
 
 export default function Home() {
@@ -34,11 +35,9 @@ export default function Home() {
               <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
                 Bienvenue {<UserProfile />} sur l'application Daval Stock
               </h1>
-              <p className="mt-6 text-lg leading-8 text-gray-600">
-                L'application conçue pour aider la pharmacie de la paix à suivre
-                les niveaux de stock de ses produits, gérer les commandes de
-                réapprovisionnement et les ventes.
-              </p>
+              <div>
+                <Search/>
+              </div>
               <div className="mt-10 flex items-center justify-center gap-x-6">
                 <Link
                   to="/Dashboard"

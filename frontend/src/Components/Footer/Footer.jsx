@@ -24,9 +24,8 @@ export default function Footer() {
       },
     ];
   return (
-    <footer className="bg-white dark:bg-gray-900">
+    <footer className="bg-gray-900">
       <div className="mx-auto w-full l p-4 py-6 lg:py-8">
-    <hr className="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
         <div className="md:flex md:justify-between">
           <div className="mb-6 md:mb-0">
             <Link to="/" className="flex items-center">
@@ -40,10 +39,10 @@ export default function Footer() {
             {footerData.map(({ id, title, element1, element2 }) => {
               return (
                 <div key={id}>
-                  <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">
+                  <h2 className="mb-6 text-sm font-semibold text-white uppercase">
                     {title}
                   </h2>
-                  <ul className="text-gray-600 dark:text-gray-400 font-medium">
+                  <ul className="text-slate-300 font-medium">
                     <li className="mb-4">
                       <a href="#" className="hover:underline">
                         {element1}
@@ -60,9 +59,10 @@ export default function Footer() {
             })}
           </div>
         </div>
-        
+        <hr className="my-6 border-gray-700 sm:mx-auto lg:my-8" />
+
         <div className="sm:flex sm:items-center sm:justify-between">
-          <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">
+          <span className="text-sm text-gray-300 sm:text-center">
             © 2023{" "}
             <a href="/" className="hover:underline">
               Daval Stock™
@@ -72,7 +72,7 @@ export default function Footer() {
           <div className="flex mt-4 space-x-6 sm:justify-center sm:mt-0">
             <a
               href="#"
-              className="text-gray-500 hover:text-gray-900 dark:hover:text-white"
+              className="text-gray-500 hover:text-white"
             >
               <svg
                 className="w-5 h-5"
@@ -90,7 +90,7 @@ export default function Footer() {
             </a>
             <a
               href="#"
-              className="text-gray-500 hover:text-gray-900 dark:hover:text-white"
+              className="text-gray-500 hover:text-white"
             >
               <svg
                 className="w-5 h-5"
@@ -108,7 +108,7 @@ export default function Footer() {
             </a>
             <a
               href="#"
-              className="text-gray-500 hover:text-gray-900 dark:hover:text-white"
+              className="text-gray-500 hover:text-white"
             >
               <svg
                 className="w-5 h-5"
@@ -122,7 +122,7 @@ export default function Footer() {
             </a>
             <a
               href="#"
-              className="text-gray-500 hover:text-gray-900 dark:hover:text-white"
+              className="text-gray-500 hover:text-white"
             >
               <svg
                 className="w-5 h-5"
