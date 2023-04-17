@@ -26,7 +26,7 @@ function UserProfile() {
 };
 
   return (
-    <span className="text-gray-900">{userProfile?.name}</span>
+    <span className="text-orange-500">{userProfile?.name}</span>
   );
 }
 
