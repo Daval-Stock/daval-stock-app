@@ -14,6 +14,7 @@ import logoDaval from "../../assets/logoDaval.png";
 import alamine from "../../assets/alamine.png";
 import Sidebar from "../Sidebar/Sidebar";
 
+
 function Users() {
   const [users, setUsers] = useState([]);
   const navigate = useNavigate();
@@ -50,7 +51,6 @@ function Users() {
   return (
     <>
       <Sidebar />
-
       <div className="p-4 sm:ml-64">
         <div className="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14">
           <div className="items-center justify-between m-10">
@@ -109,6 +109,7 @@ function Users() {
                         </button>
                       </td>
                     </tr>
+
                   ))}
                 </tbody>
               </table>

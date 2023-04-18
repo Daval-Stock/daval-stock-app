@@ -134,6 +134,7 @@ function UserProfile() {
   };
 
   return (
+
     <>
       <Navbar />
       {userProfile && (
