@@ -1,9 +1,9 @@
 import React from "react";
+import { Routes, Route } from "react-router-dom";
 import ConnexionUI from "./Components/Connexion/ConnexionUI.jsx";
 import LogoutUI from "./Components/Connexion/LogoutUI.jsx";
 import RegisterUI from "./Components/Register/RegisterUI.jsx";
 import Sidebar from "./Components/Sidebar/Sidebar.jsx";
-import { Routes, Route } from "react-router-dom";
 import Home from "./Components/Home/Home.jsx";
 import NotFound from "./Components/NotFound/NotFound.jsx";
 import UserProfile from "./Components/Users/UserProfile.jsx";
@@ -17,11 +17,14 @@ import Product from "./Components/Product/Product.jsx";
 import Order from "./Components/Order/Order.jsx";
 import Dashboard from "./Components/Dashboard/Dashboard.jsx";
 import AddProductForm from "./Components/Product/AddProductForm.jsx";
+import PrivacyPolicy from "./Components/PrivacyPolicy/PrivacyPolicy.jsx";
+import Testimonial from "./Components/Testimonial/Testimonial.jsx";
 
 const App = () => {
   return (
     <div>
       <Routes>
+
         <Route path="/" element={<Home />} />
         <Route path="/Sidebar" element={<Sidebar />} />
         <Route path="/ConnexionUI" element={<ConnexionUI />} />
@@ -39,6 +42,8 @@ const App = () => {
         <Route path="/Articles" element={<Articles />} />
         <Route path="/Order" element={<Order />} />
         <Route path="*" element={<NotFound />} />
+        <Route path="/PrivacyPolicy" element={<PrivacyPolicy/>} /> 
+        <Route path="/Testimonial" element={<Testimonial/>} />
 
       </Routes>
     </div>

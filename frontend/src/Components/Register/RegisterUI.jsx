@@ -54,6 +54,7 @@ export default function RegisterUI() {
 
     if (!formValues.password) {
       errors.password = "Le mot de passe est requis";
+
       isValid = false;
     } else if (
       !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(
@@ -62,6 +63,7 @@ export default function RegisterUI() {
     ) {
       errors.password =
         "Le mot de passe doit contenir au moins 8 caractères, dont une majuscule, une minuscule, un chiffre et un caractère spécial (@$!%*?&)";
+
       isValid = false;
     }
 
@@ -87,6 +89,7 @@ export default function RegisterUI() {
         formData.append("image", profileImage); // Ajoutez l'image avec le bon nom de champ ici
       }
       axiosInstance
+
         .post("users/register", formData)
         .then((response) => {
           navigateTo("/ConnexionUI");
@@ -139,7 +142,8 @@ export default function RegisterUI() {
   return (
     <>
       <Navbar />
-      <div className="relative isolate px-6 pt-12 lg:px-16">
+      <div className="relative isolate px-6 pt-12 lg:px-16 pb-40 ">
+
         <div
           className="absolute inset-x-0 top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
           aria-hidden="true"
@@ -152,6 +156,11 @@ export default function RegisterUI() {
             }}
           />
         </div>
+        <h2 className="text-3xl text-center font-bold tracking-tight text-gray-900 sm:text-4xl">Créer un compte</h2>
+        <p className="mt-2 text-lg pb-6 text-center leading-8 text-gray-600">
+        Remplissez le formulaire en renseignat toutes les informations !
+        </p>
+
         <section className=" dark:bg-gray-900 pb-10">
           <div className="container flex items-center justify-center min-h-screen px-6 mx-auto">
             <form
@@ -361,6 +370,7 @@ export default function RegisterUI() {
                     stroke="currentColor"
                     strokeWidth="2"
                   >
+
                     {showPassword ? (
                       <path
                         strokeLinecap="round"
@@ -384,6 +394,7 @@ export default function RegisterUI() {
                 )}
               </div>
               {/* Confirm password */}
+
               <div className="relative flex items-center mt-4">
                 <span className="absolute">
                   <svg
@@ -404,6 +415,7 @@ export default function RegisterUI() {
 
                 <input
                   type="password"
+
                   name="confirmPassword"
                   value={formValues.confirmPassword}
                   onChange={handleInputChange}
