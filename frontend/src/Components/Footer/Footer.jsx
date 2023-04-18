@@ -30,7 +30,7 @@ export default function Footer() {
           <div className="mb-6 md:mb-0">
             <Link to="/" className="flex items-center">
               <img src={logoDaval} className="h-8 mr-3" alt="davalStock Logo" />
-              <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
+              <span className="self-center text-2xl font-semibold whitespace-nowrap text-white">
                 Daval Stock
               </span>
             </Link>
@@ -64,7 +64,7 @@ export default function Footer() {
         <div className="sm:flex sm:items-center sm:justify-between">
           <span className="text-sm text-gray-300 sm:text-center">
             © 2023{" "}
-            <a href="/" className="hover:underline">
+            <a href="/" className="hover:underlin">
               Daval Stock™
             </a>
             . Tous Droits Réservés.

@@ -1,9 +1,9 @@
 import React from "react";
+import { Routes, Route } from "react-router-dom";
 import ConnexionUI from "./Components/Connexion/ConnexionUI.jsx";
 import LogoutUI from "./Components/Connexion/LogoutUI.jsx";
 import RegisterUI from "./Components/Register/RegisterUI.jsx";
 import Sidebar from "./Components/Sidebar/Sidebar.jsx";
-import { Routes, Route } from "react-router-dom";
 import Home from "./Components/Home/Home.jsx";
 import NotFound from "./Components/NotFound/NotFound.jsx";
 import Users from "./Components/Users/Users.jsx"
@@ -16,6 +16,7 @@ import Order from "./Components/Order/Order.jsx";
 import Dashboard from "./Components/Dashboard/Dashboard.jsx";
 import AddProductForm from "./Components/Product/AddProductForm.jsx";
 import PrivacyPolicy from "./Components/PrivacyPolicy/PrivacyPolicy.jsx";
+import Testimonial from "./Components/Testimonial/Testimonial.jsx";
 
 const App = () => {
   
@@ -26,6 +27,7 @@ const App = () => {
         <Route path="/Sidebar" element={<Sidebar/>} /> 
         <Route path="/ConnexionUI" element={<ConnexionUI/>} />
         <Route path="/Dashboard" element={<Dashboard/>} />
+        <Route path="/Testimonial" element={<Testimonial/>} /> 
         <Route path="/LogoutUI" element={<LogoutUI/>} />
         <Route path="/RegisterUI" element={<RegisterUI/>} />
         <Route path="/About" element={<About/>} />

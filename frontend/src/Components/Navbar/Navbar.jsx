@@ -17,10 +17,11 @@ const navigation = [
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const authToken = localStorage.getItem('authToken');
+
   
   return (
-    <div className='bg-white mb-10'>
-      <header className="fixed bg-white inset-x-0 top-0 z-50">
+    <div className=''>
+      <header className="absolute bg-transparent inset-x-0 top-0 z-50 dark:bg-transparent">
         <nav className="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
           <div className="flex lg:flex-1">
             <Link to="/" href="#" className="-m-1.5 p-1.5">
@@ -44,7 +45,7 @@ export default function Navbar() {
           </div>
           <div className="hidden lg:flex lg:gap-x-12">
             {navigation.map((item) => (
-              <a key={item.name} href={item.href} className="text-sm font-semibold leading-6 text-gray-900">
+              <a key={item.name} href={item.href} className="text-sm font-semibold leading-6 text-gray-900 dark:text-gray-200">
                 {item.name}
               </a>
             ))}

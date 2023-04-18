@@ -39,7 +39,7 @@ export default function Product() {
     return(
       <>
         <Sidebar/>
-        <div className="p-4 sm:ml-64">
+        <div className="p-4 sm:ml-64 bg-gray-800">
             <div className="p-4 border-2 border-blue-300 border-dashed rounded-lg dark:border-gray-700 mt-14">
               <div className="items-center justify-between m-10">
                 <div className="relative overflow-x-auto">
