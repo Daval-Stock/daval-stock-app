@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axiosInstance from '../axiosInstance';
+import axiosInstance from "../axiosInstance";
 import { Link } from "react-router-dom";
 import logoDaval from "../../assets/logoDaval.png";
 import Footer from "../Footer/Footer";
@@ -7,12 +7,12 @@ import Navbar from "../Navbar/Navbar";
 import { useNavigate } from 'react-router-dom';
 import FooterLink from "../Footer/FooterLink";
 
+
 export default function ConnexionUI() {
   // State pour stocker les valeurs du formulaire et les erreurs
   const [formValues, setFormValues] = useState({ email: "", password: "" });
   const [formErrors, setFormErrors] = useState({ email: "", password: "" });
   const navigateTo = useNavigate();
-  
 
   // Fonction de validation qui vérifie si les champs requis sont remplis et retourne un objet contenant les erreurs s'il y en a
   const validateForm = () => {
@@ -39,22 +39,23 @@ export default function ConnexionUI() {
     if (validateForm()) {
       // Envoyer les données du formulaire au serveur
       axiosInstance
-        .post("users/login", { email: formValues.email, password: formValues.password })
+        .post("users/login", {
+          email: formValues.email,
+          password: formValues.password,
+        })
         .then((response) => {
-          // Traitement de la réponse du serveur
-          console.log(response.data);
           const token = response.data.token;
-          localStorage.setItem('authToken', token);
-          navigateTo('/');
+          localStorage.setItem("authToken", token);
+          navigateTo("/");
         })
         .catch((error) => {
-    let errors = {};
+          let errors = {};
 
           errors.serverError = "Email ou mot de passe incorrect";
           setFormErrors(errors);
-  console.log("Axios error: ", error);
-  console.log("Axios error response: ", error.response);
-});
+          console.log("Axios error: ", error);
+          console.log("Axios error response: ", error.response);
+        });
     }
   };
 
@@ -67,7 +68,6 @@ export default function ConnexionUI() {
     }));
   };
 
-  
   return (
     <>
       <Navbar />

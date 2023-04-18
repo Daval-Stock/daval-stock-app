@@ -9,6 +9,7 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const orders_routes = require("./routes/orders_routes");
 const { notFound, errorHandler } = require("./middleware/errorHandler");
+const multer = require("multer");
 require("./config/db");
 const app = express();
 const PORT = process.env.PORT || 3000;

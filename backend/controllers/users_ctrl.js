@@ -4,6 +4,9 @@ const { generateRefreshToken } = require("../config/refreshToken");
 const User = require("../models/users");
 const asyncHandler = require("express-async-handler");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
+const path = require("path");
+const fs = require("fs");
 
 const getAllUsers = asyncHandler(async (req, res) => {
   try {
@@ -18,6 +21,10 @@ const createUser = asyncHandler(async (req, res) => {
   const email = req.body.email;
   const findUser = await User.findOne({ email });
   if (!findUser) {
+    if (req.file) {
+      // console.log(req.file.path);
+      req.body.profileImage = req.file.path;
+    }
     const newUser = await User.create(req.body);
 
     res.json(newUser);
@@ -115,7 +122,7 @@ const userProfile = asyncHandler(async (req, res) => {
   try {
     // Récupérez l'utilisateur depuis la requête (ajouté par le middleware d'authentification)
     const user = req.user;
-
+    // console.log(user);
     // Renvoyez les informations de l'utilisateur
     res.json(user);
   } catch (error) {
@@ -125,15 +132,20 @@ const userProfile = asyncHandler(async (req, res) => {
 });
 
 const updateUser = asyncHandler(async (req, res) => {
-  const { _id } = req.user;
-  validateMongoDbId(_id);
+  const { id } = req.params;
+  validateMongoDbId(id);
   try {
+    if (req.file) {
+      req.body.profileImage = req.file.path;
+    }
     const user = await User.findByIdAndUpdate(
-      _id,
+      id,
       {
         name: req?.body?.name,
         email: req?.body?.email,
         mobile: req?.body?.mobile,
+        role: req?.body?.role,
+        profileImage: req.body.profileImage,
       },
       {
         new: true,
@@ -158,6 +170,42 @@ const deleteUser = asyncHandler(async (req, res) => {
   }
 });
 
+const updatePwdUser = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id);
+  if (!user) return res.status(404).send("User not found.");
+  const validPassword = await bcrypt.compare(
+    req.body.current_password,
+    user.password
+  );
+  // console.log(validPassword);
+  if (!validPassword) {
+    console.log("Invalid current password.");
+    return res.status(400).send("Invalid current password.");
+  } else {
+    console.log("valid current password.");
+  }
+
+  // Hasher le nouveau mot de passe
+  const salt = await bcrypt.genSalt(10);
+  const hashedNewPassword = await bcrypt.hash(req.body.new_password, salt);
+
+  // Mettre à jour le mot de passe de l'utilisateur
+  user.password = hashedNewPassword;
+  await user.save();
+
+  res.send("Password changed successfully.");
+});
+
+const userImage = asyncHandler(async (req, res) => {
+  const imageName = req.params.imageName;
+  const imagePath = path.join(__dirname, "..", "uploads", imageName + ".png");
+  // console.log(imagePath);
+  if (fs.existsSync(imagePath)) {
+    res.sendFile(imagePath);
+  } else {
+    res.status(404).send("Image not found");
+  }
+});
 const blockUser = asyncHandler(async (req, res) => {
   const { id } = req.params;
   validateMongoDbId(id);
@@ -205,5 +253,7 @@ module.exports = {
   unblockUser,
   handleRefreshToken,
   userProfile,
+  updatePwdUser,
+  userImage,
   logout,
 };

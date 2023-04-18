@@ -2,7 +2,24 @@ import axiosInstance from "../axiosInstance";
 
 import React, { useState, useEffect } from "react";
 import Sidebar from "../Sidebar/Sidebar";
+import FooterLink from "../Footer/FooterLink";
+import Navbar from "../Navbar/Navbar";
 import { Link } from "react-router-dom";
+
+import {
+  RiDashboardFill,
+  CiUser,
+  FiPackage,
+  TbFileInvoice,
+  BsDatabaseCheck,
+} from "react-icons/all.js";
+import Sidebar from "../Sidebar/Sidebar";
+
+import { RiDeleteBinLine } from 'react-icons/ri';
+import { BiCartAdd } from 'react-icons/bi';
+import { FiEdit } from 'react-icons/fi';
+
+
 
 export default function Product() {
   const [product, setProduct] = useState([]);
@@ -20,26 +37,12 @@ export default function Product() {
       });
   }, []);
 
-  // Envoie d'une requête pour la suppression d'un produit
-  const deleteProduct = (id) => {
-    axiosInstance
-      .delete(`/products/delete/${id}`)
-      .then((response) => {
-        console.log(response);
-        // Mettre à jour la liste de tous les produits après la suppression
-        setProduct(product.filter((item) => item.id !== id));
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+  return (
+    <>
 
-
-    return (
-      <>
-        <Sidebar />
-        <div className="p-4 sm:ml-64 bg-gray-100 dark:bg-gray-800">
-          <div className="p-4 border-2 border-blue-300 border-dashed rounded-lg dark:border-gray-700 mt-14">
+    <Sidebar /> 
+        <div className="p-4 sm:ml-64">
+          <div className="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14">
             <div className="items-center justify-between m-10">
               <div className="relative overflow-x-auto">
                 <div className="flex">

@@ -1,7 +1,8 @@
-import React, {useContext } from "react";
+import React, { useContext } from "react";
 import Footer from "../Footer/Footer";
 import Navbar from "../Navbar/Navbar";
 import { Link } from "react-router-dom";
+
 import UserProfile from '../Users/UserProfile';
 import UserContext from '../Users/UserContext';
 import Search from "../Search/Search";
@@ -10,10 +11,11 @@ import Search from "../Search/Search";
 export default function Home() {
   const userProfile = useContext(UserContext);
   return (
-    
     <>
+
       <Navbar/>
       <div className="bg-white dark:bg-gray-900">
+
         <div className="relative isolate px-6 pt-8 lg:px-8">
           <div
             className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
@@ -32,8 +34,10 @@ export default function Home() {
               <img src="" alt="" />
             </div>
             <div className="text-center">
-              <h1 className="text-4xl font-semiBold tracking-tight text-gray-800 sm:text-5xl dark:text-gray-200">
-                Bienvenue {<UserProfile />} <br /> sur l'application Daval Stock
+
+              <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+                Bienvenue sur l'application Daval Stock
+
               </h1>
               <div>
                 <Search/>
