@@ -1,24 +1,11 @@
 import axiosInstance from "../axiosInstance";
+
 import React, { useState, useEffect } from "react";
 import Sidebar from "../Sidebar/Sidebar";
-import { RiDeleteBinLine } from "react-icons/ri";
-import { BiCartAdd } from "react-icons/bi";
-import { FiEdit } from "react-icons/fi";
 import { Link } from "react-router-dom";
 
 export default function Product() {
   const [product, setProduct] = useState([]);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  // Vérification de l'état de connexion de l'utilisateur
-  useEffect(() => {
-    const userLoggedIn = localStorage.getItem("isLoggedIn");
-    if (userLoggedIn) {
-      setIsLoggedIn(true);
-    } else {
-      setIsLoggedIn(false);
-    }
-  }, []);
 
   useEffect(() => {
     // Utiliser axiosInstance au lieu d'axios
@@ -33,8 +20,21 @@ export default function Product() {
       });
   }, []);
 
-  // Affichage conditionnel en fonction de l"état de connexion
-  if (!isLoggedIn) {
+  // Envoie d'une requête pour la suppression d'un produit
+  const deleteProduct = (id) => {
+    axiosInstance
+      .delete(`/products/delete/${id}`)
+      .then((response) => {
+        console.log(response);
+        // Mettre à jour la liste de tous les produits après la suppression
+        setProduct(product.filter((item) => item.id !== id));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+
     return (
       <>
         <Sidebar />
@@ -55,8 +55,8 @@ export default function Product() {
                     </div>
                     <div>
                       <Link to="/AddProductForm">
-                        <button class="inline-flex items-center text-blue-600 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" type="button">
-                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 mr-2 text-blue-600">
+                        <button class="inline-flex items-center text-blue-600 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-700 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" type="button">
+                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 mr-2 text-blue-600 dark:text-white">
                               <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m3.75 9v6m3-3H9m1.5-12H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
                               </svg>
                               Ajouter un Produit
@@ -66,7 +66,7 @@ export default function Product() {
         
                 </div>
                 <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                  <thead className="text-xs text-center text-gray-900 uppercase  bg-blue-200 dark:bg-gray-700 dark:text-gray-400">
+                  <thead className="text-xs text-center text-gray-900 uppercase  bg-blue-300 dark:bg-gray-700 dark:text-white">
                     <tr>
                       <th scope="col" className="px-6 py-3">
                         Nom du produit
@@ -89,28 +89,28 @@ export default function Product() {
                     </tr>
                   </thead>
                   <tbody>
-                    {product.map((product) => (
+                    {product.map(item => (
                       <tr
-                        key={product._id}
-                        className="bg-white border-b dark:bg-gray-900 dark:border-gray-700"
+                        key={item._id}
+                        className="bg-white border-b dark:bg-gray-900 dark:border-gray-700 hover:bg-blue-0"
                       >
                         <th
                           scope="row"
                           id=""
                           className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                         >
-                          {product.name}
+                          {item.name}
                         </th>
                         <td className="px-6 py-4 text-center">
-                          {product.category}
+                          {item.category}
                         </td>
                         <td className="px-6 py-4 text-center">
-                          {product.quantity}
+                          {item.quantity}
                         </td>
                         <td className="px-6 py-4 text-center">
-                          {product.price}
+                          {item.price}
                         </td>
-                        <td className="px-6 py-4 text-center">{product.description}</td>
+                        <td className="px-6 py-4 text-center">{item.description}</td>
                         <td className="px-6 py-4">
                           <div className="flex justify-center items-center gap-4">
                             <button className="text-gray-600 text-xl">
@@ -119,11 +119,13 @@ export default function Product() {
                             </svg>
 
                             </button>
-                            <button className="text-red-500 text-xl">
+                            <button
+                            type="button"
+                            onClick={() => deleteProduct(item.id)}
+                            className="text-red-500 text-xl">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                               <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
                             </svg>
-
                             </button>
                           </div>
                         </td>
@@ -137,33 +139,4 @@ export default function Product() {
         </div>
       </>
     );
-  } else {
-    return (
-      <>
-        <Sidebar />
-        <div className="p-4 sm:ml-64">
-          <div className="p-4 border-2 border-red-500 border-dashed rounded-lg dark:border-gray-700 mt-14">
-            <div className="items-center justify-between m-10">
-              <div className="relative overflow-x-auto text-center">
-                <h1 className="text-2xl uppercase font-bold text-red-500">
-                  Connexion Requise
-                </h1>
-                <p className="text-gray-600 pb-8 pt-4 text-xl">
-                  Veuillez vous connecter pour voir la liste des produits
-                </p>
-                <Link to="/ConnexionUI">
-                  <button
-                    type="submit"
-                    className="px-6 py-3 text-sm font-medium  text-white capitalize transition-colors duration-300 transform bg-blue-600 rounded-lg hover:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50"
-                  >
-                    Se connecter
-                  </button>
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </>
-    );
-  }
-}
+  } 

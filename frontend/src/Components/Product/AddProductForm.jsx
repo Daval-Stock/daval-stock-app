@@ -44,7 +44,7 @@ export default function AddProductForm() {
   return (
     <>
       <Navbar />
-      <div className="isolate bg-white px-6 py-24 sm:py-32 lg:px-8">
+      <div className="isolate bg-white dark:bg-gray-900 px-6 py-24 sm:py-32 lg:px-8">
         <div
           className="absolute inset-x-0 top-[-10rem] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[-20rem]"
           aria-hidden="true"
@@ -58,7 +58,7 @@ export default function AddProductForm() {
           />
         </div>
         <div className="mx-auto max-w-2xl">
-          <h3 className="text-xl text-center font-bold tracking-tight text-gray-800 sm:text-2xl">
+          <h3 className="text-xl text-center dark:text-gray-100 font-bold tracking-tight text-gray-800 sm:text-2xl">
             Ajout d'un nouveau produit
           </h3>
 
@@ -70,7 +70,7 @@ export default function AddProductForm() {
                     <div className="sm:col-span-3">
                         <label
                         htmlFor="product-name"
-                        className="block text-sm font-medium leading-6 text-gray-900"
+                        className="block text-sm dark:text-gray-100 font-medium leading-6 text-gray-900"
                         >
                         Nom du Produit
                         </label>
@@ -80,7 +80,7 @@ export default function AddProductForm() {
                             name="product-name"
                             value={productName}
                             onChange={(e) => setProductName(e.target.value)}
-                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-200 sm:text-sm sm:leading-6"
+                            className="block w-full dark:text-gray-400 rounded-md border-0  py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 dark:bg-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-200 sm:text-sm sm:leading-6"
                         />
                         </div>
                     </div>
@@ -88,7 +88,7 @@ export default function AddProductForm() {
                   <div className="sm:col-span-3">
                     <label
                       htmlFor="category"
-                      className="block text-sm font-medium leading-6 text-gray-900"
+                      className="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-100"
                     >
                       Quantité
                     </label>
@@ -98,7 +98,7 @@ export default function AddProductForm() {
                         name="quantity"
                         value={quantite}
                         onChange={(e) => setQuantite(e.target.value)}
-                        className="block w-full text-center rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm sm:leading-6"
+                        className="block w-full dark:bg-gray-900 dark:text-gray-400 text-center rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm sm:leading-6"
                       />
                     </div>
                   </div>
@@ -106,7 +106,7 @@ export default function AddProductForm() {
                   <div className="sm:col-span-3">
                     <label
                       htmlFor="price"
-                      className="block text-sm font-medium leading-6 text-gray-900"
+                      className="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-100"
                     >
                       Prix du produit
                     </label>
@@ -116,7 +116,7 @@ export default function AddProductForm() {
                         name="price"
                         value={price}
                         onChange={(e) => setPrice(e.target.value)}
-                        className="block text-center w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm sm:leading-6"
+                        className="block text-center dark:bg-gray-900 dark:text-gray-400 text-center w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm sm:leading-6"
                       />
                     </div>
                   </div>
@@ -124,7 +124,7 @@ export default function AddProductForm() {
                   <div className="sm:col-span-3">
                     <label
                       htmlFor="category"
-                      className="block text-sm font-medium leading-6 text-gray-900"
+                      className="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-100"
                     >
                       Catégorie
                     </label>
@@ -133,7 +133,7 @@ export default function AddProductForm() {
                         name="category"
                         value={categorie}
                         onChange={(e) => setCategorie(e.target.value)}
-                        className="block w-full text-center rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                        className="block w-full text-center dark:bg-gray-900 dark:text-gray-400 rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:max-w-xs sm:text-sm sm:leading-6"
                       >
                         <option> choisir une catégorie</option>
                         {categories.map(category => (
