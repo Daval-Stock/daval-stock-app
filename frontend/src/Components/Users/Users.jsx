@@ -13,7 +13,6 @@ import Navbar from "../Navbar/Navbar";
 import logoDaval from "../../assets/logoDaval.png";
 import alamine from "../../assets/alamine.png";
 import Sidebar from "../Sidebar/Sidebar";
-import {v4 as uuidv4} from 'react-uuid'
 
 function Users({ showNavbar }) {
   const [users, setUsers] = useState([]);
