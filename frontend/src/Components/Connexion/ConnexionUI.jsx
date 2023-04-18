@@ -1,17 +1,16 @@
 import React, { useState } from "react";
-import axiosInstance from '../axiosInstance';
+import axiosInstance from "../axiosInstance";
 import { Link } from "react-router-dom";
 import logoDaval from "../../assets/logoDaval.png";
 import Footer from "../Footer/Footer";
 import Navbar from "../Navbar/Navbar";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 export default function ConnexionUI() {
   // State pour stocker les valeurs du formulaire et les erreurs
   const [formValues, setFormValues] = useState({ email: "", password: "" });
   const [formErrors, setFormErrors] = useState({ email: "", password: "" });
   const navigateTo = useNavigate();
-  
 
   // Fonction de validation qui vérifie si les champs requis sont remplis et retourne un objet contenant les erreurs s'il y en a
   const validateForm = () => {
@@ -38,22 +37,23 @@ export default function ConnexionUI() {
     if (validateForm()) {
       // Envoyer les données du formulaire au serveur
       axiosInstance
-        .post("users/login", { email: formValues.email, password: formValues.password })
+        .post("users/login", {
+          email: formValues.email,
+          password: formValues.password,
+        })
         .then((response) => {
-          // Traitement de la réponse du serveur
-          console.log(response.data);
           const token = response.data.token;
-          localStorage.setItem('authToken', token);
-          navigateTo('/');
+          localStorage.setItem("authToken", token);
+          navigateTo("/");
         })
         .catch((error) => {
-    let errors = {};
+          let errors = {};
 
           errors.serverError = "Email ou mot de passe incorrect";
           setFormErrors(errors);
-  console.log("Axios error: ", error);
-  console.log("Axios error response: ", error.response);
-});
+          console.log("Axios error: ", error);
+          console.log("Axios error response: ", error.response);
+        });
     }
   };
 
@@ -66,7 +66,6 @@ export default function ConnexionUI() {
     }));
   };
 
-  
   return (
     <>
       <Navbar />
@@ -134,7 +133,10 @@ export default function ConnexionUI() {
                   Mot de Passe oublié ?
                 </a>
 
-                <button type="submit" className="px-6 py-2 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-500 rounded-lg hover:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50">
+                <button
+                  type="submit"
+                  className="px-6 py-2 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-500 rounded-lg hover:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50"
+                >
                   Connexion
                 </button>
               </div>
