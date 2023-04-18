@@ -1,12 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const {
-  getCategories,
-  createCategory,
-} = require("../controllers/categoryController");
+  getSites,
+  createSite,
+} = require("../controllers/sites_ctrl");
 const { authMiddleware, isAdmin } = require("../middleware/authMiddleware");
 
-router.get("/", getCategories);
-router.post("/", authMiddleware, createCategory);
+router.get("/", getSites);
+router.post("/", authMiddleware, createSite);
 
 module.exports = router;

@@ -1,4 +1,7 @@
 const mongoose = require("mongoose");
+// Assurez-vous d'importer le modèle Category
+
+
 let productSchema = new mongoose.Schema(
   {
     user: {
@@ -22,7 +25,6 @@ let productSchema = new mongoose.Schema(
     category: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Category",
-      required: true,
     },
     quantity: {
       type: Number,
@@ -38,22 +40,7 @@ let productSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    /* 
-    supplier: {
-        type:Schema.Types.ObjectId,
-        ref: 'Supplier'
-    }, 
-
-    stock:[{
-        site:{
-            type:Schema.Types.ObjectId,
-            ref: 'Site'
-        },
-        quantity:{
-            type: Number,
-            default: 0
-        }
-    }],*/
+  
     image: {
     fileName: String,
     filePath: String,
@@ -66,11 +53,14 @@ let productSchema = new mongoose.Schema(
     site: {
         type: String
       } */
+      site:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref: 'Site'
+    }
   },
   {
     //jfdj
     timestamps: true,
   }
 );
-
 module.exports = mongoose.model("Product", productSchema);
