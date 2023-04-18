@@ -1,15 +1,23 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation, Link } from "react-router-dom";
+import { TextField, Button, Typography } from "@mui/material";
 import axiosInstance from "../axiosInstance";
 import Navbar from "../Navbar/Navbar";
 import FooterLink from "../Footer/FooterLink";
 import logoDaval from "../../assets/logoDaval.png";
 
-export default function RegisterUI() {
+export default function UpdateUser() {
+  const location = useLocation();
+  const user = location.state;
+  const [profileImage, setProfileImage] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
+  const navigateTo = useNavigate();
+  const [passwordComplexity, setPasswordComplexity] = useState("");
+  const [isAdmin, setIsAdmin] = useState(user?.role === "admin" ? true : false);
   const [formValues, setFormValues] = useState({
-    username: "",
-    email: "",
-    mobile: "",
+    username: user?.name,
+    email: user?.email,
+    mobile: user?.mobile,
     password: "",
     confirmPassword: "",
   });
@@ -20,12 +28,6 @@ export default function RegisterUI() {
     password: "",
     confirmPassword: "",
   });
-  const [passwordComplexity, setPasswordComplexity] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-
-  const [profileImage, setProfileImage] = useState(null);
-
-  const navigateTo = useNavigate();
 
   const validateForm = () => {
     let errors = {};
@@ -73,29 +75,38 @@ export default function RegisterUI() {
     setFormErrors(errors);
     return isValid;
   };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) {
       const formData = new FormData();
+      const data = {
+        name: formValues.username,
+        email: formValues.email,
+        mobile: formValues.mobile,
+        password: formValues.password,
+        role: isAdmin ? "admin" : "user",
+      };
       formData.append("name", formValues.username);
       formData.append("email", formValues.email);
       formData.append("mobile", formValues.mobile);
       formData.append("password", formValues.password);
-      console.log("formValue: ", formValues);
+      // for (let pair of formData.entries()) {
+      //   console.log(pair[0] + ": " + pair[1]);
+      // }
       if (profileImage) {
-        formData.append("image", profileImage); // Ajoutez l'image avec le bon nom de champ ici
+        data.append("profileImage", profileImage);
+        formData.append("profileImage", profileImage);
       }
+
       axiosInstance
-        .post("users/register", formData)
+        .put("users/edit-user/" + user?._id, data)
         .then((response) => {
-          navigateTo("/ConnexionUI");
+          navigateTo("/UsersUI");
         })
         .catch((error) => {
           console.log("Axios error:", error);
           console.log("Axios error response:", error.response);
           if (error.response && error.response.data) {
-            console.log("Erreur: ", error);
             formErrors.message = "Cet utilisateur existe déjà!";
             setFormErrors({ ...formErrors, ...error.response.data.errors });
           }
@@ -123,11 +134,8 @@ export default function RegisterUI() {
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setFormValues({ ...formValues, [name]: value });
-
-    if (name === "password") {
-      updatePasswordComplexity(value);
-    }
   };
+
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     console.log("Image:", event.target.files[0]);
@@ -135,7 +143,6 @@ export default function RegisterUI() {
       setProfileImage(file);
     }
   };
-
   return (
     <>
       <Navbar />
@@ -166,20 +173,12 @@ export default function RegisterUI() {
               </div>
 
               <div className="flex items-center justify-center mt-6">
-                <Link
-                  to="/ConnexionUI"
-                  href="#"
-                  className="w-1/3 pb-4 font-medium text-center text-gray-500 capitalize border-b dark:border-gray-400 dark:text-gray-300"
+                <Typography
+                  variant="h2"
+                  className=" pb-4 font-medium text-center text-gray-800 capitalize border-b-2 border-blue-500 dark:border-blue-400 dark:text-white"
                 >
-                  Connexion
-                </Link>
-
-                <a
-                  href="#"
-                  className="w-1/3 pb-4 font-medium text-center text-gray-800 capitalize border-b-2 border-blue-500 dark:border-blue-400 dark:text-white"
-                >
-                  S'inscrire
-                </a>
+                  Modification
+                </Typography>
               </div>
               {formErrors.message && (
                 <p className="mt-2 text-sm text-red-500">
@@ -206,6 +205,7 @@ export default function RegisterUI() {
                 </span>
 
                 <input
+                  label="Nom d'utilisateur"
                   type="text"
                   name="username"
                   value={formValues.username}
@@ -418,26 +418,54 @@ export default function RegisterUI() {
                 )}
               </div>
 
+              <div className="relative">
+                <div className="flex center p-3">
+                  <label htmlFor="isAdmin" className="px-6">
+                    Admin:{" "}
+                  </label>
+                  <input
+                    name="isAdmin"
+                    checked={isAdmin}
+                    onChange={(e) => {
+                      setIsAdmin(e.target.checked);
+                    }}
+                    type="checkbox"
+                    className="
+                    relative 
+                    appearance-none 
+                    inline-block 
+                    h-[30px] 
+                    w-[54px] 
+                    cursor-pointer 
+                    rounded-full 
+                    bg-slate-300 
+                    shadow-md 
+                    transition-all 
+                    after:content-[''] 
+                    after:absolute 
+                    after:top-[3px] 
+                    after:left-[3px] 
+                    after:h-6 
+                    after:w-6 
+                    after:rounded-full 
+                    after:bg-white 
+                    after:shadow-sm 
+                    after:transition-all 
+                    checked:bg-blue-400 
+                    checked:after:translate-x-6"
+                  />
+                </div>
+              </div>
               <div className="mt-6">
                 <button className="w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-500 rounded-lg hover:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50">
-                  S'inscrire
+                  Modifier
                 </button>
-
-                <div className="mt-6 text-center ">
-                  <Link
-                    to="/ConnexionUI"
-                    href="#"
-                    className="text-sm text-blue-500 hover:underline dark:text-blue-400"
-                  >
-                    Vous avez déjà un compte?
-                  </Link>
-                </div>
               </div>
             </form>
           </div>
         </section>
       </div>
-      <FooterLink />
+      ;
     </>
   );
 }
