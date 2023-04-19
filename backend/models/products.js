@@ -43,16 +43,15 @@ let productSchema = new mongoose.Schema(
     productImage: {
       type: String,
     },
-    /*  supplier: {
-        type: String
-      },
-    site: {
-        type: String
-      } */
     site: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Site",
     },
+    supplier: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: false, // Rendre facultatif si certains produits n'ont pas de fournisseur spécifique
+  },
   },
   {
     //jfdj

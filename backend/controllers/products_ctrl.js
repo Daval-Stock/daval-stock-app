@@ -88,8 +88,14 @@ const createProduct = asyncHandler(async (req, res) => {
 
 //pour obtenir la liste de tout les produits
 
-const getProducts = asyncHandler(async (req, res) => {
+/* const getProducts = asyncHandler(async (req, res) => {
   try {
+    const userRole = req.user.role;
+    const userId = req.user._id;
+    if (userRole !== 'supplier'){
+      products = await Product.find({ supplier: userId });
+    }
+    else {
     const products = await Product.find()
       .populate("user")
       .populate("category")
@@ -113,12 +119,58 @@ const getProducts = asyncHandler(async (req, res) => {
         site: siteName,
       };
     });
+  }
     res.status(200).json(formattedProducts);
+  
+ 
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "server Error" });
+  }
+}); */
+const getProducts = asyncHandler(async (req, res) => {
+  try {
+    const userRole = req.user.role;
+    const userId = req.user._id;
+    let products;
+
+    if (userRole === 'supplier') {
+      products = await Product.find({ supplier: userId }).populate("user").populate("category").populate("site");
+    } else {
+      products = await Product.find()
+        .populate("user")
+        .populate("category")
+        .populate("site");
+    }
+
+    const formattedProducts = products.map((product) => {
+      const userName = product.user ? product.user?.name : "Unknown";
+      const categoryName = product.category
+        ? product.category?.name
+        : "Unknown";
+      const siteName = product.site ? product.site?.name : "Unknown";
+      return {
+        _id: product._id,
+        userName,
+        name: product.name,
+        sku: product.sku,
+        category: categoryName,
+        quantity: product.quantity,
+        price: product.price,
+        description: product.description,
+        createdAt: product.createdAt,
+        site: siteName,
+      };
+    });
+
+    res.status(200).json(formattedProducts);
+
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, message: "server Error" });
   }
 });
+
 
 //trouver un produit avec son id
 const getProductById = asyncHandler(async (req, res) => {
@@ -167,7 +219,7 @@ const getProductBySku = asyncHandler(async (req, res) => {
         category: products?.category?.name,
         quantity: products?.quantity,
         price: products?.price,
-        image: products?.image,
+        image: products?.productImage,
         description: products?.description,
         site: products?.site?.name,
         createAt: products?.createdAt,
@@ -181,7 +233,7 @@ const getProductBySku = asyncHandler(async (req, res) => {
 
 //modifier un produit
 const updateProduct = asyncHandler(async (req, res) => {
-  const { name, category, quantity, price, description } = req.body;
+  const { name, category, quantity, price, description,supplier } = req.body;
   const { id } = req.params;
 
   const product = await Product.findById(id);
@@ -213,15 +265,17 @@ const updateProduct = asyncHandler(async (req, res) => {
 
   try {
     const product = await Product.findByIdAndUpdate(
-      req.params.id,
-      {
+      req.params.id,req.body
+   /*    {
         name,
         category,
         quantity,
         price,
         description,
+        supplier,
         image: Object.keys(fileData).length === 0 ? product?.image : fileData,
-      },
+      } */
+      ,
       {
         new: true,
         runValidators: true,
