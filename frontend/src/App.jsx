@@ -19,6 +19,7 @@ import Dashboard from "./Components/Dashboard/Dashboard.jsx";
 import AddProductForm from "./Components/Product/AddProductForm.jsx";
 import PrivacyPolicy from "./Components/PrivacyPolicy/PrivacyPolicy.jsx";
 import Testimonial from "./Components/Testimonial/Testimonial.jsx";
+import UpdateProduct from "./Components/Product/UpdateProduct.jsx";
 
 const App = () => {
   return (
@@ -39,6 +40,7 @@ const App = () => {
         <Route path="/UpdateUser" element={<UpdateUser />} />
         <Route path="/AddProductForm" element={<AddProductForm/>} />
         <Route path="/Product" element={<Product />} />
+        <Route path="/UpdateProduct" element={<UpdateProduct />} />
         <Route path="/Articles" element={<Articles />} />
         <Route path="/Order" element={<Order />} />
         <Route path="*" element={<NotFound />} />

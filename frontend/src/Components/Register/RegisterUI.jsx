@@ -161,8 +161,9 @@ export default function RegisterUI() {
         <p className="mt-2 text-lg pb-6 text-center leading-8 text-gray-600">
           Remplissez le formulaire en renseignat toutes les informations !
         </p>
-
-        <section className=" dark:bg-gray-900 pb-10">
+      </div>
+      
+        <section className=" pb-10">
           <div className="container flex items-center justify-center min-h-screen px-6 mx-auto">
             <form
               className="w-full max-w-md"
@@ -231,6 +232,7 @@ export default function RegisterUI() {
               </div>
               {/* User image */}
               <label
+          
                 htmlFor="dropzone-file"
                 className="flex items-center px-3 py-3 mx-auto mt-6 text-center bg-white border-2 border-dashed rounded-lg cursor-pointer dark:border-gray-600 dark:bg-gray-900"
               >
@@ -447,7 +449,6 @@ export default function RegisterUI() {
             </form>
           </div>
         </section>
-      </div>
       <FooterLink />
     </>
   );
