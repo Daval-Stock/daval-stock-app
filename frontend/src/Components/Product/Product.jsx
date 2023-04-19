@@ -1,23 +1,7 @@
 import axiosInstance from "../axiosInstance";
-
 import React, { useState, useEffect } from "react";
 import Sidebar from "../Sidebar/Sidebar";
-import FooterLink from "../Footer/FooterLink";
-import Navbar from "../Navbar/Navbar";
 import { Link } from "react-router-dom";
-
-import {
-  RiDashboardFill,
-  CiUser,
-  FiPackage,
-  TbFileInvoice,
-  BsDatabaseCheck,
-} from "react-icons/all.js";
-import Sidebar from "../Sidebar/Sidebar";
-
-import { RiDeleteBinLine } from 'react-icons/ri';
-import { BiCartAdd } from 'react-icons/bi';
-import { FiEdit } from 'react-icons/fi';
 
 
 
@@ -42,11 +26,10 @@ export default function Product() {
 
     <Sidebar /> 
         <div className="p-4 sm:ml-64">
-          <div className="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14">
+          <div className="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-100 mt-14">
             <div className="items-center justify-between m-10">
               <div className="relative overflow-x-auto">
                 <div className="flex">
-                
                     </div>
                     <div class="flex items-center justify-between pb-4">
                     <label htmlFor="table-search" class="sr-only">Search</label>

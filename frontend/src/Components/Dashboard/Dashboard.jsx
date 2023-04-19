@@ -15,17 +15,17 @@ export default function Dashboard() {
   return (
     <>
         <div>
-            <Sidebar showNavBar={true}/>
+            <Sidebar/>
 
             <div className="p-4 sm:ml-64 dark:bg-gray-900">
             <div className="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14">
                 <div className="grid grid-cols-3 gap-4 mb-4">
                     <div className="text-center items-center justify-center h-30 rounded bg-gray-200 dark:bg-gray-800">
-                        <h2 className="text-3xl pt-2 font-semibold text-blue-600 dark:text-gray-400">425</h2>
-                        <span className="text-sm text-gray-500 dark:text-gray-500">Qté</span>
+                        <h2 className="text-3xl pt-2 font-semibold text-blue-600 dark:text-blue-400">425</h2>
+                        <span className="text-sm text-gray-500 dark:text-gray-300">Qté</span>
                         <div className="flex justify-center space-x-3 md:mt-4 gap-1 pb-3">
                         <GrStatusGood className="text-lg"/>
-                            <span className="flex justify-center text-sm text-gray-600 dark:text-gray-400">ETAT DU STOCK</span>
+                            <span className="flex justify-center text-sm text-gray-600 dark:text-gray-300">ETAT DU STOCK</span>
                         </div>
                     </div>
                     <div className="text-center items-center justify-center h-30 rounded bg-gray-50 dark:bg-gray-800">
