@@ -13,6 +13,8 @@ export default function UpdateUser() {
   const [showPassword, setShowPassword] = useState(false);
   const navigateTo = useNavigate();
   const [passwordComplexity, setPasswordComplexity] = useState("");
+  const [role, setRole] = useState("user");
+
   const [isAdmin, setIsAdmin] = useState(user?.role === "admin" ? true : false);
   const [formValues, setFormValues] = useState({
     username: user?.name,
@@ -423,7 +425,7 @@ export default function UpdateUser() {
                   <label htmlFor="isAdmin" className="px-6">
                     Admin:{" "}
                   </label>
-                  <input
+                  {/* <input
                     name="isAdmin"
                     checked={isAdmin}
                     onChange={(e) => {
@@ -453,7 +455,18 @@ export default function UpdateUser() {
                     after:transition-all 
                     checked:bg-blue-400 
                     checked:after:translate-x-6"
-                  />
+                  /> */}
+                  <select
+                    value={role}
+                    onChange={(e) => {
+                      setRole(e.target.value);
+                    }}
+                    className="relative appearance-none inline-block h-[30px] w-[120px] cursor-pointer rounded-full bg-slate-300 shadow-md transition-all"
+                  >
+                    <option value="admin">Admin</option>
+                    <option value="user">User</option>
+                    <option value="supplier">Supplier</option>
+                  </select>
                 </div>
               </div>
               <div className="mt-6">

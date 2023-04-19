@@ -10,7 +10,12 @@ const {
   getProductBySku,
   productImage,
 } = require("../controllers/products_ctrl");
-const { authMiddleware, isAdmin } = require("../middleware/authMiddleware");
+const {
+  authMiddleware,
+  isAdmin,
+  isSupplier,
+  isNotSupplier,
+} = require("../middleware/authMiddleware");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -35,17 +40,20 @@ router.post(
 router.get("/all-product", authMiddleware, getProducts);
 
 // Récupérer un produit spécifique
-router.get("/:id", getProductById);
+router.get("/:id", authMiddleware, getProductById);
 
 //récupérer un produit en entrant son sku
-router.get("/sku/:sku", getProductBySku);
+router.get("/sku/:sku", authMiddleware, getProductBySku);
 
 //Modifier un produit
-router.put("/update/:id", updateProduct);
+router.put("/update/:id", authMiddleware, isAdmin, updateProduct);
 
 //route pour supprimer un produit
-router.delete("/delete/:id", deleteProduct);
+
+router.delete("/delete/:id", authMiddleware, isAdmin, deleteProduct);
+
 
 router.get("/product-image/:imageName", productImage);
+
 
 module.exports = router;

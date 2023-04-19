@@ -30,5 +30,25 @@ const isAdmin = asyncHandler(async (req, res, next) => {
     next();
   }
 });
+const isSupplier = asyncHandler(async (req, res, next) => {
+  const { email } = req.user;
+  const supplierUser = await User.findOne({ email });
+  if (supplierUser.role !== "supplier") {
+    throw new Error("You are not an supplier");
+  } else {
+    next();
+  }
+});
+const isNotSupplier = (req, res, next) => {
+  isSupplier(
+    req,
+    res,
+    () => {
+      // Si isSupplier n'appelle pas next(), cela signifie que la condition est remplie, donc nous ne voulons pas appeler next() ici
+    },
+    next
+  );
+  console.log("ça fonctionne");
+};
 
-module.exports = { authMiddleware, isAdmin };
+module.exports = { authMiddleware, isAdmin, isSupplier, isNotSupplier };
