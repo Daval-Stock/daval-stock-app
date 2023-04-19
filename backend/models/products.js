@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 // Assurez-vous d'importer le modèle Category
 
-
 let productSchema = new mongoose.Schema(
   {
     user: {
@@ -17,7 +16,7 @@ let productSchema = new mongoose.Schema(
     /*     sku: 'SKU-' + Math.random().toString(36).substring(7)
     , */
     sku: {
-      type:String,
+      type: String,
       unique: true,
       trim: true,
     },
@@ -40,12 +39,9 @@ let productSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-  
-    image: {
-    fileName: String,
-    filePath: String,
-    fileType: String,
-    fileSize: String,
+
+    productImage: {
+      type: String,
     },
     /*  supplier: {
         type: String
@@ -53,10 +49,10 @@ let productSchema = new mongoose.Schema(
     site: {
         type: String
       } */
-      site:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref: 'Site'
-    }
+    site: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Site",
+    },
   },
   {
     //jfdj

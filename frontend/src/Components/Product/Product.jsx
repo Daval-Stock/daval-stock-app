@@ -19,20 +19,40 @@ import { BiCartAdd } from "react-icons/bi";
 import { FiEdit } from "react-icons/fi";
 
 export default function Product() {
-  const [product, setProduct] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [forceUpdate, setForceUpdate] = useState(false);
 
+  const handleDelete = (id, name) => {
+    let choice = confirm("Vous êtes sûr de vouloir supprimer " + name + "?");
+    console.log(choice);
+    if (choice) {
+      axiosInstance
+        .delete("products/delete/" + id)
+        .then((response) => {
+          console.log("Le produit a été supprimé!");
+          setProducts(products.filter((product) => product.id !== id));
+          setForceUpdate((prev) => !prev);
+        })
+        .catch((error) => {
+          console.log("Axios error:", error);
+          console.log("Axios error response:", error.response);
+        });
+    } else {
+      console.log("Action annulé!");
+    }
+  };
   useEffect(() => {
     // Utiliser axiosInstance au lieu d'axios
     axiosInstance
       .get("/products/all-product")
       .then((response) => {
-        setProduct(response.data);
+        setProducts(response.data);
         console.log(response);
       })
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [forceUpdate]);
 
   return (
     <>
@@ -42,14 +62,14 @@ export default function Product() {
           <div className="items-center justify-between m-10">
             <div className="relative overflow-x-auto">
               <div className="flex"></div>
-              <div class="flex items-center justify-between pb-4">
-                <label htmlFor="table-search" class="sr-only">
+              <div className="flex items-center justify-between pb-4">
+                <label htmlFor="table-search" className="sr-only">
                   Search
                 </label>
-                <div class="relative">
-                  <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                     <svg
-                      class="w-5 h-5 text-gray-500 dark:text-gray-400"
+                      className="w-5 h-5 text-gray-500 dark:text-gray-400"
                       aria-hidden="true"
                       fill="currentColor"
                       viewBox="0 0 20 20"
@@ -58,21 +78,21 @@ export default function Product() {
                       <path
                         fillRule="evenodd"
                         d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                        clip-rule="evenodd"
+                        clipRule="evenodd"
                       ></path>
                     </svg>
                   </div>
                   <input
                     type="text"
                     id="table-search"
-                    class="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Search for items"
                   />
                 </div>
                 <div>
                   <Link to="/AddProductForm">
                     <button
-                      class="inline-flex items-center text-blue-600 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-700 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+                      className="inline-flex items-center text-blue-600 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-700 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
                       type="button"
                     >
                       <svg
@@ -118,7 +138,7 @@ export default function Product() {
                   </tr>
                 </thead>
                 <tbody>
-                  {product.map((item) => (
+                  {products.map((item) => (
                     <tr
                       key={item._id}
                       className="bg-white border-b dark:bg-gray-900 dark:border-gray-700 hover:bg-blue-0"
@@ -156,20 +176,20 @@ export default function Product() {
                           </button>
                           <button
                             type="button"
-                            onClick={() => deleteProduct(item.id)}
+                            onClick={() => handleDelete(item?._id, item?.name)}
                             className="text-red-500 text-xl"
                           >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
                               fill="none"
                               viewBox="0 0 24 24"
-                              stroke-width="1.5"
+                              strokeWidth="1.5"
                               stroke="currentColor"
-                              class="w-5 h-5"
+                              className="w-5 h-5"
                             >
                               <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
                                 d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
                               />
                             </svg>
