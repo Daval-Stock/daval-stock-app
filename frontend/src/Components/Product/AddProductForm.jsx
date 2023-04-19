@@ -3,44 +3,104 @@ import Navbar from "../Navbar/Navbar";
 import FooterLink from "../Footer/FooterLink";
 import axiosInstance from "../axiosInstance";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function AddProductForm() {
-    const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [sites, setSites] = useState([]);
+  const [productName, setProductName] = useState("");
+  const [quantite, setQuantite] = useState(0);
+  const [price, setPrice] = useState(0);
+  const [categorie, setCategorie] = useState("");
+  const [site, setSite] = useState("");
+  const [productImage, setProductImage] = useState(null);
+  const [description, setDescription] = useState("");
+  const navigateTo = useNavigate();
 
-    const [productName, setProductName] = useState('');
-    const [quantite, setQuantite] = useState(0);
-    const [price, setPrice] = useState(0);
-    const [categorie, setCategorie] = useState('');
-    const [image, setImage] = useState('');
-    const [description, setDescription] = useState('');
-      
-        const handleSubmit = (event) => {
-          event.preventDefault();
-          const donnees = { nomProduit, quantite, prix, categorie, image, description };
-          envoyerDonnees(donnees);
-        };
-      
-        const envoyerDonnees = (donnees) => {
-          axios.post('/envoyer', donnees)
-            .then(response => {
-              console.log('Données envoyées avec succès au serveur !');
-            })
-            .catch(error => {
-              console.error('Erreur lors de l\'envoi des données au serveur :', error);
-            });
-        };
+  const [formErrors, setFormErrors] = useState({
+    productName: "",
+    quantite: "",
+    price: "",
+    categories: "",
+  });
 
-    useEffect(() => {
-        axiosInstance
-        .get("/categories/")
-        .then(Response => {
-            setCategories(Response.data)
-        })
-        .catch(error => {
-            console.log("Erreur lors de la récupération des catégories :", error)
-        });
-    }, []);
+  function generateProductSKU() {
+    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const numbers = "0123456789";
+    let code = "";
+
+    // Ajoute trois lettres aléatoires
+    for (let i = 0; i < 3; i++) {
+      const randomIndex = Math.floor(Math.random() * letters.length);
+      code += letters[randomIndex];
+    }
+
+    // Ajoute trois chiffres aléatoires
+    for (let i = 0; i < 3; i++) {
+      const randomIndex = Math.floor(Math.random() * numbers.length);
+      code += numbers[randomIndex];
+    }
+
+    return code;
+  }
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    const formData = new FormData();
+    formData.append("name", productName);
+    formData.append("quantity", quantite);
+    formData.append("price", price);
+    formData.append("description", description);
+    console.log(categorie);
+    formData.append("categoryName", categorie);
+    formData.append("siteName", site);
+    formData.append("sku", generateProductSKU());
+    if (productImage) {
+      formData.append("image", productImage); // Ajoutez l'image avec le bon nom de champ ici
+    }
+    axiosInstance
+      .post("/products/createProduct", formData)
+      .then((response) => {
+        navigateTo("/Product");
+      })
+      .catch((error) => {
+        console.log("Axios error:", error);
+        console.log("Axios error response:", error.response);
+        if (error.response && error.response.data) {
+          console.log("Erreur: ", error);
+          formErrors.message = "Cet produit existe déjà!";
+          setFormErrors({ ...formErrors, ...error.response.data.errors });
+        }
+      });
+  };
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    console.log("Image:", event.target.files[0]);
+    if (file) {
+      setProductImage(file);
+    }
+  };
+
+  useEffect(() => {
+    axiosInstance
+      .get("/categories/")
+      .then((Response) => {
+        setCategories(Response.data);
+      })
+      .catch((error) => {
+        console.log("Erreur lors de la récupération des catégories :", error);
+      });
+
+    axiosInstance
+      .get("/sites/")
+      .then((Response) => {
+        setSites(Response.data);
+      })
+      .catch((error) => {
+        console.log("Erreur lors de la récupération des sites :", error);
+      });
+  }, []);
   return (
     <>
       <Navbar />
@@ -66,24 +126,23 @@ export default function AddProductForm() {
             <div className="space-y-12">
               <div className=" pb-12">
                 <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                  
-                    <div className="sm:col-span-3">
-                        <label
-                        htmlFor="product-name"
-                        className="block text-sm dark:text-gray-100 font-medium leading-6 text-gray-900"
-                        >
-                        Nom du Produit
-                        </label>
-                        <div className="mt-2">
-                        <input
-                            type="text"
-                            name="product-name"
-                            value={productName}
-                            onChange={(e) => setProductName(e.target.value)}
-                            className="block w-full dark:text-gray-400 rounded-md border-0  py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 dark:bg-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-200 sm:text-sm sm:leading-6"
-                        />
-                        </div>
+                  <div className="sm:col-span-3">
+                    <label
+                      htmlFor="product-name"
+                      className="block text-sm dark:text-gray-100 font-medium leading-6 text-gray-900"
+                    >
+                      Nom du Produit
+                    </label>
+                    <div className="mt-2">
+                      <input
+                        type="text"
+                        name="product-name"
+                        value={productName}
+                        onChange={(e) => setProductName(e.target.value)}
+                        className="block w-full dark:text-gray-400 rounded-md border-0  py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 dark:bg-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-200 sm:text-sm sm:leading-6"
+                      />
                     </div>
+                  </div>
 
                   <div className="sm:col-span-3">
                     <label
@@ -136,39 +195,69 @@ export default function AddProductForm() {
                         className="block w-full text-center dark:bg-gray-900 dark:text-gray-400 rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:max-w-xs sm:text-sm sm:leading-6"
                       >
                         <option> choisir une catégorie</option>
-                        {categories.map(category => (
-                            <option
-                            key={category.id}
-                            value={category.id}>{category.name}</option>
+                        {categories.map((category) => (
+                          <option key={category?._id} value={category?.name}>
+                            {category?.name}
+                          </option>
                         ))}
                       </select>
                     </div>
                   </div>
 
-                  <div className="col-span-full">
-                  <label
-                htmlFor="dropzone-file"
-                className="flex items-center px-3 py-3 mx-auto mt-6 text-center bg-white border-2 border-dashed rounded-lg cursor-pointer dark:border-gray-600 dark:bg-gray-900"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-6 h-6 text-gray-300 dark:text-gray-500"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
-                  />
-                </svg>
+                  <div className="sm: col-span-3">
+                    <label
+                      htmlFor="dropzone-file"
+                      className="flex items-center px-3 py-3 mx-auto mt-6 text-center bg-white border-2 border-dashed rounded-lg cursor-pointer dark:border-gray-600 dark:bg-gray-900"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="w-6 h-6 text-gray-300 dark:text-gray-500"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
+                        />
+                      </svg>
 
-                <h2 className="mx-3 text-gray-400">Photo du produit</h2>
+                      <h2 className="mx-3 text-gray-400">Photo du produit</h2>
 
-                <input id="dropzone-file" type="file" className="hidden" />
-              </label>
+                      <input
+                        id="dropzone-file"
+                        type="file"
+                        onChange={handleImageChange}
+                        className=""
+                        name="image"
+                      />
+                    </label>
+                  </div>
+
+                  <div className="sm:col-span-3">
+                    <label
+                      htmlFor="site"
+                      className="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-100"
+                    >
+                      Site
+                    </label>
+                    <div className="mt-2">
+                      <select
+                        name="site"
+                        value={site}
+                        onChange={(e) => setSite(e.target.value)}
+                        className="block w-full text-center dark:bg-gray-900 dark:text-gray-400 rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                      >
+                        <option> choisir une site</option>
+                        {sites.map((site) => (
+                          <option key={site?._id} value={site?.name}>
+                            {site?.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                   </div>
 
                   <div className="col-span-full">
@@ -182,27 +271,39 @@ export default function AddProductForm() {
                       <textarea
                         id="description"
                         name="description"
+                        onChange={(e) => setDescription(e.target.value)}
                         rows={3}
                         className="block w-full rounded-md text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:py-1.5 sm:text-sm sm:leading-6"
                         defaultValue={""}
                       />
                     </div>
                   </div>
-                  
                 </div>
-                <div class="mt-6 flex items-center justify-end gap-x-6">
+                <div className="mt-6 flex items-center justify-end gap-x-6">
                   <Link to="/Product">
-                    <button type="button" class="text-sm font-semibold leading-6 text-gray-900">Annuler</button>
+                    <button
+                      type="button"
+                      className="text-sm font-semibold leading-6 text-gray-900"
+                    >
+                      Annuler
+                    </button>
                   </Link>
-                  <button type="submit" class="rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">Enregistrer</button>
+                  <button
+                    type="submit"
+                    className="rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+                  >
+                    Enregistrer
+                  </button>
                 </div>
-                <p class="mt-10 text-sm leading-6 text-gray-700">Noter que tous les produits enregistrer seront directement stocké dans la base de donnée. Retrouvez le produits saisi à la page produit du tableau de bord</p>
-
+                <p className="mt-10 text-sm leading-6 text-gray-700">
+                  Noter que tous les produits enregistrer seront directement
+                  stocké dans la base de donnée. Retrouvez le produits saisi à
+                  la page produit du tableau de bord
+                </p>
               </div>
             </div>
           </form>
         </div>
-
       </div>
 
       <FooterLink />

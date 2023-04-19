@@ -10,7 +10,17 @@ const {
   getProductBySku,
 } = require("../controllers/products_ctrl");
 const { authMiddleware, isAdmin } = require("../middleware/authMiddleware");
-const upload = require("../middleware/upload");
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads");
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + "-" + file.originalname);
+  },
+});
+
+const upload = multer({ storage: storage });
 
 // Créer un nouveau produit
 router.post(
