@@ -35,7 +35,7 @@ export default function Home() {
             </div>
             <div className="text-center">
 
-              <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+              <h1 className="text-4xl font-semiBold tracking-tight text-gray-900 dark:text-gray-300 sm:text-6xl">
                 Bienvenue sur l'application Daval Stock
 
               </h1>
