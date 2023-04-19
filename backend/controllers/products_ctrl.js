@@ -2,102 +2,87 @@ const Product = require("../models/products");
 const asyncHandler = require("express-async-handler");
 const { fileSizeFormatter } = require("../utils/fileUpload");
 const User = require("../models/users");
-const Category = require('../models/category'); // Importez le modèle Category
-const fs = require('fs');
-const path = require('path');
-const Sites = require("../models/sites")
-async function getDefaultCategoryId() {
+const Category = require("../models/category"); // Importez le modèle Category
+const fs = require("fs");
+const path = require("path");
+const Sites = require("../models/sites");
+
+const getDefaultCategoryId = async () => {
   let defaultCategory = await Category.findOne({ name: "autres" });
   return defaultCategory;
-}
+};
 
+const getDefaultSiteId = async () => {
+  let defaultSiteId = await Site.findOne({ name: "Metz" });
+  return defaultSiteId;
+};
 
 //pour ajouter un produit
 const createProduct = asyncHandler(async (req, res) => {
-  const { name, quantity, price, description, categoryName, siteName } = req.body;
-
-  if (!name || !quantity || !price || !description) {
-    res.status(400);
-    throw new Error("Please fill in all fields");
-  }   
-
-  //Check if category exist
-  // Handle Image upload
-  let fileData = {};
-  if (req.file) {
-    fileData = {
-      fileName: req.file.originalname,
-      filePath: uploadedFile,
-      fileType: req.file.mimetype,
-      fileSize: fileSizeFormatter(req.file.size, 2),
-    };
-  }
-  else {""
-    // Use default image if no image is provided
-    fileData = {
-      fileName: 'default-product-image.jpg',
-      filePath: "../uploads/default-product-image.jpg",
-      fileType: 'image/jpeg',
-      fileSize: 'unknown',
-    };
-  }
-  console.log(req.body)
-console.log(categoryName)
-  const user = await User.findById(req.user.id);
-  if (!user) {
-    res.status(404);
-    throw new Error("User not found");
-  }
-
-  const category = await Category.findOne({ name: categoryName });
-  console.log(category)
-  // Si la catégorie n'est pas trouvée, utilisez la catégorie par défaut
-  const categoryId = category ? category._id : await getDefaultCategoryId();
-  
-  //pour voir si un site existe
-  const site = await Sites.findOne({name:siteName});
- 
-  const siteId = site?._id;
- console.log(siteId)
- 
-  //create Product
- sku = name.substring(0, 3).toUpperCase() + category.name.substring(0, 3).toUpperCase();
-  try {
-    const findProduct = await Product.findOne({ name, category:categoryId });
-    console.log(findProduct)
-    if (!findProduct) {
-      const product = await Product.create({
-        user: user,
-        name,
-        sku,
-        category:categoryId,
-        quantity,
-        price,
-        description,
-        image: fileData,
-        site: siteId
-      });
-      console.log("Le produit n'existait pas!");
-      res.status(201).json({
-        _id: product?._id,
-        userName: product?.user?.name,
-        name: product?.name,
-        sku: product?.sku,
-        category: product?.category?.name,
-        quantity: product?.quantity,
-        price: product?.price,
-        description: product?.description,
-        createAt: product?.createdAt,
-        siteName: product?.site.name,
-      });
-    } else {
-      throw new Error("Product Already Exists");
+  const sku = req.body.sku;
+  const findSku = await Product.findOne({ sku });
+  if (!findSku) {
+    if (req.file) {
+      req.body.productImage = req.file.path;
     }
 
-    return;
-  } catch (error) {
-    console.error(error);
-    throw new Error("Product Already Exists");
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      res.status(404);
+      throw new Error("User not found");
+    }
+    const userId = user ? user._id : await getDefaultCategoryId();
+    req.body.user = userId;
+
+    const category = await Category.findOne({ name: req.body.categoryName });
+    console.log(category);
+    if (!category) {
+      res.status(404);
+      throw new Error("Category not found in the DB");
+    }
+    const categoryId = category ? category._id : await getDefaultCategoryId();
+    req.body.category = categoryId;
+
+    // Si la catégorie n'est pas trouvée, utilisez la catégorie par défaut
+    const site = await Sites.findOne({ name: req.body.siteName });
+    if (!site) {
+      res.status(404);
+      throw new Error("Site not found");
+    }
+    const siteId = site ? site._id : await getDefaultSiteId();
+    req.body.site = siteId;
+
+    try {
+      const findProduct = await Product.findOne({
+        name: req.body.name,
+        category: categoryId,
+      });
+      console.log(findProduct);
+      if (!findProduct) {
+        const product = await Product.create(req.body);
+
+        console.log("Le produit n'existait pas!");
+        res.status(201).json({
+          _id: product?._id,
+          userName: product?.user?.name,
+          name: product?.name,
+          sku: product?.sku,
+          category: product?.category?.name,
+          quantity: product?.quantity,
+          price: product?.price,
+          description: product?.description,
+          createAt: product?.createdAt,
+          siteName: product?.site.name,
+        });
+      } else {
+        throw new Error("Product Already Exists");
+      }
+    } catch (error) {
+      console.error(error);
+      throw new Error("Product Already Exists");
+    }
+  } else {
+    throw new Error("SKU Already Exists");
   }
 });
 
@@ -105,11 +90,16 @@ console.log(categoryName)
 
 const getProducts = asyncHandler(async (req, res) => {
   try {
-    const products = await Product.find().populate('user').populate('category').populate('site');
-    const formattedProducts = products.map(product => {
-      const userName = product.user ? product.user?.name : 'Unknown';
-      const categoryName = product.category ? product.category?.name : 'Unknown';
-      const siteName = product.site ? product.site?.name : 'Unknown';
+    const products = await Product.find()
+      .populate("user")
+      .populate("category")
+      .populate("site");
+    const formattedProducts = products.map((product) => {
+      const userName = product.user ? product.user?.name : "Unknown";
+      const categoryName = product.category
+        ? product.category?.name
+        : "Unknown";
+      const siteName = product.site ? product.site?.name : "Unknown";
       return {
         _id: product._id,
         userName,
@@ -120,7 +110,7 @@ const getProducts = asyncHandler(async (req, res) => {
         price: product.price,
         description: product.description,
         createdAt: product.createdAt,
-        site: siteName
+        site: siteName,
       };
     });
     res.status(200).json(formattedProducts);
@@ -133,8 +123,11 @@ const getProducts = asyncHandler(async (req, res) => {
 //trouver un produit avec son id
 const getProductById = asyncHandler(async (req, res) => {
   try {
-    const products = await Product.findById(req.params.id).populate('user').populate('category').populate('site');
-     if (!products) {
+    const products = await Product.findById(req.params.id)
+      .populate("user")
+      .populate("category")
+      .populate("site");
+    if (!products) {
       res.status(404).json({ success: false, message: "product not found" });
     } else {
       res.status(200).json({
@@ -149,7 +142,6 @@ const getProductById = asyncHandler(async (req, res) => {
         description: products?.description,
         site: products?.site?.name,
         createAt: products?.createdAt,
-        
       });
     }
   } catch (error) {
@@ -161,8 +153,10 @@ const getProductById = asyncHandler(async (req, res) => {
 //trouver un produit ave son sku
 const getProductBySku = asyncHandler(async (req, res) => {
   try {
-    const products = await Product.findOne({ sku: req.params.sku }).populate('user').populate('category');
-     if (!products) {
+    const products = await Product.findOne({ sku: req.params.sku })
+      .populate("user")
+      .populate("category");
+    if (!products) {
       res.status(404).json({ success: false, message: "product not found" });
     } else {
       res.status(200).json({
@@ -201,7 +195,7 @@ const updateProduct = asyncHandler(async (req, res) => {
   // Handle Image upload
   let fileData = {};
   if (req.file) {
-    const uploadsDir = path.join(__dirname, 'uploads');
+    const uploadsDir = path.join(__dirname, "uploads");
     if (!fs.existsSync(uploadsDir)) {
       fs.mkdirSync(uploadsDir);
     }
@@ -261,9 +255,9 @@ const deleteProduct = asyncHandler(async (req, res) => {
 
 module.exports = {
   createProduct,
-  getProductById, 
+  getProductById,
   getProducts,
   updateProduct,
   deleteProduct,
-  getProductBySku
+  getProductBySku,
 };
