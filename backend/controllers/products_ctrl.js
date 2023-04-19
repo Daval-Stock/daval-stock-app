@@ -181,9 +181,7 @@ const getProductBySku = asyncHandler(async (req, res) => {
 
 //modifier un produit
 const updateProduct = asyncHandler(async (req, res) => {
-  const { name, category, quantity, price, description } = req.body;
   const { id } = req.params;
-
   const product = await Product.findById(id);
 
   // if product doesnt exist
@@ -193,40 +191,31 @@ const updateProduct = asyncHandler(async (req, res) => {
   }
 
   // Handle Image upload
-  let fileData = {};
   if (req.file) {
-    const uploadsDir = path.join(__dirname, "uploads");
-    if (!fs.existsSync(uploadsDir)) {
-      fs.mkdirSync(uploadsDir);
-    }
-
-    const imagePath = path.join(uploadsDir, req.file.originalname);
-    fs.writeFileSync(imagePath, req.file.buffer);
-
-    fileData = {
-      fileName: req.file.originalname,
-      filePath: `/uploads/${req.file.originalname}`,
-      fileType: req.file.mimetype,
-      fileSize: fileSizeFormatter(req.file.size, 2),
-    };
+    req.body.productImage = req.file.path;
   }
+  const category = await Category.findOne({ name: req.body.categoryName });
+  console.log(category);
+  if (!category) {
+    res.status(404);
+    throw new Error("Category not found in the DB");
+  }
+  const categoryId = category ? category._id : await getDefaultCategoryId();
+  req.body.category = categoryId;
+
+  const site = await Sites.findOne({ name: req.body.siteName });
+  if (!site) {
+    res.status(404);
+    throw new Error("Site not found");
+  }
+  const siteId = site ? site._id : await getDefaultSiteId();
+  req.body.site = siteId;
 
   try {
-    const product = await Product.findByIdAndUpdate(
-      req.params.id,
-      {
-        name,
-        category,
-        quantity,
-        price,
-        description,
-        image: Object.keys(fileData).length === 0 ? product?.image : fileData,
-      },
-      {
-        new: true,
-        runValidators: true,
-      }
-    );
+    const product = await Product.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
     if (!product) {
       res.status(404).json({ success: false, message: "Product not found" });
     } else {

@@ -20,12 +20,6 @@ const siteRoutes = require("./routes/sites_routes");
 // cors
 const cors = require("cors");
 
-
-
-
-
-
-
 // middleware
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -63,7 +57,6 @@ app.use("/sites", siteRoutes);
 
 //route commandes
 app.use("/orders", orders_routes);
-
 
 app.use(notFound);
 app.use(errorHandler);

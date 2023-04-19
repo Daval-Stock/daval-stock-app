@@ -4,9 +4,8 @@ import { Link } from "react-router-dom";
 import logoDaval from "../../assets/logoDaval.png";
 import Footer from "../Footer/Footer";
 import Navbar from "../Navbar/Navbar";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import FooterLink from "../Footer/FooterLink";
-
 
 export default function ConnexionUI() {
   // State pour stocker les valeurs du formulaire et les erreurs
@@ -28,7 +27,6 @@ export default function ConnexionUI() {
       errors.password = "Le mot de passe est requis";
       isValid = false;
     }
-    console.log(errors);
     setFormErrors(errors);
     return isValid;
   };
@@ -134,9 +132,12 @@ export default function ConnexionUI() {
                 >
                   Mot de Passe oublié ?
                 </a>
-                  <button type="submit" className="px-6 py-2 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-500 rounded-lg hover:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50">
-                    Connexion
-                  </button>                
+                <button
+                  type="submit"
+                  className="px-6 py-2 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-500 rounded-lg hover:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50"
+                >
+                  Connexion
+                </button>
               </div>
             </form>
           </div>
