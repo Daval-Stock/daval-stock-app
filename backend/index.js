@@ -21,9 +21,9 @@ const siteRoutes = require("./routes/sites_routes");
 const cors = require("cors");
 
 
+
 //Importer pour exécuter le fichier d'envoie du mail d'alerte aux fournisseurs
 require("./utils/productAlerts");
-
 
 
 
@@ -64,7 +64,6 @@ app.use("/sites", siteRoutes);
 
 //route commandes
 app.use("/orders", orders_routes);
-
 
 app.use(notFound);
 app.use(errorHandler);
