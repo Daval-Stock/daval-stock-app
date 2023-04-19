@@ -1,88 +1,54 @@
-import React from 'react'
+import React from "react";
 import {
-    GrStatusGood,GoPackage,RiDashboardFill,CiUser,
-    FiPackage,TbFileInvoice,BsDatabaseCheck
-} from "react-icons/all.js"
-import { Link } from 'react-router-dom'
-import Navbar from '../Navbar/Navbar'
-import Sidebar from '../Sidebar/Sidebar'
-import logoDaval from '../../assets/logoDaval.png'
-import alamine from '../../assets/alamine.png'
-import FooterLink from '../Footer/FooterLink'
-
+  GrStatusGood,
+  GoPackage,
+  RiDashboardFill,
+  CiUser,
+  FiPackage,
+  TbFileInvoice,
+  BsDatabaseCheck,
+} from "react-icons/all.js";
+import { Link } from "react-router-dom";
+import Navbar from "../Navbar/Navbar";
+import Sidebar from "../Sidebar/Sidebar";
+import logoDaval from "../../assets/logoDaval.png";
+import alamine from "../../assets/alamine.png";
+import FooterLink from "../Footer/FooterLink";
+import axiosInstance from "../axiosInstance";
+import { useState, useEffect } from "react";
+import ProductCard from "../Product/ProductCard";
 
 export default function Dashboard() {
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    // Utiliser axiosInstance au lieu d'axios
+    axiosInstance
+      .get("/products/all-product")
+      .then((response) => {
+        setProducts(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
   return (
     <>
-        <div>
-            <Sidebar/>
-
-            <div className="p-4 sm:ml-64 dark:bg-gray-900">
-            <div className="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14">
-                <div className="grid grid-cols-3 gap-4 mb-4">
-                    <div className="text-center items-center justify-center h-30 rounded bg-gray-200 dark:bg-gray-800">
-                        <h2 className="text-3xl pt-2 font-semibold text-blue-600 dark:text-blue-400">425</h2>
-                        <span className="text-sm text-gray-500 dark:text-gray-300">Qté</span>
-                        <div className="flex justify-center space-x-3 md:mt-4 gap-1 pb-3">
-                        <GrStatusGood className="text-lg"/>
-                            <span className="flex justify-center text-sm text-gray-600 dark:text-gray-300">ETAT DU STOCK</span>
-                        </div>
-                    </div>
-                    <div className="text-center items-center justify-center h-30 rounded bg-gray-50 dark:bg-gray-800">
-                        <h2 className="text-3xl pt-2 font-semibold text-red-600 dark:text-gray-400">13</h2>
-                        <span className="text-sm text-gray-500 dark:text-gray-500">Colis</span>
-                        <div className="flex justify-center space-x-3 md:mt-4 gap-1 pb-3">
-                        <GoPackage className="text-lg"/>
-                            <span className="flex justify-center text-sm text-gray-600 dark:text-gray-400">COMMANDES EN COURS</span>
-                        </div>
-                    </div>
-                    <div className="text-center items-center justify-center h-30 rounded bg-gray-50 dark:bg-gray-800">
-                        <h2 className="text-3xl pt-2 font-semibold text-red-600 dark:text-gray-400">224</h2>
-                        <span className="text-sm text-gray-500 dark:text-gray-500">Colis</span>
-                        <div className="flex justify-center space-x-3 md:mt-4 gap-1 pb-3">
-                        <GoPackage className="text-lg"/>
-                            <span className="flex justify-center text-sm text-gray-600 dark:text-gray-400">VENTE DU JOUR</span>
-                        </div>
-                    </div>  
-                </div>
-                <div className="flex items-center justify-center h-48 mb-4 rounded bg-gray-50  dark:bg-gray-800">
-                    <p className="text-2xl text-gray-400 dark:text-gray-500">ss</p>
-                </div>
-                <div className="grid grid-cols-2 gap-4 mb-4">
-                    <div className="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-                        <p className="text-2xl text-gray-400 dark:text-gray-500">+</p>
-                    </div>
-                    <div className="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-                        <p className="text-2xl text-gray-400 dark:text-gray-500">+</p>
-                    </div>
-                    <div className="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-                        <p className="text-2xl text-gray-400 dark:text-gray-500">+</p>
-                    </div>
-                    <div className="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-                        <p className="text-2xl text-gray-400 dark:text-gray-500">+</p>
-                    </div>
-                </div>
-                <div className="flex items-center justify-center h-48 mb-4 rounded bg-gray-50 dark:bg-gray-800">
-                    <p className="text-2xl text-gray-400 dark:text-gray-500">+</p>
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                    <div className="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-                        <p className="text-2xl text-gray-400 dark:text-gray-500">+</p>
-                    </div>
-                    <div className="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-                        <p className="text-2xl text-gray-400 dark:text-gray-500">+</p>
-                    </div>
-                    <div className="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-                        <p className="text-2xl text-gray-400 dark:text-gray-500">+</p>
-                    </div>
-                    <div className="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-                        <p className="text-2xl text-gray-400 dark:text-gray-500">+</p>
-                    </div>
-                </div>
+      <Sidebar />
+      <div className="p-4 sm:ml-64">
+        <div className="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14">
+          <div className="items-center justify-between m-10">
+            <div className="relative overflow-x-auto">
+              <div className="flex"></div>
+              <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                {products.map((product) => (
+                  <ProductCard key={product._id} product={product} />
+                ))}
+              </div>
             </div>
-            </div>
+          </div>
         </div>
+      </div>
     </>
-    
-  )
+  );
 }

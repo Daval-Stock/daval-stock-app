@@ -8,6 +8,7 @@ const {
   updateProduct,
   deleteProduct,
   getProductBySku,
+  productImage,
 } = require("../controllers/products_ctrl");
 const { authMiddleware, isAdmin } = require("../middleware/authMiddleware");
 
@@ -44,4 +45,7 @@ router.put("/update/:id", updateProduct);
 
 //route pour supprimer un produit
 router.delete("/delete/:id", deleteProduct);
+
+router.get("/product-image/:imageName", productImage);
+
 module.exports = router;

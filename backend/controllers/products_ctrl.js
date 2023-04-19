@@ -108,11 +108,13 @@ const getProducts = asyncHandler(async (req, res) => {
         category: categoryName,
         quantity: product.quantity,
         price: product.price,
+        productImage: product.productImage,
         description: product.description,
         createdAt: product.createdAt,
         site: siteName,
       };
     });
+    console.log(formattedProducts);
     res.status(200).json(formattedProducts);
   } catch (error) {
     console.log(error);
@@ -242,6 +244,17 @@ const deleteProduct = asyncHandler(async (req, res) => {
   }
 });
 
+const productImage = asyncHandler(async (req, res) => {
+  const imageName = req.params.imageName;
+  const imagePath = path.join(__dirname, "..", "uploads", imageName + ".jpg");
+  console.log(imagePath);
+  // console.log(imagePath);
+  if (fs.existsSync(imagePath)) {
+    res.sendFile(imagePath);
+  } else {
+    res.status(404).send("Image not found");
+  }
+});
 module.exports = {
   createProduct,
   getProductById,
@@ -249,4 +262,5 @@ module.exports = {
   updateProduct,
   deleteProduct,
   getProductBySku,
+  productImage,
 };
