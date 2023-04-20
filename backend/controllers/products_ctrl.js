@@ -236,7 +236,7 @@ const getProductBySku = asyncHandler(async (req, res) => {
 
 //modifier un produit
 const updateProduct = asyncHandler(async (req, res) => {
-  const { name, category, quantity, price, description,supplier } = req.body;
+  const { name, categoryName, quantity, price, description,supplier } = req.body;
 
   const { id } = req.params;
   const product = await Product.findById(id);
@@ -251,7 +251,7 @@ const updateProduct = asyncHandler(async (req, res) => {
   if (req.file) {
     req.body.productImage = req.file.path;
   }
-  const category = await Category.findOne({ name: req.body.categoryName });
+ const category = await Category.findOne({ name: req.body.categoryName });
   console.log(category);
   if (!category) {
     res.status(404);
@@ -270,23 +270,6 @@ const updateProduct = asyncHandler(async (req, res) => {
 
   try {
 
-    const product = await Product.findByIdAndUpdate(
-      req.params.id,req.body
-   /*    {
-        name,
-        category,
-        quantity,
-        price,
-        description,
-        supplier,
-        image: Object.keys(fileData).length === 0 ? product?.image : fileData,
-      } */
-      ,
-      {
-        new: true,
-        runValidators: true,
-      }
-    );
 
     const product = await Product.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
