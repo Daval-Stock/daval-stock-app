@@ -2,7 +2,7 @@ import axiosInstance from "../axiosInstance";
 import React, { useState, useEffect } from "react";
 import Sidebar from "../Sidebar/Sidebar";
 import { Link } from "react-router-dom";
-
+import ProductCard from "./ProductCard";
 
 import {
   RiDashboardFill,
@@ -11,7 +11,6 @@ import {
   TbFileInvoice,
   BsDatabaseCheck,
 } from "react-icons/all.js";
-
 
 import { RiDeleteBinLine } from "react-icons/ri";
 import { BiCartAdd } from "react-icons/bi";
@@ -46,7 +45,6 @@ export default function Product() {
       .get("/products/all-product")
       .then((response) => {
         setProducts(response.data);
-        console.log(response);
       })
       .catch((error) => {
         console.log(error);
@@ -55,7 +53,6 @@ export default function Product() {
 
   return (
     <>
-
       <Sidebar />
       <div className="p-4 sm:ml-64">
         <div className="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14">
@@ -88,7 +85,6 @@ export default function Product() {
                     className="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Search for items"
                   />
-
                 </div>
                 <div>
                   <Link to="/AddProductForm">
@@ -201,6 +197,11 @@ export default function Product() {
                   ))}
                 </tbody>
               </table>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {products.map((product) => (
+                  <ProductCard key={product._id} product={product} />
+                ))}
+              </div>
             </div>
           </div>
         </div>

@@ -19,12 +19,13 @@ import Dashboard from "./Components/Dashboard/Dashboard.jsx";
 import AddProductForm from "./Components/Product/AddProductForm.jsx";
 import PrivacyPolicy from "./Components/PrivacyPolicy/PrivacyPolicy.jsx";
 import Testimonial from "./Components/Testimonial/Testimonial.jsx";
+import UpdateProduct from "./Components/Product/UpdateProduct.jsx";
+import ProductCard from "./Components/Product/ProductCard.jsx";
 
 const App = () => {
   return (
     <div>
       <Routes>
-
         <Route path="/" element={<Home />} />
         <Route path="/Sidebar" element={<Sidebar />} />
         <Route path="/ConnexionUI" element={<ConnexionUI />} />
@@ -37,14 +38,15 @@ const App = () => {
         <Route path="/UsersUI" element={<Users />} />
         <Route path="/profile" element={<UserProfile />} />
         <Route path="/UpdateUser" element={<UpdateUser />} />
-        <Route path="/AddProductForm" element={<AddProductForm/>} />
+        <Route path="/AddProductForm" element={<AddProductForm />} />
         <Route path="/Product" element={<Product />} />
+        <Route path="/UpdateProduct" element={<UpdateProduct />} />
         <Route path="/Articles" element={<Articles />} />
         <Route path="/Order" element={<Order />} />
         <Route path="*" element={<NotFound />} />
-        <Route path="/PrivacyPolicy" element={<PrivacyPolicy/>} /> 
-        <Route path="/Testimonial" element={<Testimonial/>} />
-
+        <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
+        <Route path="/Testimonial" element={<Testimonial />} />
+        <Route path="/ProductCard" element={<ProductCard />} />
       </Routes>
     </div>
   );
