@@ -1,4 +1,4 @@
-const Product = require("../models/products");
+/* const Product = require("../models/products");
 const User = require("../models/users");
 const nodemailer = require("nodemailer");
 const cron = require("node-cron");
@@ -34,6 +34,7 @@ const sendEmailNotification = async (req, res) => {
 
 
 const checkProductThreshold = async (req, res) => {
+    console.log("Starting product threshold check...");
   try {
     const products = await Product.find().populate("supplier");
     const threshold = 10;
@@ -49,6 +50,7 @@ const checkProductThreshold = async (req, res) => {
         }
       }
     }
+     console.log("Product threshold check completed.");
     res.status(200).json({ success: true, message: "Product threshold check completed." });
   } catch (error) {
     console.error(`Failed to check product threshold: ${error.message}`);
@@ -62,5 +64,69 @@ module.exports={
 }
 
 // Planifiez la tâche pour vérifier le seuil de produit toutes les heures (vous pouvez ajuster la fréquence selon vos besoins)
-cron.schedule("0 * * * *", checkProductThreshold);
+cron.schedule("* * * * *", checkProductThreshold);
+console.log("Scheduled product threshold check every min");
 
+ */
+
+const Product = require("../models/products");
+const User = require("../models/users");
+const nodemailer = require("nodemailer");
+const cron = require("node-cron");
+
+// Configurez votre service de messagerie ici
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: "daval.stock@gmail.com",
+    pass: "rogghvozsdeyzmsb",
+  },
+});
+
+const sendEmailNotification = async ({ email, message }) => {
+  const mailOptions = {
+    from: "daval.stock@gmail.com",
+    to: email,
+    subject: "Alerte de seuil minimum de produit",
+    text: message,
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    console.log(`Email sent to ${email}`);
+  } catch (error) {
+    console.error(`Failed to send email: ${error.message}`);
+  }
+};
+
+const checkProductThreshold = async () => {
+  console.log("Starting product threshold check...");
+  try {
+    const products = await Product.find().populate("supplier");
+    const threshold = 10;
+
+    for (const product of products) {
+      if (product.quantity <= threshold) {
+        const supplier = await User.findById(product.supplier);
+
+        if (supplier) {
+          const message = `Le produit ${product.name} (SKU: ${product.sku}) a atteint le seuil minimum de ${threshold}. Veuillez réapprovisionner le stock.`;
+
+          await sendEmailNotification({ email: supplier.email, message });
+        }
+      }
+    }
+    console.log("Product threshold check completed.");
+  } catch (error) {
+    console.error(`Failed to check product threshold: ${error.message}`);
+  }
+};
+
+module.exports = {
+  sendEmailNotification,
+  checkProductThreshold,
+};
+
+// Planifiez la tâche pour vérifier le seuil de produit toutes les heures (vous pouvez ajuster la fréquence selon vos besoins)
+cron.schedule("0 * * * *", checkProductThreshold);
+console.log("Scheduled product threshold check every hour.");
