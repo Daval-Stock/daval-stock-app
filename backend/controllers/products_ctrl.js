@@ -193,6 +193,7 @@ const getProductBySku = asyncHandler(async (req, res) => {
 
 //modifier un produit
 const updateProduct = asyncHandler(async (req, res) => {
+
   const { id } = req.params;
   const product = await Product.findById(id);
   // if product doesnt exist
@@ -207,6 +208,7 @@ const updateProduct = asyncHandler(async (req, res) => {
     req.body.productImage = req.file.path;
   }
   const category = await Category.findOne({ name: req.body.categoryName });
+
   if (!category) {
     res.status(404);
     throw new Error("Category not found in the DB");
