@@ -1,207 +1,185 @@
 const Product = require('../models/products');
 const Order = require('../models/order');
-const asyncHandler = require('express-async-handler'); // importer asyncHandler
+const asyncHandler = require('express-async-handler');
+const User = require("../models/users")
+ // importer asyncHandler
 const Category = require('../models/category'); // importer le modèle Category
 
-// Get all orders
-const getAllOrders = async (req, res) => {
-  try {
-    const orders = await Order.find({});
-    res.send(orders);
-  } catch (error) {
-    console.error(error);
-    res.status(500).send(error);
+
+// créer une commande
+
+const createOrder =asyncHandler( async (req, res) => {
+  const { user,products, totalCost, status, sourceSite, destinationSite } = req.body;
+
+  user = await User.findById(req.user.id);
+    const newOrder = await Order.create({
+      user,
+      products,
+      totalCost,
+      status,
+      sourceSite,
+      destinationSite
+    });
+    res.status(201).json(newOrder);
+});
+
+//obtenir une commande avec son id
+const getOrderById = asyncHandler(async (req, res) => {
+  const order = await Order.findById(req.params.id);
+
+  if (!order) {
+    res.status(404);
+    throw new Error("Order not found");
   }
-};
 
-// Get a single order by ID
-const getOrderById = async (req, res) => {
-  try {
-    const order = await Order.findById(req.params.id).populate('products', 'name price');
-    res.send(order);
-  } catch (error) {
-    console.error(error);
-    res.status(500).send(error);
+  res.status(200).json(order);
+});
+
+const getOrders = asyncHandler(async (req, res) => {
+  const orders = await Order.find().populate("user");
+  res.status(200).json(orders);
+});
+
+/* const updateOrder = asyncHandler(async (req, res) => {
+  const { user, products, status, sourceSite, destinationSite, totalCost } = req.body;
+
+  const order = await Order.findById(req.params.id);
+
+  if (!order) {
+    res.status(404);
+    throw new Error("Order not found");
   }
-};
 
-// Create a new order
-/* const createOrder = asyncHandler(async (req, res) => {
-  // Verified if category exist
-  const categoryName = req.body;
-  console.log(categoryName)
-  const category = await Category.findOne({ name: categoryName });
-console.log(categoryName)
-async function getDefaultCategoryId() {
-  let defaultCategory = await Category.findOne({ name: "autres" });
-  return defaultCategory;
-}
-const categoryId = category ? category._id : await getDefaultCategoryId();
+ 
 
-  const order = new Order(req.body);
-  await order.save();
-  res.send(order);
+  order.user = user;
+  order.products = products;
+  order.status = status;
+  order.sourceSite = sourceSite;
+  order.destinationSite = destinationSite;
+  order.totalCost = totalCost;
+
+  const prevStatus = order.status;
+  order.status = status;
+
+  if (prevStatus !== "approved" && status === "approved") {
+    for (const item of order.products) {
+      const product = await Product.findById(item.product);
+    
+
+      if (!order.sourceSite) {
+        next();
+      }
+      else {
+        const sourceSiteProduct = await Product.findOne({
+          _id: item.product,
+          site: order.sourceSite,
+        });
+        sourceSiteProduct.quantity -= item.quantity;
+        await sourceSiteProduct.save();
+      }
+
+      const destinationSiteProduct = await Product.findOne({
+        _id:item.product,
+        site: order.destinationSite,
+      });
+       if (destinationSiteProduct) {
+        destinationSiteProduct.quantity += item.quantity;
+        await destinationSiteProduct.save();
+      } else {
+        // Create a new product with the destination site and updated quantity
+        const newProduct = new Product({
+          ...product._doc,
+          _id: undefined,
+          site: order.destinationSite,
+          quantity: item.quantity,
+        });
+        await newProduct.save();
+      }
+    }
+  }
+
+  const updatedOrder = await order.save();
+  res.status(200).json(updatedOrder);
 }); */
-const createOrder = async (req, res) => {
-  try {
-    const order = new Order(req.body);
-    await order.save();
-    res.send(order);
-  } catch (error) {
-    console.error(error);
-    res.status(500).send(error);
+
+const updateOrder = asyncHandler(async (req, res) => {
+  const { user, products, status, sourceSite, destinationSite, totalCost } = req.body;
+
+  const order = await Order.findById(req.params.id);
+
+  if (!order) {
+    res.status(404);
+    throw new Error("Order not found");
   }
-};
 
+  order.user = user;
+  order.products = products;
+  order.status = status;
+  order.sourceSite = sourceSite;
+  order.destinationSite = destinationSite;
+  order.totalCost = totalCost;
 
+  const prevStatus = order.status;
+  order.status = status;
 
-// Update an existing order by ID
+  if (prevStatus !== "approved" && status === "approved") {
+    for (const item of order.products) {
+      const product = await Product.findById(item.product);
 
-const updateOrder = async (req, res) => {
-  try {
-    const order = await Order.findByIdAndUpdate(req.params.id, req.body, { new: true }).populate("products");
-    // Check if order is confirmed and update stock levels accordingly
-    //la conditions ci-dessous ne fonctionne pas très bien
-    if (order.order_status === 'Delivered') {
-      const products = order.products;
-      for (const product of products) {
-        const quantity = product.quantity;
-        const sku = product.sku;
-        const productFromDB = await Product.findOne({sku:sku});
-        if (productFromDB) {
-          productFromDB.quantity += quantity;
-          await productFromDB.save();
-        } else {
-          const newProduct = new Product();
-          await newProduct.save();
+      if (order.sourceSite) {
+        const sourceSiteProduct = await Product.findOne({
+          _id: item.product,
+          site: order.sourceSite,
+        });
+        if (sourceSiteProduct) {
+          sourceSiteProduct.quantity -= item.quantity;
+          await sourceSiteProduct.save();
         }
       }
-    }
 
-    res.send(order);
-  } catch (error) {
-    console.error(error);
-    res.status(500).send(error);
-  }
-};
-
-// Delete an existing order by ID
-const deleteOrder = async (req, res) => {
-  try {
-    const order = await Order.findByIdAndDelete(req.params.id);
-    res.send(order);
-  } catch (error) {
-    console.error(error);
-    res.status(500).send(error);
-  }
-};
-
-module.exports = {getAllOrders, getOrderById, createOrder, updateOrder, deleteOrder};
-
-/* 
-// Créer une nouvelle commande
-exports.createOrder = async (req, res) => {
-  try {
-    const { site, product, quantity } = req.body;
-
-    // Vérifier si le produit existe dans la base de données
-    const existingProduct = await Product.findOne({ name: product });
-    let productToUse;
-
-    if (!existingProduct) {
-      // Si le produit n'existe pas, le créer
-      const newProduct = await Product.create({ name: product});
-      productToUse = newProduct;
-    } else {
-      productToUse = existingProduct;
-    }
-
-    // Créer la commande
-    const order = await Order.create({
-      site: site,
-      product: productToUse._id,
-      quantity: quantity
-    });
-
-    // Mettre à jour le stock du produit
-    productToUse.stock.forEach(item => {
-      if (item.site.equals(site)) {
-        item.quantity += quantity;
-      }
-    });
-
-    await productToUse.save();
-
-    res.status(201).json({ success: true, data: order });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ success: false, error: error.message });
-  }
-};
-
-// Mettre à jour une commande existante
-exports.updateOrder = async (req, res) => {
-  try {
-    const orderId = req.params.id;
-    const { quantity, status } = req.body;
-
-    // Vérifier si la commande existe dans la base de données
-    const order = await Order.findById(orderId);
-
-    if (!order) {
-      return res.status(404).json({ success: false, error: 'Commande non trouvée' });
-    }
-
-    // Mettre à jour la commande
-    order.quantity = quantity || order.quantity;
-    order.status = status || order.status;
-
-    if (status === 'fulfilled' && !order.dateFulfilled) {
-      order.dateFulfilled = Date.now();
-    }
-
-    await order.save();
-
-    // Mettre à jour le stock du produit si la commande est remplie
-    if (status === 'fulfilled') {
-      const product = await Product.findById(order.product);
-
-      product.stock.forEach(item => {
-        if (item.site.equals(order.site)) {
-          item.quantity -= order.quantity;
-        }
+      const destinationSiteProduct = await Product.findOne({
+        sku: product.sku,
+        site: order.destinationSite,
       });
 
-      await product.save();
+      if (destinationSiteProduct) {
+        destinationSiteProduct.quantity += item.quantity;
+        await destinationSiteProduct.save();
+      } else {
+        // Si le produit n'existe pas pour le site de destination, créez une nouvelle instance de produit pour ce site.
+        const newProduct = new Product({
+          ...product.toObject(),
+          _id: mongoose.Types.ObjectId(),
+          site: order.destinationSite,
+          quantity: item.quantity,
+        });
+        await newProduct.save();
+      }
     }
-
-    res.status(200).json({ success: true, data: order });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ success: false, error: error.message });
   }
-};
 
-// Supprimer une commande existante
-exports.deleteOrder = async (req, res) => {
-  try {
-    const orderId = req.params.id;
+  const updatedOrder = await order.save();
+  res.status(200).json(updatedOrder);
+});
 
-    // Vérifier si la commande existe dans la base de données
-    const order = await Order.findById(orderId);
 
-    if (!order) {
-      return res.status(404).json({ success: false, error: 'Commande non trouvée' });
-    }
+const deleteOrder = asyncHandler(async (req, res) => {
+  const order = await Order.findById(req.params.id);
 
-    // Supprimer la commande
-    await order.remove();
-
-    res.status(200).json({ success: true, data: {} });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ success: false, error: error.message });
+  if (!order) {
+    res.status(404);
+    throw new Error("Order not found");
   }
-};
 
- */
+  await order.remove();
+  res.status(200).json({ message: "Order removed" });
+});
+
+module.exports = {
+  createOrder,
+  getOrderById,
+  getOrders,
+  updateOrder,
+  deleteOrder,
+};

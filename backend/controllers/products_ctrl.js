@@ -1,6 +1,5 @@
 const Product = require("../models/products");
 const asyncHandler = require("express-async-handler");
-const { fileSizeFormatter } = require("../utils/fileUpload");
 const User = require("../models/users");
 const Category = require("../models/category"); // Importez le modèle Category
 const fs = require("fs");
@@ -13,7 +12,7 @@ const getDefaultCategoryId = async () => {
 };
 
 const getDefaultSiteId = async () => {
-  let defaultSiteId = await Site.findOne({ name: "Metz" });
+  let defaultSiteId = await Sites.findOne({ name: "Metz" });
   return defaultSiteId;
 };
 
@@ -30,24 +29,28 @@ const createProduct = asyncHandler(async (req, res) => {
     if (!user) {
       res.status(404);
       throw new Error("User not found");
+      return;
     }
+
     const userId = user?._id;
     req.body.user = userId;
 
     const category = await Category.findOne({ name: req.body.categoryName });
-    console.log(category);
     if (!category) {
       res.status(404);
       throw new Error("Category not found in the DB");
+      return;
     }
+    
+    // Si la catégorie n'est pas trouvée, utilisez la catégorie par défaut
     const categoryId = category ? category._id : await getDefaultCategoryId();
     req.body.category = categoryId;
 
-    // Si la catégorie n'est pas trouvée, utilisez la catégorie par défaut
     const site = await Sites.findOne({ name: req.body.siteName });
     if (!site) {
       res.status(404);
       throw new Error("Site not found");
+      return;
     }
     const siteId = site ? site._id : await getDefaultSiteId();
     req.body.site = siteId;
@@ -57,7 +60,6 @@ const createProduct = asyncHandler(async (req, res) => {
         name: req.body.name,
         category: categoryId,
       });
-      console.log(findProduct);
       if (!findProduct) {
         const product = await Product.create(req.body);
 
@@ -87,7 +89,6 @@ const createProduct = asyncHandler(async (req, res) => {
 });
 
 //pour obtenir la liste de tout les produits
-
 const getProducts = asyncHandler(async (req, res) => {
   try {
     const userRole = req.user.role;
@@ -162,7 +163,7 @@ const getProductById = asyncHandler(async (req, res) => {
   }
 });
 
-//trouver un produit ave son sku
+//trouver un produit avec son sku
 const getProductBySku = asyncHandler(async (req, res) => {
   try {
     const products = await Product.findOne({ sku: req.params.sku })
@@ -193,7 +194,6 @@ const getProductBySku = asyncHandler(async (req, res) => {
 
 //modifier un produit
 const updateProduct = asyncHandler(async (req, res) => {
-
   const { id } = req.params;
   const product = await Product.findById(id);
   // if product doesnt exist
@@ -226,11 +226,6 @@ const updateProduct = asyncHandler(async (req, res) => {
 
   try {
     product = await Product.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true,
-    });
-
-    const product = await Product.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true,
     });
