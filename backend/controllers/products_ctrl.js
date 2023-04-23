@@ -193,23 +193,20 @@ const getProductBySku = asyncHandler(async (req, res) => {
 
 //modifier un produit
 const updateProduct = asyncHandler(async (req, res) => {
-  const { name, category, quantity, price, description, supplier } = req.body;
-
   const { id } = req.params;
   const product = await Product.findById(id);
-
   // if product doesnt exist
   if (!product) {
     res.status(404);
     throw new Error("Product not found");
+    return;
   }
 
   // Handle Image upload
   if (req.file) {
     req.body.productImage = req.file.path;
   }
-  category = await Category.findOne({ name: req.body.categoryName });
-  console.log(category);
+  const category = await Category.findOne({ name: req.body.categoryName });
   if (!category) {
     res.status(404);
     throw new Error("Category not found in the DB");
@@ -226,23 +223,10 @@ const updateProduct = asyncHandler(async (req, res) => {
   req.body.site = siteId;
 
   try {
-    product = await Product.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      /*    {
-        name,
-        category,
-        quantity,
-        price,
-        description,
-        supplier,
-        image: Object.keys(fileData).length === 0 ? product?.image : fileData,
-      } */
-      {
-        new: true,
-        runValidators: true,
-      }
-    );
+    product = await Product.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
 
     const product = await Product.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
