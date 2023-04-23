@@ -88,18 +88,22 @@ const createProduct = asyncHandler(async (req, res) => {
 
 //pour obtenir la liste de tout les produits
 
-/* const getProducts = asyncHandler(async (req, res) => {
+const getProducts = asyncHandler(async (req, res) => {
   try {
     const userRole = req.user.role;
-    const userId = req.user._id;
-    if (userRole !== 'supplier'){
-      products = await Product.find({ supplier: userId });
+
+    let products;
+    if (userRole === "supplier") {
+      products = await Product.find({ supplier: req.user._id })
+        .populate("user")
+        .populate("category")
+        .populate("site");
+    } else {
+      products = await Product.find()
+        .populate("user")
+        .populate("category")
+        .populate("site");
     }
-    else {
-    const products = await Product.find()
-      .populate("user")
-      .populate("category")
-      .populate("site");
     const formattedProducts = products.map((product) => {
       const userName = product.user ? product.user?.name : "Unknown";
       const categoryName = product.category
@@ -120,60 +124,13 @@ const createProduct = asyncHandler(async (req, res) => {
         site: siteName,
       };
     });
-
-  }
+    console.log(formattedProducts);
     res.status(200).json(formattedProducts);
-  
- 
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ success: false, message: "server Error" });
-  }
-}); */
-const getProducts = asyncHandler(async (req, res) => {
-  try {
-    const userRole = req.user.role;
-    const userId = req.user._id;
-    let products;
-
-    if (userRole === 'supplier') {
-      products = await Product.find({ supplier: userId }).populate("user").populate("category").populate("site");
-    } else {
-      products = await Product.find()
-        .populate("user")
-        .populate("category")
-        .populate("site");
-    }
-
-    const formattedProducts = products.map((product) => {
-      const userName = product.user ? product.user?.name : "Unknown";
-      const categoryName = product.category
-        ? product.category?.name
-        : "Unknown";
-      const siteName = product.site ? product.site?.name : "Unknown";
-      return {
-        _id: product._id,
-        userName,
-        name: product.name,
-        sku: product.sku,
-        category: categoryName,
-        quantity: product.quantity,
-        price: product.price,
-        description: product.description,
-        createdAt: product.createdAt,
-        site: siteName,
-      };
-    });
-
-
-    res.status(200).json(formattedProducts);
-
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, message: "server Error" });
   }
 });
-
 
 //trouver un produit avec son id
 const getProductById = asyncHandler(async (req, res) => {
@@ -236,23 +193,22 @@ const getProductBySku = asyncHandler(async (req, res) => {
 
 //modifier un produit
 const updateProduct = asyncHandler(async (req, res) => {
-  const { name, categoryName, quantity, price, description,supplier } = req.body;
 
   const { id } = req.params;
   const product = await Product.findById(id);
-
   // if product doesnt exist
   if (!product) {
     res.status(404);
     throw new Error("Product not found");
+    return;
   }
 
   // Handle Image upload
   if (req.file) {
     req.body.productImage = req.file.path;
   }
- const category = await Category.findOne({ name: req.body.categoryName });
-  console.log(category);
+  const category = await Category.findOne({ name: req.body.categoryName });
+
   if (!category) {
     res.status(404);
     throw new Error("Category not found in the DB");
@@ -269,7 +225,10 @@ const updateProduct = asyncHandler(async (req, res) => {
   req.body.site = siteId;
 
   try {
-
+    product = await Product.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
 
     const product = await Product.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
