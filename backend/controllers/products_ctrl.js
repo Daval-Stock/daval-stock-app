@@ -29,25 +29,28 @@ const createProduct = asyncHandler(async (req, res) => {
     if (!user) {
       res.status(404);
       throw new Error("User not found");
+      return;
     }
-    const userId = user ? user._id : await getDefaultCategoryId();
 
+    const userId = user?._id;
     req.body.user = userId;
-//@DG-Elom s'il te plaît pourrait après m'expliquer pourquoi tu utilise ici la fonction getDefaultCategory pour l'id user par défaut 
+
     const category = await Category.findOne({ name: req.body.categoryName });
-    console.log(category);
     if (!category) {
       res.status(404);
       throw new Error("Category not found in the DB");
+      return;
     }
+    
+    // Si la catégorie n'est pas trouvée, utilisez la catégorie par défaut
     const categoryId = category ? category._id : await getDefaultCategoryId();
     req.body.category = categoryId;
 
-    // Si la catégorie n'est pas trouvée, utilisez la catégorie par défaut
     const site = await Sites.findOne({ name: req.body.siteName });
     if (!site) {
       res.status(404);
       throw new Error("Site not found");
+      return;
     }
     const siteId = site ? site._id : await getDefaultSiteId();
     req.body.site = siteId;
@@ -57,7 +60,6 @@ const createProduct = asyncHandler(async (req, res) => {
         name: req.body.name,
         category: categoryId,
       });
-      console.log(findProduct);
       if (!findProduct) {
         const product = await Product.create(req.body);
 
@@ -90,18 +92,19 @@ const createProduct = asyncHandler(async (req, res) => {
 const getProducts = asyncHandler(async (req, res) => {
   try {
     const userRole = req.user.role;
-    const userId = req.user._id;
-    let products;
 
-    if (userRole === 'supplier') {
-      products = await Product.find({ supplier: userId }).populate("user").populate("category").populate("site");
+    let products;
+    if (userRole === "supplier") {
+      products = await Product.find({ supplier: req.user._id })
+        .populate("user")
+        .populate("category")
+        .populate("site");
     } else {
       products = await Product.find()
         .populate("user")
         .populate("category")
         .populate("site");
     }
-
     const formattedProducts = products.map((product) => {
       const userName = product.user ? product.user?.name : "Unknown";
       const categoryName = product.category
@@ -116,21 +119,19 @@ const getProducts = asyncHandler(async (req, res) => {
         category: categoryName,
         quantity: product.quantity,
         price: product.price,
+        productImage: product.productImage,
         description: product.description,
         createdAt: product.createdAt,
         site: siteName,
       };
     });
-
-
+    console.log(formattedProducts);
     res.status(200).json(formattedProducts);
-
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, message: "server Error" });
   }
 });
-
 
 //trouver un produit avec son id
 const getProductById = asyncHandler(async (req, res) => {
@@ -162,7 +163,7 @@ const getProductById = asyncHandler(async (req, res) => {
   }
 });
 
-//trouver un produit ave son sku
+//trouver un produit avec son sku
 const getProductBySku = asyncHandler(async (req, res) => {
   try {
     const products = await Product.findOne({ sku: req.params.sku })
@@ -193,23 +194,21 @@ const getProductBySku = asyncHandler(async (req, res) => {
 
 //modifier un produit
 const updateProduct = asyncHandler(async (req, res) => {
-  const { name, categoryName, quantity, price, description,supplier } = req.body;
-
   const { id } = req.params;
   const product = await Product.findById(id);
-
   // if product doesnt exist
   if (!product) {
     res.status(404);
     throw new Error("Product not found");
+    return;
   }
 
   // Handle Image upload
   if (req.file) {
     req.body.productImage = req.file.path;
   }
- const category = await Category.findOne({ name: req.body.categoryName });
-  console.log(category);
+  const category = await Category.findOne({ name: req.body.categoryName });
+
   if (!category) {
     res.status(404);
     throw new Error("Category not found in the DB");
@@ -226,9 +225,7 @@ const updateProduct = asyncHandler(async (req, res) => {
   req.body.site = siteId;
 
   try {
-
-
-    const product = await Product.findByIdAndUpdate(req.params.id, req.body, {
+    product = await Product.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true,
     });
