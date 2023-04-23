@@ -31,7 +31,7 @@ const createProduct = asyncHandler(async (req, res) => {
       res.status(404);
       throw new Error("User not found");
     }
-    const userId = user ? user._id : await getDefaultCategoryId();
+    const userId = user?._id;
     req.body.user = userId;
 
     const category = await Category.findOne({ name: req.body.categoryName });
