@@ -1,6 +1,5 @@
 const Product = require("../models/products");
 const asyncHandler = require("express-async-handler");
-const { fileSizeFormatter } = require("../utils/fileUpload");
 const User = require("../models/users");
 const Category = require("../models/category"); // Importez le modèle Category
 const fs = require("fs");
@@ -13,7 +12,7 @@ const getDefaultCategoryId = async () => {
 };
 
 const getDefaultSiteId = async () => {
-  let defaultSiteId = await Site.findOne({ name: "Metz" });
+  let defaultSiteId = await Sites.findOne({ name: "Metz" });
   return defaultSiteId;
 };
 
@@ -32,8 +31,9 @@ const createProduct = asyncHandler(async (req, res) => {
       throw new Error("User not found");
     }
     const userId = user ? user._id : await getDefaultCategoryId();
-    req.body.user = userId;
 
+    req.body.user = userId;
+//@DG-Elom s'il te plaît pourrait après m'expliquer pourquoi tu utilise ici la fonction getDefaultCategory pour l'id user par défaut 
     const category = await Category.findOne({ name: req.body.categoryName });
     console.log(category);
     if (!category) {
@@ -87,49 +87,6 @@ const createProduct = asyncHandler(async (req, res) => {
 });
 
 //pour obtenir la liste de tout les produits
-
-/* const getProducts = asyncHandler(async (req, res) => {
-  try {
-    const userRole = req.user.role;
-    const userId = req.user._id;
-    if (userRole !== 'supplier'){
-      products = await Product.find({ supplier: userId });
-    }
-    else {
-    const products = await Product.find()
-      .populate("user")
-      .populate("category")
-      .populate("site");
-    const formattedProducts = products.map((product) => {
-      const userName = product.user ? product.user?.name : "Unknown";
-      const categoryName = product.category
-        ? product.category?.name
-        : "Unknown";
-      const siteName = product.site ? product.site?.name : "Unknown";
-      return {
-        _id: product._id,
-        userName,
-        name: product.name,
-        sku: product.sku,
-        category: categoryName,
-        quantity: product.quantity,
-        price: product.price,
-        productImage: product.productImage,
-        description: product.description,
-        createdAt: product.createdAt,
-        site: siteName,
-      };
-    });
-
-  }
-    res.status(200).json(formattedProducts);
-  
- 
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ success: false, message: "server Error" });
-  }
-}); */
 const getProducts = asyncHandler(async (req, res) => {
   try {
     const userRole = req.user.role;
