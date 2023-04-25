@@ -16,6 +16,7 @@ import Sidebar from "../Sidebar/Sidebar";
 
 function Users() {
   const [users, setUsers] = useState([]);
+
   const [forceUpdate, setForceUpdate] = useState(false);
   const navigateTo = useNavigate();
 
@@ -124,6 +125,9 @@ function Users() {
                       Rôle
                     </th>
                     <th scope="col" className="px-6 py-3">
+                      Site
+                    </th>
+                    <th scope="col" className="px-6 py-3">
                       Action
                     </th>
                   </tr>
@@ -151,6 +155,7 @@ function Users() {
                       <td className="px-6 py-4">{user?.email}</td>
                       <td className="px-6 py-4">{user?.mobile}</td>
                       <td className="px-6 py-4">{user?.role}</td>
+                      <td className="px-6 py-4">{user?.site?.name}</td>
                       <td className="px-6 py-4">
                         <div className="flex justify-center items-center gap-4">
                           <button

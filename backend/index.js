@@ -20,12 +20,8 @@ const siteRoutes = require("./routes/sites_routes");
 // cors
 const cors = require("cors");
 
-
-
 //Importer pour exécuter le fichier d'envoie du mail d'alerte aux fournisseurs
 require("./utils/productAlerts");
-
-
 
 // middleware
 app.use(bodyParser.urlencoded({ extended: false }));
