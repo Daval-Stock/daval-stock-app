@@ -13,13 +13,14 @@ export default function UpdateUser() {
   const [showPassword, setShowPassword] = useState(false);
   const navigateTo = useNavigate();
   const [passwordComplexity, setPasswordComplexity] = useState("");
-  const [role, setRole] = useState("user");
-
-  const [isAdmin, setIsAdmin] = useState(user?.role === "admin" ? true : false);
+  const [role, setRole] = useState(user?.role);
+  const [sites, setSites] = useState([]);
   const [formValues, setFormValues] = useState({
     username: user?.name,
     email: user?.email,
     mobile: user?.mobile,
+    site: user?.site?.name,
+    role: user?.role,
     password: "",
     confirmPassword: "",
   });
@@ -57,8 +58,8 @@ export default function UpdateUser() {
     }
 
     if (!formValues.password) {
-      errors.password = "Le mot de passe est requis";
-      isValid = false;
+      //errors.password = "Le mot de passe est requis";
+      //isValid = false;
     } else if (
       !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(
         formValues.password
@@ -66,17 +67,29 @@ export default function UpdateUser() {
     ) {
       errors.password =
         "Le mot de passe doit contenir au moins 8 caractères, dont une majuscule, une minuscule, un chiffre et un caractère spécial (@$!%*?&)";
-      isValid = false;
+      //isValid = false;
     }
 
     if (formValues.password !== formValues.confirmPassword) {
       errors.confirmPassword = "Les mots de passe ne correspondent pas";
-      isValid = false;
+      //isValid = false;
     }
 
     setFormErrors(errors);
     return isValid;
   };
+
+  useEffect(() => {
+    axiosInstance
+      .get("/sites/")
+      .then((Response) => {
+        setSites(Response.data);
+      })
+      .catch((error) => {
+        console.log("Erreur lors de la récupération des sites :", error);
+      });
+  }, []);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) {
@@ -85,16 +98,16 @@ export default function UpdateUser() {
         name: formValues.username,
         email: formValues.email,
         mobile: formValues.mobile,
+        siteName: formValues.site,
         password: formValues.password,
-        role: isAdmin ? "admin" : "user",
+        role: role,
       };
       formData.append("name", formValues.username);
       formData.append("email", formValues.email);
       formData.append("mobile", formValues.mobile);
+      formData.append("siteName", formValues.site);
       formData.append("password", formValues.password);
-      // for (let pair of formData.entries()) {
-      //   console.log(pair[0] + ": " + pair[1]);
-      // }
+
       if (profileImage) {
         data.append("profileImage", profileImage);
         formData.append("profileImage", profileImage);
@@ -317,6 +330,31 @@ export default function UpdateUser() {
                   </p>
                 )}
               </div>
+
+              <div className="sm:col-span-3">
+                <label
+                  htmlFor="site"
+                  className="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-100"
+                >
+                  Site
+                </label>
+                <div className="mt-2">
+                  <select
+                    name="site"
+                    value={formValues.site}
+                    onChange={handleInputChange}
+                    className="block w-full text-center dark:bg-gray-900 dark:text-gray-400 rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                  >
+                    <option> choisir une site</option>
+                    {sites.map((site) => (
+                      <option key={site?._id} value={site?.name}>
+                        {site?.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
               {/* Password  */}
               <div className="relative flex items-center mt-4">
                 <span className="absolute">
@@ -423,45 +461,15 @@ export default function UpdateUser() {
               <div className="relative">
                 <div className="flex center p-3">
                   <label htmlFor="isAdmin" className="px-6">
-                    Admin:{" "}
+                    Rôle:{" "}
                   </label>
-                  {/* <input
-                    name="isAdmin"
-                    checked={isAdmin}
-                    onChange={(e) => {
-                      setIsAdmin(e.target.checked);
-                    }}
-                    type="checkbox"
-                    className="
-                    relative 
-                    appearance-none 
-                    inline-block 
-                    h-[30px] 
-                    w-[54px] 
-                    cursor-pointer 
-                    rounded-full 
-                    bg-slate-300 
-                    shadow-md 
-                    transition-all 
-                    after:content-[''] 
-                    after:absolute 
-                    after:top-[3px] 
-                    after:left-[3px] 
-                    after:h-6 
-                    after:w-6 
-                    after:rounded-full 
-                    after:bg-white 
-                    after:shadow-sm 
-                    after:transition-all 
-                    checked:bg-blue-400 
-                    checked:after:translate-x-6"
-                  /> */}
+
                   <select
                     value={role}
                     onChange={(e) => {
                       setRole(e.target.value);
                     }}
-                    className="relative appearance-none inline-block h-[30px] w-[120px] cursor-pointer rounded-full bg-slate-300 shadow-md transition-all"
+                    className="relative appearance-none inline-block h-[30px] w-[120px] cursor-pointer rounded-full bg-slate-300 shadow-md px-5 transition-all"
                   >
                     <option value="admin">Admin</option>
                     <option value="user">User</option>

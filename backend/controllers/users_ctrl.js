@@ -2,15 +2,21 @@ const validateMongoDbId = require("../utils/validateMongodbId");
 const { generateToken } = require("../config/jwtToken");
 const { generateRefreshToken } = require("../config/refreshToken");
 const User = require("../models/users");
+const Sites = require("../models/sites");
 const asyncHandler = require("express-async-handler");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const path = require("path");
 const fs = require("fs");
 
+const getDefaultSiteId = async () => {
+  let defaultSiteId = await Sites.findOne({ name: "Metz" });
+  return defaultSiteId;
+};
+
 const getAllUsers = asyncHandler(async (req, res) => {
   try {
-    const users = await User.find();
+    const users = await User.find().populate("site");
     res.status(200).json(users);
   } catch (error) {
     throw new Error(error);
@@ -21,6 +27,15 @@ const createUser = asyncHandler(async (req, res) => {
   const email = req.body.email;
   const findUser = await User.findOne({ email });
   if (!findUser) {
+    const site = await Sites.findOne({ name: req.body.siteName });
+    if (!site) {
+      res.status(404);
+      throw new Error("Site not found");
+      return;
+    }
+    const siteId = site ? site._id : await getDefaultSiteId();
+    req.body.site = siteId;
+
     if (req.file) {
       // console.log(req.file.path);
       req.body.profileImage = req.file.path;
@@ -57,6 +72,7 @@ const loginUserCtrl = asyncHandler(async (req, res) => {
       name: findUser?.name,
       email: findUser?.email,
       mobile: findUser?.mobile,
+      site: findUser?.site,
       role: findUser?.role,
       token: generateToken(findUser?._id),
     });
@@ -138,6 +154,15 @@ const updateUser = asyncHandler(async (req, res) => {
     if (req.file) {
       req.body.profileImage = req.file.path;
     }
+
+    const site = await Sites.findOne({ name: req.body.siteName });
+    if (!site) {
+      res.status(404);
+      throw new Error("Site not found");
+    }
+    const siteId = site ? site._id : await getDefaultSiteId();
+    req.body.site = siteId;
+
     const user = await User.findByIdAndUpdate(
       id,
       {
@@ -145,6 +170,7 @@ const updateUser = asyncHandler(async (req, res) => {
         email: req?.body?.email,
         mobile: req?.body?.mobile,
         role: req?.body?.role,
+        site: req?.body?.site,
         profileImage: req.body.profileImage,
       },
       {
