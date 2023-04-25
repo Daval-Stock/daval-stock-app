@@ -130,6 +130,9 @@ export default function Product() {
                       Description
                     </th>
                     <th scope="col" className="px-6 py-3">
+                      Site
+                    </th>
+                    <th scope="col" className="px-6 py-3">
                       Action
                     </th>
                   </tr>
@@ -153,6 +156,7 @@ export default function Product() {
                       <td className="px-6 py-4 text-center">
                         {item.description}
                       </td>
+                      <td className="px-6 py-4 text-center">{item?.site}</td>
                       <td className="px-6 py-4">
                         <div className="flex justify-center items-center gap-4">
                           <button className="text-gray-600 text-xl">

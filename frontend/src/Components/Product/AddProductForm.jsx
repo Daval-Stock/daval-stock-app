@@ -54,7 +54,7 @@ export default function AddProductForm() {
     formData.append("description", description);
     console.log(categorie);
     formData.append("categoryName", categorie);
-    formData.append("siteName", site);
+    // formData.append("siteName", site);
     formData.append("sku", generateProductSKU());
     if (productImage) {
       formData.append("image", productImage); // Ajoutez l'image avec le bon nom de champ ici
@@ -92,14 +92,14 @@ export default function AddProductForm() {
         console.log("Erreur lors de la récupération des catégories :", error);
       });
 
-    axiosInstance
-      .get("/sites/")
-      .then((Response) => {
-        setSites(Response.data);
-      })
-      .catch((error) => {
-        console.log("Erreur lors de la récupération des sites :", error);
-      });
+    //   axiosInstance
+    //     .get("/sites/")
+    //     .then((Response) => {
+    //       setSites(Response.data);
+    //     })
+    //     .catch((error) => {
+    //       console.log("Erreur lors de la récupération des sites :", error);
+    //     });
   }, []);
   return (
     <>
@@ -236,7 +236,7 @@ export default function AddProductForm() {
                     </label>
                   </div>
 
-                  <div className="sm:col-span-3">
+                  {/* <div className="sm:col-span-3">
                     <label
                       htmlFor="site"
                       className="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-100"
@@ -258,7 +258,7 @@ export default function AddProductForm() {
                         ))}
                       </select>
                     </div>
-                  </div>
+                  </div> */}
 
                   <div className="col-span-full">
                     <label

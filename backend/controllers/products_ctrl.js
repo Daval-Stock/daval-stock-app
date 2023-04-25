@@ -41,19 +41,19 @@ const createProduct = asyncHandler(async (req, res) => {
       throw new Error("Category not found in the DB");
       return;
     }
-    
+
     // Si la catégorie n'est pas trouvée, utilisez la catégorie par défaut
     const categoryId = category ? category._id : await getDefaultCategoryId();
     req.body.category = categoryId;
 
-    const site = await Sites.findOne({ name: req.body.siteName });
-    if (!site) {
-      res.status(404);
-      throw new Error("Site not found");
-      return;
-    }
-    const siteId = site ? site._id : await getDefaultSiteId();
-    req.body.site = siteId;
+    // const site = await Sites.findOne({ name: req.body.siteName });
+    // if (!site) {
+    //   res.status(404);
+    //   throw new Error("Site not found");
+    //   return;
+    // }
+    // const siteId = site ? site._id : await getDefaultSiteId();
+    req.body.site = user?.site;
 
     try {
       const findProduct = await Product.findOne({
@@ -216,13 +216,13 @@ const updateProduct = asyncHandler(async (req, res) => {
   const categoryId = category ? category._id : await getDefaultCategoryId();
   req.body.category = categoryId;
 
-  const site = await Sites.findOne({ name: req.body.siteName });
-  if (!site) {
-    res.status(404);
-    throw new Error("Site not found");
-  }
-  const siteId = site ? site._id : await getDefaultSiteId();
-  req.body.site = siteId;
+  // const site = await Sites.findOne({ name: req.body.siteName });
+  // if (!site) {
+  //   res.status(404);
+  //   throw new Error("Site not found");
+  // // }
+  // const siteId = site ? site._id : await getDefaultSiteId();
+  // req.body.site = siteId;
 
   try {
     product = await Product.findByIdAndUpdate(req.params.id, req.body, {
