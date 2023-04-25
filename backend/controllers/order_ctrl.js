@@ -5,21 +5,27 @@ const User = require("../models/users")
  // importer asyncHandler
 const Category = require('../models/category'); // importer le modèle Category
 
-
+const createOrderNumber = () => {
+  const currentDate = new Date().toISOString().slice(0, 10).replace(/-/g, "");
+  const randomNum = Math.floor(Math.random() * 1000000);
+  return `ORD-${currentDate}-${randomNum}`;
+};
 // créer une commande
 
 const createOrder =asyncHandler( async (req, res) => {
-  const { user,products, totalCost, status, sourceSite, destinationSite } = req.body;
+  const { products, totalCost, status, sourceSite, destinationSite } = req.body;
 
-  user = await User.findById(req.user.id);
-    const newOrder = await Order.create({
-      user,
-      products,
-      totalCost,
-      status,
-      sourceSite,
-      destinationSite
-    });
+  const user = req.user._id
+   const newOrder = await Order.create({
+  orderNumber: createOrderNumber(),
+  user,
+  products,
+  totalCost,
+  status,
+  sourceSite,
+  destinationSite,
+});
+
     res.status(201).json(newOrder);
 });
 
