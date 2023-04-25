@@ -16,6 +16,7 @@ const PORT = process.env.PORT || 3000;
 const path = require("path");
 const categoryRoutes = require("./routes/category_routes");
 const siteRoutes = require("./routes/sites_routes");
+const saleRoutes= require("./routes/sales_routes");
 
 // cors
 const cors = require("cors");
@@ -60,6 +61,9 @@ app.use("/sites", siteRoutes);
 
 //route commandes
 app.use("/orders", orders_routes);
+
+//route ventes;
+app.use("/sales", saleRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
