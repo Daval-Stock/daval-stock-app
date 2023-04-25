@@ -22,12 +22,16 @@ var userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ["admin", "user","supplier"],
+      enum: ["admin", "user", "supplier"],
       default: "user",
     },
     isBlocked: {
       type: Boolean,
       default: false,
+    },
+    site: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Site",
     },
     profileImage: {
       type: String,
