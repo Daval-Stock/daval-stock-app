@@ -7,6 +7,11 @@ const Site = require("../models/sites");
 const Category = require("../models/category"); // importer le modèle Category
 
 // créer une commande
+const createOrderNumber = () => {
+  const currentDate = new Date().toISOString().slice(0, 10).replace(/-/g, "");
+  const randomNum = Math.floor(Math.random() * 1000000);
+  return `ORD-${currentDate}-${randomNum}`;
+};
 
 const createOrder = asyncHandler(async (req, res) => {
   const { products, totalCost, status, sourceSite, destinationSite } = req.body;
@@ -14,6 +19,7 @@ const createOrder = asyncHandler(async (req, res) => {
   user = await User.findById(req.user.id);
   const newOrder = await Order.create({
     user,
+    orderNumber: createOrderNumber(),
     products,
     totalCost,
     status,

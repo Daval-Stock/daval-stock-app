@@ -190,7 +190,7 @@ const getProductBySku = asyncHandler(async (req, res) => {
 //modifier un produit
 const updateProduct = asyncHandler(async (req, res) => {
   const { id } = req.params;
-  const product = await Product.findById(id);
+  let product = await Product.findById(id);
   // if product doesnt exist
   if (!product) {
     res.status(404);
