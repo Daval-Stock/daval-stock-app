@@ -2,9 +2,10 @@ import { useState, useEffect } from "react";
 import { Dialog } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import logoDaval from "../../assets/logoDaval.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axiosInstance from "../axiosInstance";
 import { FaUserCircle } from "react-icons/fa";
+import AddProductForm from "./../Product/AddProductForm";
 
 const navigation = [
   { name: "Accueil", href: "/" },
@@ -19,7 +20,7 @@ export default function Navbar() {
   const authToken = localStorage.getItem("authToken");
 
   const [userProfile, setUserProfile] = useState(null);
-
+  const navigate = useNavigate();
   const UserIcon = () => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -40,6 +41,8 @@ export default function Navbar() {
   useEffect(() => {
     if (authToken) {
       fetchUserProfile();
+    } else {
+      navigate("/ConnexionUI");
     }
   }, [authToken]);
   const fetchUserProfile = async () => {
@@ -77,8 +80,11 @@ export default function Navbar() {
           </div>
           <div className="hidden lg:flex lg:gap-x-12">
             {navigation.map((item) => (
-              <a key={item.name} href={item.href} className="text-sm font-semibold leading-6 text-gray-900 dark:text-gray-200">
-
+              <a
+                key={item.name}
+                href={item.href}
+                className="text-sm font-semibold leading-6 text-gray-900 dark:text-gray-200"
+              >
                 {item.name}
               </a>
             ))}
@@ -89,11 +95,11 @@ export default function Navbar() {
                 <div className="flex ">
                   <Link to="/profile">
                     <div className="">{userProfile?.name}</div>
-                    <div className="">
-                      <FaUserCircle />
-                      {/* <UserIcon /> */}
-                    </div>
                   </Link>
+                  <div className="px-2 py-1">
+                    <FaUserCircle />
+                    {/* <UserIcon /> */}
+                  </div>
                 </div>
                 <div className="">
                   <Link
