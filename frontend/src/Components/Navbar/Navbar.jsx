@@ -2,9 +2,10 @@ import { useState, useEffect } from "react";
 import { Dialog } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import logoDaval from "../../assets/logoDaval.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axiosInstance from "../axiosInstance";
 import { FaUserCircle } from "react-icons/fa";
+import AddProductForm from "./../Product/AddProductForm";
 
 const navigation = [
   { name: "Accueil", href: "/" },
@@ -19,7 +20,7 @@ export default function Navbar() {
   const authToken = localStorage.getItem("authToken");
 
   const [userProfile, setUserProfile] = useState(null);
-
+  const navigate = useNavigate();
   const UserIcon = () => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -40,6 +41,8 @@ export default function Navbar() {
   useEffect(() => {
     if (authToken) {
       fetchUserProfile();
+    } else {
+      navigate("/ConnexionUI");
     }
   }, [authToken]);
   const fetchUserProfile = async () => {
@@ -88,13 +91,16 @@ export default function Navbar() {
           </div>
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
             {authToken ? (
-              <div className="flex items-center gap-4">
-                <Link to="/profile">
-                  <div className="flex items-center gap-2">
-                    <div className="flex">{userProfile?.name}</div>
+              <div className="flex">
+                <div className="flex ">
+                  <Link to="/profile">
+                    <div className="">{userProfile?.name}</div>
+                  </Link>
+                  <div className="px-2 py-1">
                     <FaUserCircle />
                   </div>
-                </Link>
+                </div>
+
                 <div className="">
                   <Link
                     to="/LogoutUI"

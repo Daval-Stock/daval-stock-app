@@ -1,5 +1,5 @@
 import React from "react";
-import { FiPackage, TbFileInvoice, BsDatabaseCheck } from "react-icons/all.js";
+import { FiPackage, TbFileInvoice, BsDatabaseCheck, BsDashCircle } from "react-icons/all.js";
 import { Link } from "react-router-dom";
 import Navbar from "../Navbar/Navbar";
 import { useState, useEffect } from "react";
@@ -90,6 +90,7 @@ export default function Sidebar_({ children }) {
                     </span>
                   </div>
                 </Link>
+
               )}
 
               <Link to="/Product">
@@ -112,17 +113,28 @@ export default function Sidebar_({ children }) {
                 </a>
               </li>
               <li>
-                <a
-                  href="#"
+                <Link
+                to="/Stock_Status"
                   className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
                 >
                   <BsDatabaseCheck className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-200 group-hover:text-gray-900 dark:group-hover:text-white" />
                   <span className="flex-1 ml-3 whitespace-nowrap">
                     Etat du stock
                   </span>
-                </a>
+                </Link>
               </li>
 
+              <li>
+                <Link
+                to="/Trash"
+                                  className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                >
+                  <BsDashCircle className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-200 group-hover:text-gray-900 dark:group-hover:text-white" />
+                  <span className="flex-1 ml-3 whitespace-nowrap">
+                    Trashboard
+                  </span>
+                </Link>
+              </li>
               <li>
                 <a
                   href="#"

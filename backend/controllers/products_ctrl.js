@@ -5,6 +5,7 @@ const Category = require("../models/category"); // Importez le modèle Category
 const fs = require("fs");
 const path = require("path");
 const Sites = require("../models/sites");
+const JsBarcode = require("jsbarcode");
 
 const getDefaultCategoryId = async () => {
   let defaultCategory = await Category.findOne({ name: "autres" });
@@ -46,15 +47,8 @@ const createProduct = asyncHandler(async (req, res) => {
     const categoryId = category ? category._id : await getDefaultCategoryId();
     req.body.category = categoryId;
 
-    // const site = await Sites.findOne({ name: req.body.siteName });
-    // if (!site) {
-    //   res.status(404);
-    //   throw new Error("Site not found");
-    //   return;
-    // }
-    // const siteId = site ? site._id : await getDefaultSiteId();
-    req.body.site = user?.site;
 
+    req.body.site = user?.site;
     try {
       const findProduct = await Product.findOne({
         name: req.body.name,
@@ -64,10 +58,12 @@ const createProduct = asyncHandler(async (req, res) => {
         const product = await Product.create(req.body);
 
         console.log("Le produit n'existait pas!");
+        console.log(product);
         res.status(201).json({
           _id: product?._id,
           userName: product?.user?.name,
           name: product?.name,
+          barcode: product?.barcode,
           sku: product?.sku,
           category: product?.category?.name,
           quantity: product?.quantity,
@@ -125,7 +121,7 @@ const getProducts = asyncHandler(async (req, res) => {
         site: siteName,
       };
     });
-    console.log(formattedProducts);
+    
     res.status(200).json(formattedProducts);
   } catch (error) {
     console.log(error);
