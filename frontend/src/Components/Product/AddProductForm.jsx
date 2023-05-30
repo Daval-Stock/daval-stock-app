@@ -7,12 +7,10 @@ import { Link, useNavigate } from "react-router-dom";
 
 export default function AddProductForm() {
   const [categories, setCategories] = useState([]);
-  const [sites, setSites] = useState([]);
   const [productName, setProductName] = useState("");
   const [quantite, setQuantite] = useState(0);
   const [price, setPrice] = useState(0);
   const [categorie, setCategorie] = useState("");
-  const [site, setSite] = useState("");
   const [productImage, setProductImage] = useState(null);
   const [description, setDescription] = useState("");
   const navigateTo = useNavigate();
