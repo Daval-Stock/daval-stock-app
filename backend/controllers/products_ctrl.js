@@ -46,13 +46,7 @@ const createProduct = asyncHandler(async (req, res) => {
     const categoryId = category ? category._id : await getDefaultCategoryId();
     req.body.category = categoryId;
 
-    // const site = await Sites.findOne({ name: req.body.siteName });
-    // if (!site) {
-    //   res.status(404);
-    //   throw new Error("Site not found");
-    //   return;
-    // }
-    // const siteId = site ? site._id : await getDefaultSiteId();
+
     req.body.site = user?.site;
 
     try {
@@ -125,7 +119,7 @@ const getProducts = asyncHandler(async (req, res) => {
         site: siteName,
       };
     });
-    console.log(formattedProducts);
+    
     res.status(200).json(formattedProducts);
   } catch (error) {
     console.log(error);

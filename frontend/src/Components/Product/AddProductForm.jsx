@@ -92,14 +92,7 @@ export default function AddProductForm() {
         console.log("Erreur lors de la récupération des catégories :", error);
       });
 
-    //   axiosInstance
-    //     .get("/sites/")
-    //     .then((Response) => {
-    //       setSites(Response.data);
-    //     })
-    //     .catch((error) => {
-    //       console.log("Erreur lors de la récupération des sites :", error);
-    //     });
+
   }, []);
   return (
     <>
@@ -235,30 +228,6 @@ export default function AddProductForm() {
                       />
                     </label>
                   </div>
-
-                  {/* <div className="sm:col-span-3">
-                    <label
-                      htmlFor="site"
-                      className="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-100"
-                    >
-                      Site
-                    </label>
-                    <div className="mt-2">
-                      <select
-                        name="site"
-                        value={site}
-                        onChange={(e) => setSite(e.target.value)}
-                        className="block w-full text-center dark:bg-gray-900 dark:text-gray-400 rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:max-w-xs sm:text-sm sm:leading-6"
-                      >
-                        <option> choisir une site</option>
-                        {sites.map((site) => (
-                          <option key={site?._id} value={site?.name}>
-                            {site?.name}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  </div> */}
 
                   <div className="col-span-full">
                     <label

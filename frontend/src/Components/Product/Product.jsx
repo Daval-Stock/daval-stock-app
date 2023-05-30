@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import Sidebar from "../Sidebar/Sidebar";
 import { Link } from "react-router-dom";
 import ProductCard from "./ProductCard";
+import Quagga from 'quagga';
 
 import {
   RiDashboardFill,
@@ -19,10 +20,85 @@ import { FiEdit } from "react-icons/fi";
 export default function Product() {
   const [products, setProducts] = useState([]);
   const [forceUpdate, setForceUpdate] = useState(false);
+  const [search, setSearch] = useState("");
+  
+  const handleSearchChange = (value) => {
+    // Envoyer la valeur de recherche au serveur
+    axiosInstance
+      .get(`/products/sku/${value}`)
+      .then((response) => {
+        setSearch(response.data.name);
+      })
+      .catch((error) => {
+        console.error("Erreur lors de la recherche :", error);
+      });
+  };
+
+  const startBarcodeScanner = () => {
+    var scanBeep = new Audio('https://www.soundjay.com/mechanical/camera-shutter-click-08.mp3');
+    Quagga.init({
+      inputStream : {
+        name : "Live",
+        type : "LiveStream",
+        constraints: {
+          width: {min: 60},
+          height: {min: 80},
+          facingMode: "environment" }, // Use rear camera
+        target: document.querySelector('#barcode-scanner')    // Point at the ID of the DOM element.
+      },
+     area: { // defines rectangle of the detection/localization area
+        top: "0%",    // top offset
+        right: "0%",  // right offset
+        left: "0%",   // left offset
+        bottom: "0%"  // bottom offset
+      },
+      decoder : {
+        readers : ["ean_reader","ean_8_reader","code_39_reader","code_39_vin_reader","codabar_reader","upc_reader","upc_e_reader","i2of5_reader"]
+      }
+    }, function(err) {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      Quagga.start();
+      console.log("Initialization finished. Ready to start");
+    });
+    let barcode = "";
+    Quagga.onDetected((data) => {
+      barcode = data.codeResult.code;
+
+      if(barcode) {
+        handleSearchChange(barcode);
+        //scanBeep.play(); 
+        Quagga.stop();
+        return;
+      }
+    });
+    
+  }
+    
+
+/*   useEffect(() => {
+    return () => {
+      // Cleanup: stop Quagga when component is unmounted
+      Quagga.stop();
+    }
+  }, []); */
+
+  useEffect(() => {
+    // Utiliser axiosInstance au lieu d'axios
+    axiosInstance
+      .get("/products/all-product")
+      .then((response) => {
+        setProducts(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [forceUpdate]);
 
   const handleDelete = (id, name) => {
     let choice = confirm("Vous êtes sûr de vouloir supprimer " + name + "?");
-    console.log(choice);
     if (choice) {
       axiosInstance
         .delete("products/delete/" + id)
@@ -39,17 +115,7 @@ export default function Product() {
       console.log("Action annulé!");
     }
   };
-  useEffect(() => {
-    // Utiliser axiosInstance au lieu d'axios
-    axiosInstance
-      .get("/products/all-product")
-      .then((response) => {
-        setProducts(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [forceUpdate]);
+
 
   return (
     <>
@@ -60,9 +126,6 @@ export default function Product() {
             <div className="relative overflow-x-auto">
               <div className="flex"></div>
               <div className="flex items-center justify-between pb-4">
-                <label htmlFor="table-search" className="sr-only">
-                  Search
-                </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                     <svg
@@ -84,7 +147,10 @@ export default function Product() {
                     id="table-search"
                     className="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Search for items"
+                    value={search}
+                    onChange={(event) => setSearch(event.target.value)}
                   />
+                  
                 </div>
                 <div>
                   <Link to="/AddProductForm">
@@ -111,11 +177,15 @@ export default function Product() {
                   </Link>
                 </div>
               </div>
+              
               <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                 <thead className="text-xs text-center text-gray-900 uppercase  bg-blue-300 dark:bg-gray-700 dark:text-white">
                   <tr>
                     <th scope="col" className="px-6 py-3">
                       Nom du produit
+                    </th>
+                    <th sope="col" className="px-6 py-3">
+                      SKU du produit
                     </th>
                     <th scope="col" className="px-6 py-3">
                       Categories
@@ -138,7 +208,7 @@ export default function Product() {
                   </tr>
                 </thead>
                 <tbody>
-                  {products.map((item) => (
+                  {products.filter((p) => p.name.toLowerCase().includes(search.toLowerCase())).map((item) => (
                     <tr
                       key={item._id}
                       className="bg-white border-b dark:bg-gray-900 dark:border-gray-700 hover:bg-blue-0"
@@ -150,6 +220,7 @@ export default function Product() {
                       >
                         {item.name}
                       </th>
+                      <td className="px-6 py-4 text-center">{item.sku}</td>
                       <td className="px-6 py-4 text-center">{item.category}</td>
                       <td className="px-6 py-4 text-center">{item.quantity}</td>
                       <td className="px-6 py-4 text-center">{item.price}</td>
@@ -201,6 +272,13 @@ export default function Product() {
                   ))}
                 </tbody>
               </table>
+              <button id="barcode-scanner"
+                       type="button"
+                       className="text-white right-2.5 top-2.5 bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+                      onClick={startBarcodeScanner}
+            >
+              Scan Barcode
+            </button>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {products.map((product) => (
                   <ProductCard key={product._id} product={product} />
@@ -210,6 +288,7 @@ export default function Product() {
           </div>
         </div>
       </div>
+      
     </>
   );
 }
