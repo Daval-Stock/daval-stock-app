@@ -160,67 +160,54 @@ export default function RegisterUI() {
   return (
     <Container>
       <FormCard>
-        <h2 className="text-3xl text-center font-bold tracking-tight text-gray-900 sm:text-4xl">
-          Créer un compte
-        </h2>
-        <p className="mt-2 text-lg text-center leading-8 text-gray-600">
-          Remplissez le formulaire en renseignat toutes les informations !
-        </p>
-
-        <section className="">
-          <div className="flex items-center justify-center min-h-screen px-6 mx-auto">
-            <div className="flex justify-center mx-auto">
+        <div className="px-6 py-4">
+          <div className="flex justify-center mx-auto">
+            <Link to="/">
               <img className="w-auto h-7 sm:h-8" src={logoDaval} alt="" />
-            </div>
-
-            <div className="flex items-center justify-center mt-6">
-              <Link
-                to="/ConnexionUI"
-                href="#"
-                className="w-1/3 pb-4 font-medium text-center text-gray-500 capitalize border-b dark:border-gray-400 dark:text-gray-300"
-              >
-                Connexion
-              </Link>
-
-              <a
-                href="#"
-                className="w-1/3 pb-4 font-medium text-center text-gray-800 capitalize border-b-2 border-blue-500 dark:border-blue-400 dark:text-white"
-              >
-                S'inscrire
-              </a>
-            </div>
-            {formErrors.message && (
-              <p className="mt-2 text-sm text-red-500">{formErrors.message}</p>
-            )}
-            <Form
-              handleSubmit={handleSubmit}
-              name={formValues.username}
-              email={formValues.email}
-              mobile={formValues.mobile}
-              handleInputChange={handleInputChange}
-              password={formValues.password}
-              confirmPassword={formValues.confirmPassword}
-              buttonLabel="S'inscrire"
-              errors={formErrors}
-              site={site}
-              setSite={setSite}
-              sites={sites}
-              dropFile={true}
-              method="post"
-              encType="multipart/form-data"
-            />
-
-            <div className="mt-6 text-center ">
-              <Link
-                to="/ConnexionUI"
-                href="#"
-                className="text-sm text-blue-500 hover:underline dark:text-blue-400"
-              >
-                Vous avez déjà un compte?
-              </Link>
-            </div>
+            </Link>
           </div>
-        </section>
+
+          <h3 className="mt-3 text-xl font-medium text-center text-gray-600 dark:text-gray-200">
+            Créer un compte
+          </h3>
+
+          <p className="mt-1 text-center text-gray-500 dark:text-gray-400">
+            Remplissez le formulaire en renseignat toutes les informations !
+          </p>
+          {formErrors.serverError}
+          <Form
+            formValues={formValues}
+            handleSubmit={handleSubmit}
+            name={true}
+            email={true}
+            mobile={true}
+            handleInputChange={handleInputChange}
+            password={true}
+            confirmPassword={true}
+            buttonLabel="S'inscrire"
+            errors={formErrors}
+            site={site}
+            setSite={setSite}
+            sites={sites}
+            dropFile={true}
+            method="post"
+            encType="multipart/form-data"
+          />
+        </div>
+
+        <div className="flex items-center justify-center py-4 text-center bg-gray-200 dark:bg-gray-800">
+          <span className="text-sm text-gray-600 dark:text-gray-200">
+            Vous avez déjà un compte?{" "}
+          </span>
+
+          <Link
+            to="/ConnexionUI"
+            href="#"
+            className="mx-2 text-sm font-bold text-blue-500 dark:text-blue-400 hover:underline"
+          >
+            Se connecter
+          </Link>
+        </div>
       </FormCard>
     </Container>
   );

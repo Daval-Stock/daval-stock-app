@@ -89,10 +89,11 @@ export default function ConnexionUI() {
           </p>
           {formErrors.serverError}
           <Form
+            formValues={formValues}
             handleSubmit={handleSubmit}
-            email={formValues.email}
+            email={true}
             handleInputChange={handleInputChange}
-            password={formValues.password}
+            password={true}
             buttonLabel="Se connecter"
             errors={formErrors}
           />

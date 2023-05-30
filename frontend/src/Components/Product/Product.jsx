@@ -15,6 +15,8 @@ import {
 import { RiDeleteBinLine } from "react-icons/ri";
 import { BiCartAdd } from "react-icons/bi";
 import { FiEdit } from "react-icons/fi";
+import Container from "../Container";
+import Layout from "../Layout";
 
 export default function Product() {
   const [products, setProducts] = useState([]);
@@ -52,8 +54,11 @@ export default function Product() {
   }, [forceUpdate]);
 
   return (
-    <>
-      <Sidebar>
+    <Layout>
+      <Container>
+        <div className="mb-4">
+          <h1 className="text-white text-3xl font-semibold">Produits</h1>
+        </div>
         <div className="flex items-center justify-between pb-4">
           <label htmlFor="table-search" className="sr-only">
             Search
@@ -106,7 +111,7 @@ export default function Product() {
             </Link>
           </div>
         </div>
-        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+        <table className="w-full rounded-lg text-sm text-left text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-center text-gray-900 uppercase  bg-blue-300 dark:bg-gray-700 dark:text-white">
             <tr>
               <th scope="col" className="px-6 py-3">
@@ -194,12 +199,12 @@ export default function Product() {
             ))}
           </tbody>
         </table>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 m-3">
           {products.map((product) => (
             <ProductCard key={product._id} product={product} />
           ))}
         </div>
-      </Sidebar>
-    </>
+      </Container>
+    </Layout>
   );
 }
