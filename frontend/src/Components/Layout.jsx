@@ -33,6 +33,7 @@ const Layout = ({ children }) => {
             <div className="mb-2">{children}</div>
           </Header>
         </div>
+
         <Footer />
       </Sidebar>
     </div>

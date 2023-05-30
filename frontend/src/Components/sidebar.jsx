@@ -20,6 +20,7 @@ const Sidebar = ({ children }) => {
         icon: HiHome,
       },
       {
+        
         label: "Search",
         active: pathname === "/Dashboard",
         href: "/Dashboard",
