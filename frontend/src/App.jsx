@@ -21,6 +21,8 @@ import PrivacyPolicy from "./Components/PrivacyPolicy/PrivacyPolicy.jsx";
 import Testimonial from "./Components/Testimonial/Testimonial.jsx";
 import UpdateProduct from "./Components/Product/UpdateProduct.jsx";
 import ProductCard from "./Components/Product/ProductCard.jsx";
+import StockStatus from "./Components/Stock_Status/Stock_Status.jsx";
+import Trashboard from "./Components/Trashboard/Trashboard.jsx";
 
 const App = () => {
   return (
@@ -47,6 +49,8 @@ const App = () => {
         <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
         <Route path="/Testimonial" element={<Testimonial />} />
         <Route path="/ProductCard" element={<ProductCard />} />
+        <Route path="/Stock_Status" element={<StockStatus/>}/>  
+        <Route path="/Trash" element={<Trashboard />} />
       </Routes>
     </div>
   );

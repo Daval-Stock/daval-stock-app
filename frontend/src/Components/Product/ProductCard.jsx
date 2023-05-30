@@ -2,7 +2,6 @@ import React from "react";
 import defaultProductImage from "../../assets/default-product-image.jpg";
 
 const ProductCard = ({ product }) => {
-  console.log(product);
   const { name, category, quantity, price, description, imageUrl } = product;
   //console.log(product?.productImage.split("\\").pop().replace(".jpg", ""));
   const productImageUrl = product?.productImage
