@@ -4,6 +4,7 @@ import axiosInstance from "../axiosInstance";
 import UserContext from "./UserContext";
 import Navbar from "../Navbar/Navbar";
 import defaultProfilImage from "../../assets/default-profile-image-url.jpg";
+import Container from "../Container";
 
 function UserProfile() {
   const [userProfile, setUserProfile] = useState(null);
@@ -134,8 +135,7 @@ function UserProfile() {
   };
 
   return (
-    <>
-      <Navbar />
+    <Container>
       <div className="relative isolate px-6 pt-32 lg:px-16">
         <div
           className="absolute inset-x-0 top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
@@ -681,7 +681,7 @@ function UserProfile() {
           </div>
         </div>
                       )} */}
-    </>
+    </Container>
   );
 }
 

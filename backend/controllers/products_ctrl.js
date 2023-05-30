@@ -47,6 +47,7 @@ const createProduct = asyncHandler(async (req, res) => {
     const categoryId = category ? category._id : await getDefaultCategoryId();
     req.body.category = categoryId;
 
+
     req.body.site = user?.site;
     try {
       const findProduct = await Product.findOne({
@@ -120,7 +121,7 @@ const getProducts = asyncHandler(async (req, res) => {
         site: siteName,
       };
     });
-    console.log(formattedProducts);
+    
     res.status(200).json(formattedProducts);
   } catch (error) {
     console.log(error);
