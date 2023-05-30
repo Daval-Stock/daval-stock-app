@@ -1,14 +1,16 @@
 import Footer from "./Footer/Footer";
 import FooterLink from "./Footer/FooterLink";
 import Navbar from "./Navbar/Navbar";
-const Container = ({ children }) => {
+import { clsx } from "clsx";
+
+const Container = ({ children, className }) => {
   const authToken = localStorage.getItem("authToken");
 
   return (
     <>
-      <Navbar />
-      {children}
-      {authToken ? <Footer /> : <FooterLink />}
+      <div className={clsx(className, "mx-2 min-h-lg p-30 sm:py-16 lg:py-50")}>
+        {children}
+      </div>
     </>
   );
 };

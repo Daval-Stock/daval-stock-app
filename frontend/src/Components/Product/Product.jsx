@@ -16,6 +16,8 @@ import {
 import { RiDeleteBinLine } from "react-icons/ri";
 import { BiCartAdd } from "react-icons/bi";
 import { FiEdit } from "react-icons/fi";
+import Container from "../Container";
+import Layout from "../Layout";
 
 export default function Product() {
   const [products, setProducts] = useState([]);
@@ -118,46 +120,111 @@ export default function Product() {
 
 
   return (
-    <>
-      <Sidebar />
-      <div className="p-4 sm:ml-64">
-        <div className="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14">
-          <div className="items-center justify-between m-10">
-            <div className="relative overflow-x-auto">
-              <div className="flex"></div>
-              <div className="flex items-center justify-between pb-4">
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                    <svg
-                      className="w-5 h-5 text-gray-500 dark:text-gray-400"
-                      aria-hidden="true"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                        clipRule="evenodd"
-                      ></path>
-                    </svg>
-                  </div>
-                  <input
-                    type="text"
-                    id="table-search"
-                    className="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Search for items"
-                    value={search}
-                    onChange={(event) => setSearch(event.target.value)}
+
+    <Layout>
+      <Container>
+        <div className="mb-4">
+          <h1 className="text-white text-3xl font-semibold">Produits</h1>
+        </div>
+        <div className="flex items-center justify-between pb-4">
+          <label htmlFor="table-search" className="sr-only">
+            Search
+          </label>
+          <div className="relative">
+            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+              <svg
+                className="w-5 h-5 text-gray-500 dark:text-gray-400"
+                aria-hidden="true"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                  clipRule="evenodd"
+                ></path>
+              </svg>
+            </div>
+            <input
+              type="text"
+              id="table-search"
+              className="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="Search for items"
+            />
+          </div>
+          <div>
+            <Link to="/AddProductForm">
+              <button
+                className="inline-flex items-center text-blue-600 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-700 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+                type="button"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="w-4 h-4 mr-2 text-blue-600 dark:text-white"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m3.75 9v6m3-3H9m1.5-12H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"
                   />
-                  
-                </div>
-                <div>
-                  <Link to="/AddProductForm">
-                    <button
-                      className="inline-flex items-center text-blue-600 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-700 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
-                      type="button"
-                    >
+                </svg>
+                Ajouter un Produit
+              </button>
+            </Link>
+          </div>
+        </div>
+        <table className="w-full rounded-lg text-sm text-left text-gray-500 dark:text-gray-400">
+          <thead className="text-xs text-center text-gray-900 uppercase  bg-blue-300 dark:bg-gray-700 dark:text-white">
+            <tr>
+              <th scope="col" className="px-6 py-3">
+                Nom du produit
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Categories
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Quantité
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Prix
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Description
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Site
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Action
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {products.map((item) => (
+              <tr
+                key={item._id}
+                className="bg-white border-b dark:bg-gray-900 dark:border-gray-700 hover:bg-blue-0"
+              >
+                <th
+                  scope="row"
+                  id=""
+                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                >
+                  {item.name}
+                </th>
+                <td className="px-6 py-4 text-center">{item.category}</td>
+                <td className="px-6 py-4 text-center">{item.quantity}</td>
+                <td className="px-6 py-4 text-center">{item.price}</td>
+                <td className="px-6 py-4 text-center">{item.description}</td>
+                <td className="px-6 py-4 text-center">{item?.site}</td>
+                <td className="px-6 py-4">
+                  <div className="flex justify-center items-center gap-4">
+                    <button className="text-gray-600 text-xl">
 
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -222,6 +289,7 @@ export default function Product() {
                         stroke="currentColor"
                         className="w-5 h-5"
                       >
+
                         {item.name}
                       </th>
                       <td className="px-6 py-4 text-center">{item.sku}</td>
@@ -293,7 +361,7 @@ export default function Product() {
         </div>
       </div>
       
-
-    </>
+     </Container>
+    </Layout>
   );
 }

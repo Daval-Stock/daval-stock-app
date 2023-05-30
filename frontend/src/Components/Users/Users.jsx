@@ -14,6 +14,7 @@ import logoDaval from "../../assets/logoDaval.png";
 import alamine from "../../assets/alamine.png";
 import Sidebar from "../Sidebar/Sidebar";
 import Container from "../Container";
+import Layout from "../Layout";
 
 function Users() {
   const [users, setUsers] = useState([]);
@@ -52,8 +53,11 @@ function Users() {
       });
   }, [forceUpdate]);
   return (
-    <>
-      <Sidebar>
+    <Layout>
+      <Container>
+        <div className="mb-4">
+          <h1 className="text-white text-3xl font-semibold">Utilisateurs</h1>
+        </div>
         <div className="flex items-center justify-between pb-4">
           <label htmlFor="table-search" className="sr-only">
             Search
@@ -203,8 +207,8 @@ function Users() {
             ))}
           </tbody>
         </table>
-      </Sidebar>
-    </>
+      </Container>
+    </Layout>
   );
 }
 
