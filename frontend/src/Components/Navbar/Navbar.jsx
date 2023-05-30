@@ -77,24 +77,24 @@ export default function Navbar() {
           </div>
           <div className="hidden lg:flex lg:gap-x-12">
             {navigation.map((item) => (
-              <a key={item.name} href={item.href} className="text-sm font-semibold leading-6 text-gray-900 dark:text-gray-200">
-
+              <a
+                key={item.name}
+                href={item.href}
+                className="text-sm font-semibold leading-6 text-gray-900 dark:text-gray-200"
+              >
                 {item.name}
               </a>
             ))}
           </div>
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
             {authToken ? (
-              <div className="flex">
-                <div className="flex ">
-                  <Link to="/profile">
-                    <div className="">{userProfile?.name}</div>
-                    <div className="">
-                      <FaUserCircle />
-                      {/* <UserIcon /> */}
-                    </div>
-                  </Link>
-                </div>
+              <div className="flex items-center gap-4">
+                <Link to="/profile">
+                  <div className="flex items-center gap-2">
+                    <div className="flex">{userProfile?.name}</div>
+                    <FaUserCircle />
+                  </div>
+                </Link>
                 <div className="">
                   <Link
                     to="/LogoutUI"
@@ -144,23 +144,34 @@ export default function Navbar() {
               <div className="-my-6 divide-y divide-gray-500/10">
                 <div className="space-y-2 py-6">
                   {navigation.map((item) => (
-                    <a
+                    <Link
                       key={item.name}
                       href={item.href}
                       className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                     >
                       {item.name}
-                    </a>
+                    </Link>
                   ))}
                 </div>
-                <div className="py-6">
-                  <a
-                    href="#"
-                    className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                  >
-                    Se connecter
-                  </a>
-                </div>
+                {authToken ? (
+                  <div className="py-6">
+                    <Link
+                      href="#"
+                      className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                    >
+                      Se déconnecter
+                    </Link>
+                  </div>
+                ) : (
+                  <div className="py-6">
+                    <Link
+                      href="#"
+                      className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                    >
+                      Se connecter
+                    </Link>
+                  </div>
+                )}
               </div>
             </div>
           </Dialog.Panel>
