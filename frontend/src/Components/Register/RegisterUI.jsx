@@ -102,7 +102,7 @@ export default function RegisterUI() {
       formData.append("name", formValues.username);
       formData.append("email", formValues.email);
       formData.append("mobile", formValues.mobile);
-      formData.append("siteName", site);
+      formData.append("siteName", formValues.site);
       formData.append("password", formValues.password);
       console.log("formValue: ", formValues);
       if (profileImage) {
