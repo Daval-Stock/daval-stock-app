@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { HiHome } from "react-icons/hi";
 import { BiSearch } from "react-icons/bi";
 import Button from "./Button";
+import { Link } from "react-router-dom";
 const Header = ({ children, className }) => {
   const router = useNavigate();
   const handleLogout = () => {
@@ -59,12 +60,14 @@ const Header = ({ children, className }) => {
             </div>
           </>
           <div>
-            <Button
-              onClick={() => {}}
-              className="bg-transparent bg-white px-6 py-2 font-medium"
-            >
-              Log In
-            </Button>
+            <Link to="/ConnexionUI">
+              <Button
+                onClick={() => {}}
+                className="bg-transparent bg-white px-6 py-2 font-medium"
+              >
+                Log In
+              </Button>
+            </Link>
           </div>
         </div>
       </div>

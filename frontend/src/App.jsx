@@ -26,11 +26,24 @@ import SidebarUI from "./Components/Sidebar/SidebarUI.jsx";
 
 import StockStatus from "./Components/Stock_Status/Stock_Status.jsx";
 import Trashboard from "./Components/Trashboard/Trashboard.jsx";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const App = () => {
   return (
     <div>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/Sidebar" element={<Sidebar />} />
@@ -56,9 +69,8 @@ const App = () => {
 
         <Route path="/SidebarUI" element={<SidebarUI />} />
 
-        <Route path="/Stock_Status" element={<StockStatus/>}/>  
+        <Route path="/Stock_Status" element={<StockStatus />} />
         <Route path="/Trash" element={<Trashboard />} />
-
       </Routes>
     </div>
   );

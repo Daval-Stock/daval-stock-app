@@ -16,7 +16,7 @@ const PORT = process.env.PORT || 3000;
 const path = require("path");
 const categoryRoutes = require("./routes/category_routes");
 const siteRoutes = require("./routes/sites_routes");
-const saleRoutes= require("./routes/sales_routes");
+const saleRoutes = require("./routes/sales_routes");
 const UserInventoryRoutes = require("./routes/UserInventory_route");
 
 // cors

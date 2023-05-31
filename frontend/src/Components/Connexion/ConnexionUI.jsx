@@ -11,6 +11,7 @@ import Button from "../Button";
 import Container from "../Container";
 import Form from "../Form";
 import FormCard from "../FormCard";
+import Layout from "../Layout";
 
 export default function ConnexionUI() {
   // State pour stocker les valeurs du formulaire et les erreurs
@@ -71,48 +72,50 @@ export default function ConnexionUI() {
   };
 
   return (
-    <Container>
-      <FormCard>
-        <div className="px-6 py-4">
-          <div className="flex justify-center mx-auto">
-            <Link to="/">
-              <img className="w-auto h-7 sm:h-8" src={logoDaval} alt="" />
-            </Link>
+    <Layout>
+      <Container>
+        <FormCard>
+          <div className="px-8 py-4 my-6">
+            <div className="flex justify-center mx-auto">
+              <Link to="/">
+                <img className="w-auto h-7 sm:h-8" src={logoDaval} alt="" />
+              </Link>
+            </div>
+
+            <h3 className="mt-3 text-xl font-medium text-center text-gray-600 dark:text-gray-200">
+              Se connecter
+            </h3>
+
+            <p className="mt-1 text-center text-gray-500 dark:text-gray-400">
+              en seulement deux clics
+            </p>
+            {formErrors.serverError}
+            <Form
+              formValues={formValues}
+              handleSubmit={handleSubmit}
+              email={true}
+              handleInputChange={handleInputChange}
+              password={true}
+              buttonLabel="Se connecter"
+              errors={formErrors}
+            />
           </div>
 
-          <h3 className="mt-3 text-xl font-medium text-center text-gray-600 dark:text-gray-200">
-            Se connecter
-          </h3>
+          <div className="flex items-center justify-center rounded-b-lg py-3 text-center bg-gray-200 dark:bg-gray-800">
+            <span className="text-sm text-gray-600 dark:text-gray-200">
+              Vous n'avez pas de compte ?{" "}
+            </span>
 
-          <p className="mt-1 text-center text-gray-500 dark:text-gray-400">
-            en seulement deux clics
-          </p>
-          {formErrors.serverError}
-          <Form
-            formValues={formValues}
-            handleSubmit={handleSubmit}
-            email={true}
-            handleInputChange={handleInputChange}
-            password={true}
-            buttonLabel="Se connecter"
-            errors={formErrors}
-          />
-        </div>
-
-        <div className="flex items-center justify-center py-4 text-center bg-gray-200 dark:bg-gray-800">
-          <span className="text-sm text-gray-600 dark:text-gray-200">
-            Vous n'avez pas de compte ?{" "}
-          </span>
-
-          <Link
-            to="/RegisterUI"
-            href="#"
-            className="mx-2 text-sm font-bold text-blue-500 dark:text-blue-400 hover:underline"
-          >
-            S'inscrire
-          </Link>
-        </div>
-      </FormCard>
-    </Container>
+            <Link
+              to="/RegisterUI"
+              href="#"
+              className="mx-2 text-sm font-bold text-blue-500 dark:text-blue-400 hover:underline"
+            >
+              S'inscrire
+            </Link>
+          </div>
+        </FormCard>
+      </Container>
+    </Layout>
   );
 }

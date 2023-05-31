@@ -7,6 +7,8 @@ import { GoGraph } from "react-icons/go";
 import { BsGraphUpArrow } from "react-icons/bs";
 import Box from "./Box";
 import SidebarItem from "./SidebarItem";
+import logoDaval from "../assets/logoDaval.png";
+import { Link } from "react-router-dom";
 
 const Sidebar = ({ children }) => {
   const location = useLocation();
@@ -20,7 +22,6 @@ const Sidebar = ({ children }) => {
         icon: HiHome,
       },
       {
-        
         label: "Search",
         active: pathname === "/Dashboard",
         href: "/Dashboard",
@@ -60,6 +61,13 @@ const Sidebar = ({ children }) => {
       <div className="hidden md:flex flex-col gap-y-2 text-white bg-black h-full w-[300px] p-2">
         <Box>
           <div className="flex flex-col gap-y-4 px-5 py-5">
+            <Link to="/">
+              <img
+                className="w-auto h-7 sm:h-8 text-orange-500"
+                src={logoDaval}
+                alt=""
+              />
+            </Link>
             {routes.map((item) => (
               <SidebarItem key={item.href} {...item} />
             ))}

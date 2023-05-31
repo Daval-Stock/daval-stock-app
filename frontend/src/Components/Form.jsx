@@ -69,27 +69,19 @@ const Form = ({
       )}
       {site && (
         <div className="sm:col-span-3">
-          <label
-            htmlFor="site"
-            className="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-100"
+          <select
+            name="site"
+            value={formValues.site}
+            onChange={handleInputChange}
+            className="block w-[700px] mt-4 text-center bg-gray-900text-gray-400 rounded-md border-0 py-3 shadow-sm ring-1 ring-inset text-gray-600 bg-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:max-w-xs sm:text-sm sm:leading-6"
           >
-            Site
-          </label>
-          <div className="mt-2">
-            <select
-              name="site"
-              value={site}
-              onChange={(e) => setSite(e.target.value)}
-              className="block w-full text-center dark:bg-gray-900 dark:text-gray-400 rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:max-w-xs sm:text-sm sm:leading-6"
-            >
-              <option> choisir une site</option>
-              {sites.map((site) => (
-                <option key={site?._id} value={site?.name}>
-                  {site?.name}
-                </option>
-              ))}
-            </select>
-          </div>
+            <option> choisir une site</option>
+            {sites.map((site) => (
+              <option key={site?._id} value={site?.name}>
+                {site?.name}
+              </option>
+            ))}
+          </select>
         </div>
       )}
 
@@ -118,19 +110,20 @@ const Form = ({
         />
       )}
 
-      <div className="flex items-center justify-between mt-4">
+      <div className="flex flex-col items-center justify-between gap-y-4 mt-4">
+        <Button
+          type="submit"
+          onClick={() => {}}
+          className="px-6 py-2 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-500 rounded-lg hover:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50"
+        >
+          {buttonLabel}
+        </Button>
         <Link
           href="#"
           className="text-sm text-gray-600 dark:text-gray-200 hover:text-gray-500"
         >
           Mot de Passe oublié ?
         </Link>
-        <Button
-          label={buttonLabel}
-          type="submit"
-          onClick={() => {}}
-          className="px-6 py-2 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-500 rounded-lg hover:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50"
-        />
       </div>
     </form>
   );
