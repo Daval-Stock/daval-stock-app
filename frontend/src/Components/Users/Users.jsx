@@ -1,18 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axiosInstance from "../axiosInstance";
 import { Link, useNavigate } from "react-router-dom";
-import { AiFillDelete } from "react-icons/all.js";
-import {
-  RiDashboardFill,
-  CiUser,
-  FiPackage,
-  TbFileInvoice,
-  BsDatabaseCheck,
-} from "react-icons/all.js";
-import Navbar from "../Navbar/Navbar";
-import logoDaval from "../../assets/logoDaval.png";
-import alamine from "../../assets/alamine.png";
-import Sidebar from "../Sidebar/Sidebar";
+
 import Container from "../Container";
 import Layout from "../Layout";
 

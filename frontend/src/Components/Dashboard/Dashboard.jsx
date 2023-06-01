@@ -1,19 +1,4 @@
 import React from "react";
-import {
-  GrStatusGood,
-  GoPackage,
-  RiDashboardFill,
-  CiUser,
-  FiPackage,
-  TbFileInvoice,
-  BsDatabaseCheck,
-} from "react-icons/all.js";
-import { Link } from "react-router-dom";
-import Navbar from "../Navbar/Navbar";
-import Sidebar from "../Sidebar/Sidebar";
-import logoDaval from "../../assets/logoDaval.png";
-import alamine from "../../assets/alamine.png";
-import FooterLink from "../Footer/FooterLink";
 import axiosInstance from "../axiosInstance";
 import { useState, useEffect } from "react";
 import ProductCard from "../Product/ProductCard";

@@ -1,5 +1,6 @@
 import clsx from "clsx";
 import { AiOutlineDownload } from "react-icons/ai";
+import { toast } from "react-toastify";
 
 const Input = ({
   className,
@@ -11,6 +12,9 @@ const Input = ({
   onChange,
   error,
 }) => {
+  if (error) {
+    toast.error(error);
+  }
   return (
     <div className="w-full mt-4">
       {type === "file" ? (
@@ -34,8 +38,6 @@ const Input = ({
               className={clsx(className, "hidden")}
             />
           </label>
-
-          {error && <span>{error}</span>}
         </>
       ) : (
         <input

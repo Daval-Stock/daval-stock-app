@@ -1,10 +1,5 @@
-import React from "react";
-import { FiPackage, TbFileInvoice, BsDatabaseCheck, BsDashCircle } from "react-icons/all.js";
-import { Link } from "react-router-dom";
-import Navbar from "../Navbar/Navbar";
 import { useState, useEffect } from "react";
 import axiosInstance from "../axiosInstance";
-import Container from "../Container";
 import Layout from "../Layout";
 
 export default function Sidebar_({ children }) {
@@ -35,7 +30,7 @@ export default function Sidebar_({ children }) {
 
   return (
     <Layout>
-      <div className="flex">
+      {/* <div className="flex">
         <aside
           className=" h-auto w-72 py-40 pt-20 transition-transform -translate-x-full bg-red-500 border-r border-gray-200 sm:translate-x-0 dark:bg-gray-900 dark:border-gray-600"
           aria-label="Sidebar"
@@ -90,7 +85,6 @@ export default function Sidebar_({ children }) {
                     </span>
                   </div>
                 </Link>
-
               )}
 
               <Link to="/Product">
@@ -114,7 +108,7 @@ export default function Sidebar_({ children }) {
               </li>
               <li>
                 <Link
-                to="/Stock_Status"
+                  to="/Stock_Status"
                   className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
                 >
                   <BsDatabaseCheck className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-200 group-hover:text-gray-900 dark:group-hover:text-white" />
@@ -126,8 +120,8 @@ export default function Sidebar_({ children }) {
 
               <li>
                 <Link
-                to="/Trash"
-                                  className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                  to="/Trash"
+                  className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
                 >
                   <BsDashCircle className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-200 group-hover:text-gray-900 dark:group-hover:text-white" />
                   <span className="flex-1 ml-3 whitespace-nowrap">
@@ -177,7 +171,7 @@ export default function Sidebar_({ children }) {
             </div>
           </div>
         </section>
-      </div>
+      </div> */}
     </Layout>
   );
 }
