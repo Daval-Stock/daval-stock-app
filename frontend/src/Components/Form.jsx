@@ -1,12 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import Input from "./Input";
 import { Link } from "react-router-dom";
 import Button from "./Button";
-import { AiOutlineDownload } from "react-icons/ai";
 
 const Form = ({
   formValues,
   handleSubmit,
+  productName,
+  quantity,
+  price,
+  description,
+  category,
+  categories,
   mobile,
   email,
   handleInputChange,
@@ -14,8 +19,8 @@ const Form = ({
   password,
   confirmPassword,
   site,
-  setSite,
   sites,
+  role,
   name,
   buttonLabel,
   encType,
@@ -23,7 +28,17 @@ const Form = ({
   method,
   errors,
 }) => {
-  console.log("confirmPassword:", confirmPassword);
+  const [showPassword, setShowPassword] = useState({
+    password: false,
+    confirmPassword: false,
+  });
+
+  const togglePasswordVisibility = (e, name) => {
+    setShowPassword({
+      ...showPassword,
+      [name]: !showPassword[name],
+    });
+  };
   return (
     <form onSubmit={handleSubmit} encType={encType} method={method}>
       {name && (
@@ -37,6 +52,62 @@ const Form = ({
           onChange={handleInputChange}
           error={errors.email}
         />
+      )}
+
+      {productName && (
+        <Input
+          className=""
+          type="text"
+          name="productName"
+          placeholder="Libellé du produit"
+          value={formValues.productName}
+          onChange={handleInputChange}
+        />
+      )}
+
+      {price && (
+        <Input
+          className=""
+          type="number"
+          name="price"
+          placeholder="Prix du produit"
+          value={formValues.price}
+          onChange={handleInputChange}
+        />
+      )}
+
+      {quantity && (
+        <Input
+          className=""
+          type="number"
+          name="quantity"
+          placeholder="Nombre de produits"
+          value={formValues.quantity}
+          onChange={handleInputChange}
+        />
+      )}
+
+      {category && (
+        <div className="flex items-center gap-2">
+          <label htmlFor="category" className="px-6">
+            Categories:{" "}
+          </label>
+          <div className="sm:col-span-3">
+            <select
+              name="category"
+              value={formValues.category}
+              onChange={handleInputChange}
+              className="block w-[700px] mt-4 text-center bg-gray-900text-gray-400 rounded-md border-0 py-3 shadow-sm ring-1 ring-inset text-gray-600 bg-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:max-w-xs sm:text-sm sm:leading-6"
+            >
+              <option> choisir une catégorie</option>
+              {categories.map((categorie) => (
+                <option key={categorie?._id} value={categorie?.name}>
+                  {categorie?.name}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
       )}
 
       {email && (
@@ -68,21 +139,37 @@ const Form = ({
         <Input type="file" onChange={handleImageChange} name="image" />
       )}
       {site && (
-        <div className="sm:col-span-3">
-          <select
-            name="site"
-            value={formValues.site}
-            onChange={handleInputChange}
-            className="block w-[700px] mt-4 text-center bg-gray-900text-gray-400 rounded-md border-0 py-3 shadow-sm ring-1 ring-inset text-gray-600 bg-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:max-w-xs sm:text-sm sm:leading-6"
-          >
-            <option> choisir une site</option>
-            {sites.map((site) => (
-              <option key={site?._id} value={site?.name}>
-                {site?.name}
-              </option>
-            ))}
-          </select>
+        <div className="flex items-center gap-2">
+          <label htmlFor="isAdmin" className="px-6">
+            Site:{" "}
+          </label>
+          <div className="sm:col-span-3">
+            <select
+              name="site"
+              value={formValues.site}
+              onChange={handleInputChange}
+              className="block w-[700px] mt-4 text-center bg-gray-900text-gray-400 rounded-md border-0 py-3 shadow-sm ring-1 ring-inset text-gray-600 bg-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:max-w-xs sm:text-sm sm:leading-6"
+            >
+              <option> choisir une site</option>
+              {sites.map((site) => (
+                <option key={site?._id} value={site?.name}>
+                  {site?.name}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
+      )}
+
+      {description && (
+        <Input
+          className=""
+          type="textarea"
+          name="description"
+          placeholder="Description"
+          value={formValues.description}
+          onChange={handleInputChange}
+        />
       )}
 
       {password && (
@@ -95,6 +182,11 @@ const Form = ({
           value={formValues.password}
           onChange={handleInputChange}
           error={errors.password}
+          showPassword={showPassword.password}
+          setShowPassword={setShowPassword}
+          togglePasswordVisibility={(e) =>
+            togglePasswordVisibility(e, "password")
+          }
         />
       )}
 
@@ -107,6 +199,20 @@ const Form = ({
           value={formValues.confirmPassword}
           onChange={handleInputChange}
           error={errors.confirmPassword}
+          showPassword={showPassword.confirmPassword}
+          setShowPassword={setShowPassword}
+          togglePasswordVisibility={(e) =>
+            togglePasswordVisibility(e, "confirmPassword")
+          }
+        />
+      )}
+
+      {role && (
+        <Input
+          type="select"
+          name="role"
+          value={formValues.role}
+          roleChange={handleInputChange}
         />
       )}
 
@@ -118,12 +224,6 @@ const Form = ({
         >
           {buttonLabel}
         </Button>
-        <Link
-          href="#"
-          className="text-sm text-gray-600 dark:text-gray-200 hover:text-gray-500"
-        >
-          Mot de Passe oublié ?
-        </Link>
       </div>
     </form>
   );

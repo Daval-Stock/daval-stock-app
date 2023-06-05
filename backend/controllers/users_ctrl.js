@@ -272,6 +272,17 @@ const unblockUser = asyncHandler(async (req, res) => {
   }
 });
 
+const verifyIfTokenIsValid = asyncHandler(async (req, res) => {
+  const { token } = req.params;
+  const decoded = jwt.verify(token, process.env.JWT_SECRET);
+  const user = await User.findById(decoded.id);
+  if (!user) {
+    throw new Error("Invalid Token");
+  }
+  res.json(user);
+  // console.log(user);
+});
+
 module.exports = {
   createUser,
   getAllUsers,
@@ -286,4 +297,5 @@ module.exports = {
   updatePwdUser,
   userImage,
   logout,
+  verifyIfTokenIsValid,
 };

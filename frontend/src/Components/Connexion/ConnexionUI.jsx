@@ -12,6 +12,8 @@ import Container from "../Container";
 import Form from "../Form";
 import FormCard from "../FormCard";
 import Layout from "../Layout";
+import { postLoginUser } from "../../api/authentication";
+import { toast } from "react-toastify";
 
 export default function ConnexionUI() {
   // State pour stocker les valeurs du formulaire et les erreurs
@@ -37,28 +39,17 @@ export default function ConnexionUI() {
   };
 
   // Fonction appelée lorsque le formulaire est soumis
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
       // Envoyer les données du formulaire au serveur
-      axiosInstance
-        .post("users/login", {
-          email: formValues.email,
-          password: formValues.password,
-        })
-        .then((response) => {
-          const { token } = response.data;
-          localStorage.setItem("authToken", token);
-          navigateTo("/");
-        })
-        .catch((error) => {
-          let errors = {};
-
-          errors.serverError = "Email ou mot de passe incorrect";
-          setFormErrors(errors);
-          console.log("Axios error: ", error);
-          console.log("Axios error response: ", error.response);
-        });
+      const { data, error } = await postLoginUser(formValues);
+      if (data) {
+        navigateTo("/");
+      }
+      if (error) {
+        toast.error(error);
+      }
     }
   };
 

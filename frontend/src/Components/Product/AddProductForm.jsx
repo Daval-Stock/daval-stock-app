@@ -1,26 +1,29 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "../Navbar/Navbar";
-import FooterLink from "../Footer/FooterLink";
-import axiosInstance from "../axiosInstance";
-import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import axiosInstance from "../axiosInstance";
+import Container from "./../Container";
+import Layout from "./../Layout";
+import FormCard from "./../FormCard";
+import Form from "./../Form";
+import Loader from "../Loader";
+import logoDaval from "../../assets/logoDaval.png";
+import { toast } from "react-toastify";
 
 export default function AddProductForm() {
-  const [categories, setCategories] = useState([]);
-  const [productName, setProductName] = useState("");
-  const [quantite, setQuantite] = useState(0);
-  const [price, setPrice] = useState(0);
-  const [categorie, setCategorie] = useState("");
-  const [productImage, setProductImage] = useState(null);
-  const [description, setDescription] = useState("");
-  const navigateTo = useNavigate();
-
-  const [formErrors, setFormErrors] = useState({
+  const [formValues, setFormValues] = useState({
     productName: "",
-    quantite: "",
-    price: "",
-    categories: "",
+    quantity: undefined,
+    price: undefined,
+    category: "",
+    description: "",
+    site: "",
   });
+  const [categories, setCategories] = useState([]);
+  const [productImage, setProductImage] = useState(null);
+  const [sites, setSites] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const navigateTo = useNavigate();
 
   function generateProductSKU() {
     const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -44,34 +47,36 @@ export default function AddProductForm() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
+    console.log("Form values:", formValues);
     const formData = new FormData();
-    formData.append("name", productName);
-    formData.append("quantity", quantite);
-    formData.append("price", price);
-    formData.append("description", description);
-    console.log(categorie);
-    formData.append("categoryName", categorie);
-    // formData.append("siteName", site);
+    formData.append("name", formValues.productName);
+    formData.append("quantity", formValues.quantity);
+    formData.append("price", formValues.price);
+    formData.append("description", formValues.description);
+    formData.append("categoryName", formValues.category);
     formData.append("sku", generateProductSKU());
     if (productImage) {
       formData.append("image", productImage); // Ajoutez l'image avec le bon nom de champ ici
     }
+
     axiosInstance
       .post("/products/createProduct", formData)
       .then((response) => {
         navigateTo("/Product");
+        toast.success("Produit ajouté avec succès");
       })
       .catch((error) => {
         console.log("Axios error:", error);
         console.log("Axios error response:", error.response);
         if (error.response && error.response.data) {
           console.log("Erreur: ", error);
-          formErrors.message = "Cet produit existe déjà!";
-          setFormErrors({ ...formErrors, ...error.response.data.errors });
+          toast.error(
+            "Cet produit existe déjà! " + error.response.data.message
+          );
         }
       });
   };
+
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     console.log("Image:", event.target.files[0]);
@@ -85,16 +90,75 @@ export default function AddProductForm() {
       .get("/categories/")
       .then((Response) => {
         setCategories(Response.data);
+        setIsLoading(false);
       })
       .catch((error) => {
         console.log("Erreur lors de la récupération des catégories :", error);
+        setIsLoading(false);
       });
-
-
   }, []);
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setFormValues({ ...formValues, [name]: value });
+  };
+
   return (
     <>
-      <Navbar />
+      <Layout>
+        <Container>
+          {isLoading ? (
+            <Loader />
+          ) : (
+            <FormCard>
+              <div className="px-6 py-4">
+                <div className="flex justify-center mx-auto">
+                  <Link to="/">
+                    <img className="w-auto h-7 sm:h-8" src={logoDaval} alt="" />
+                  </Link>
+                </div>
+
+                <h3 className="mt-3 text-xl font-medium text-center text-gray-600 dark:text-gray-200">
+                  Ajout d'un nouveau produit
+                </h3>
+
+                <p className="mt-1 text-center text-gray-500 dark:text-gray-400">
+                  Remplissez le formulaire en renseignant toutes les
+                  informations !
+                </p>
+
+                <Form
+                  formValues={formValues}
+                  handleSubmit={handleSubmit}
+                  productName={true}
+                  quantity={true}
+                  price={true}
+                  handleImageChange={handleImageChange}
+                  handleInputChange={handleInputChange}
+                  category={true}
+                  description={true}
+                  buttonLabel="Enregistrer"
+                  categories={categories}
+                  dropFile={true}
+                  method="post"
+                  encType="multipart/form-data"
+                />
+              </div>
+
+              {/* <div className="flex items-center justify-center rounded-b-lg py-4 text-center bg-gray-200 dark:bg-gray-800">
+                <Link
+                  to="/ConnexionUI"
+                  className="mx-2 text-sm font-bold text-blue-500 dark:text-blue-400 hover:underline"
+                >
+                  Se connecter
+                </Link>
+              </div> */}
+            </FormCard>
+          )}
+        </Container>
+      </Layout>
+
+      {/* <Navbar />
       <div className="isolate bg-white dark:bg-gray-900 px-6 py-24 sm:py-32 lg:px-8">
         <div
           className="absolute inset-x-0 top-[-10rem] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[-20rem]"
@@ -127,7 +191,7 @@ export default function AddProductForm() {
                     <div className="mt-2">
                       <input
                         type="text"
-                        name="product-name"
+                        name="productName"
                         value={productName}
                         onChange={(e) => setProductName(e.target.value)}
                         className="block w-full dark:text-gray-400 rounded-md border-0  py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 dark:bg-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-200 sm:text-sm sm:leading-6"
@@ -273,7 +337,7 @@ export default function AddProductForm() {
         </div>
       </div>
 
-      <FooterLink />
+      <FooterLink /> */}
     </>
   );
 }
