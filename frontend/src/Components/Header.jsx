@@ -8,32 +8,25 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { FaUserCircle } from "react-icons/fa";
 import axiosInstance from "./axiosInstance";
+import { getUserProfile } from "../api/authentication";
 
 const Header = ({ children, className }) => {
   const router = useNavigate();
-  const handleLogout = () => {
-    //Handle logout  in the future
-  };
+
   const authToken = localStorage.getItem("authToken");
   const [userProfile, setUserProfile] = useState(null);
 
   useEffect(() => {
-    if (authToken) {
-      fetchUserProfile();
-    } else {
-      navigate("/ConnexionUI");
+    async function fetchData() {
+      if (authToken) {
+        const { data } = await getUserProfile();
+        setUserProfile(data);
+      } else {
+        // router("/ConnexionUI");
+      }
     }
+    fetchData();
   }, [authToken]);
-  const fetchUserProfile = async () => {
-    axiosInstance
-      .get("/users/profile")
-      .then((response) => {
-        setUserProfile(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
 
   return (
     <div
@@ -74,23 +67,18 @@ const Header = ({ children, className }) => {
         </div>
         <div className="flex gap-x-4 items-center justify-between">
           {authToken ? (
-            <div className="flex ">
+            <div className="flex items-center gap-3">
               <Link to="/profile">
                 <div className="flex items-center gap-x-3 mr-3">
                   <div className="">{userProfile?.name}</div>
-
                   <div className="">
                     <FaUserCircle size={35} />
                   </div>
                 </div>
               </Link>
-
               <div className="">
                 <Link to="/LogoutUI">
-                  <Button
-                    onClick={() => {}}
-                    className="bg-transparent bg-white px-6 py-2 font-medium"
-                  >
+                  <Button className="bg-transparent bg-white px-6 py-2 font-medium">
                     Logout
                   </Button>
                 </Link>

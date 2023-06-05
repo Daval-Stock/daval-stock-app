@@ -33,8 +33,8 @@ const Sidebar = ({ children }) => {
   const links = useMemo(() => [
     {
       label: "Tableau de bord",
-      active: pathname === "/Dashboard",
-      href: "/Dashboard",
+      active: pathname === "/Trash",
+      href: "/Trash",
       icon: GoGraph,
     },
     {
@@ -58,7 +58,7 @@ const Sidebar = ({ children }) => {
   ]);
   return (
     <div className="flex h-full">
-      <div className="hidden md:flex flex-col gap-y-2 text-white bg-black h-full w-[300px] p-2">
+      <div className="hidden md:flex flex-col gap-y-2 text-white bg-black h-auto w-[300px] p-2">
         <Box>
           <div className="flex flex-col gap-y-4 px-5 py-5">
             <Link to="/">
@@ -81,7 +81,7 @@ const Sidebar = ({ children }) => {
           </div>
         </Box>
       </div>
-      <main className="h-full flex-1 overflow-y-auto py-2">{children}</main>
+      <main className="h-full flex-1 py-2">{children}</main>
     </div>
   );
 };

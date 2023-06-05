@@ -2,7 +2,6 @@ import { twMerge } from "tailwind-merge";
 import { clsx } from "clsx";
 
 const Box = ({ children, className }) => {
-  console.log(className);
   return (
     <div
       className={twMerge(

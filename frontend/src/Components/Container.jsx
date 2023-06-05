@@ -8,7 +8,7 @@ const Container = ({ children, className }) => {
 
   return (
     <>
-      <div className={clsx(className, "mx-2 min-h-lg p-30 sm:py-16 lg:py-50")}>
+      <div className={clsx(className, "mx-1 min-h-lg p-10 sm:py-16 lg:py-50")}>
         {children}
       </div>
     </>

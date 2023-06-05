@@ -9,6 +9,8 @@ import FormCard from "../FormCard";
 import Form from "../Form";
 import Layout from "../Layout";
 import { toast } from "react-toastify";
+import { postRegisterUser } from "../../api/authentication";
+import Loader from "../Loader";
 
 export default function RegisterUI() {
   const [formValues, setFormValues] = useState({
@@ -27,11 +29,9 @@ export default function RegisterUI() {
     password: "",
     confirmPassword: "",
   });
-  const [passwordComplexity, setPasswordComplexity] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [site, setSite] = useState("");
   const [sites, setSites] = useState([]);
   const [profileImage, setProfileImage] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const navigateTo = useNavigate();
 
@@ -89,14 +89,17 @@ export default function RegisterUI() {
       .get("/sites/")
       .then((Response) => {
         setSites(Response.data);
+        setIsLoading(false);
       })
       .catch((error) => {
         console.log("Erreur lors de la récupération des sites :", error);
+        setIsLoading(false);
       });
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     if (validateForm()) {
       const formData = new FormData();
       formData.append("name", formValues.username);
@@ -109,22 +112,16 @@ export default function RegisterUI() {
         formData.append("image", profileImage); // Ajoutez l'image avec le bon nom de champ ici
       }
 
-      axiosInstance
-        .post("users/register", formData)
-        .then((response) => {
-          toast.success("Votre compte a été créé avec succès");
-          navigateTo("/");
-        })
-        .catch((error) => {
-          console.log("Axios error:", error);
-          console.log("Axios error response:", error.response);
-          if (error.response && error.response.data) {
-            console.log("Erreur: ", error);
-            formErrors.message = "Cet utilisateur existe déjà!";
-            toast.error(error.response.data.message);
-            setFormErrors({ ...formErrors, ...error.response.data.errors });
-          }
-        });
+      const { data, error } = await postRegisterUser(formData);
+      if (data) {
+        toast.success("Compte créé avec succès");
+        navigateTo("/");
+        setIsLoading(false);
+      }
+      if (error) {
+        toast.error("Erreur lors de la création du compte");
+        setIsLoading(false);
+      }
     }
   };
 
@@ -140,9 +137,6 @@ export default function RegisterUI() {
     } else {
       setPasswordComplexity("weak");
     }
-  };
-  const togglePasswordVisibility = () => {
-    setShowPassword((prevState) => !prevState);
   };
 
   const handleInputChange = (event) => {
@@ -164,56 +158,59 @@ export default function RegisterUI() {
   return (
     <Layout>
       <Container>
-        <FormCard>
-          <div className="px-6 py-4">
-            <div className="flex justify-center mx-auto">
-              <Link to="/">
-                <img className="w-auto h-7 sm:h-8" src={logoDaval} alt="" />
-              </Link>
+        {isLoading ? (
+          <Loader />
+        ) : (
+          <FormCard>
+            <div className="px-6 py-4">
+              <div className="flex justify-center mx-auto">
+                <Link to="/">
+                  <img className="w-auto h-7 sm:h-8" src={logoDaval} alt="" />
+                </Link>
+              </div>
+
+              <h3 className="mt-3 text-xl font-medium text-center text-gray-600 dark:text-gray-200">
+                Créer un compte
+              </h3>
+
+              <p className="mt-1 text-center text-gray-500 dark:text-gray-400">
+                Remplissez le formulaire en renseignant toutes les informations
+                !
+              </p>
+              <Form
+                formValues={formValues}
+                handleSubmit={handleSubmit}
+                name={true}
+                email={true}
+                mobile={true}
+                handleImageChange={handleImageChange}
+                handleInputChange={handleInputChange}
+                password={true}
+                confirmPassword={true}
+                buttonLabel="S'inscrire"
+                errors={formErrors}
+                site={true}
+                sites={sites}
+                dropFile={true}
+                method="post"
+                encType="multipart/form-data"
+              />
             </div>
 
-            <h3 className="mt-3 text-xl font-medium text-center text-gray-600 dark:text-gray-200">
-              Créer un compte
-            </h3>
+            <div className="flex items-center justify-center rounded-b-lg py-4 text-center bg-gray-200 dark:bg-gray-800">
+              <span className="text-sm text-gray-600 dark:text-gray-200">
+                Vous avez déjà un compte?{" "}
+              </span>
 
-            <p className="mt-1 text-center text-gray-500 dark:text-gray-400">
-              Remplissez le formulaire en renseignat toutes les informations !
-            </p>
-            {formErrors.serverError}
-            <Form
-              formValues={formValues}
-              handleSubmit={handleSubmit}
-              name={true}
-              email={true}
-              mobile={true}
-              handleInputChange={handleInputChange}
-              password={true}
-              confirmPassword={true}
-              buttonLabel="S'inscrire"
-              errors={formErrors}
-              site={true}
-              setSite={setSite}
-              sites={sites}
-              dropFile={true}
-              method="post"
-              encType="multipart/form-data"
-            />
-          </div>
-
-          <div className="flex items-center justify-center rounded-b-lg py-4 text-center bg-gray-200 dark:bg-gray-800">
-            <span className="text-sm text-gray-600 dark:text-gray-200">
-              Vous avez déjà un compte?{" "}
-            </span>
-
-            <Link
-              to="/ConnexionUI"
-              href="#"
-              className="mx-2 text-sm font-bold text-blue-500 dark:text-blue-400 hover:underline"
-            >
-              Se connecter
-            </Link>
-          </div>
-        </FormCard>
+              <Link
+                to="/ConnexionUI"
+                className="mx-2 text-sm font-bold text-blue-500 dark:text-blue-400 hover:underline"
+              >
+                Se connecter
+              </Link>
+            </div>
+          </FormCard>
+        )}
       </Container>
     </Layout>
   );
