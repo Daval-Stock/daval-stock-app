@@ -94,7 +94,7 @@ function Trashboard() {
                 <PieChart width={400} height={500}>
                   <Pie
                     data={data}
-                    cx={200}
+                    cx={300}
                     cy={200}
                     labelLine={false}
                     label={({ name, percent }) =>
@@ -114,10 +114,11 @@ function Trashboard() {
                   <Tooltip />
                 </PieChart>
               </div>
-              <div>
+             
+            </div>
+             <div>
                 <StockStatus />
               </div>
-            </div>
           </div>
         </div>
       </Container>
