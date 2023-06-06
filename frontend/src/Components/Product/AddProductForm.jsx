@@ -9,6 +9,7 @@ import Loader from "../Loader";
 import logoDaval from "../../assets/logoDaval.png";
 import { toast } from "react-toastify";
 
+
 export default function AddProductForm() {
   const [formValues, setFormValues] = useState({
     productName: "",
@@ -17,6 +18,7 @@ export default function AddProductForm() {
     category: "",
     description: "",
     site: "",
+    ExpirationDate:Date,
   });
   const [categories, setCategories] = useState([]);
   const [productImage, setProductImage] = useState(null);
@@ -52,6 +54,7 @@ export default function AddProductForm() {
     formData.append("name", formValues.productName);
     formData.append("quantity", formValues.quantity);
     formData.append("price", formValues.price);
+    formData.append("ExpirationDate",formValues.ExpirationDate);
     formData.append("description", formValues.description);
     formData.append("categoryName", formValues.category);
     formData.append("sku", generateProductSKU());
@@ -133,6 +136,7 @@ export default function AddProductForm() {
                   productName={true}
                   quantity={true}
                   price={true}
+                  ExpirationDate={true}
                   handleImageChange={handleImageChange}
                   handleInputChange={handleInputChange}
                   category={true}

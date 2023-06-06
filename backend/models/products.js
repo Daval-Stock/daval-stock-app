@@ -51,6 +51,11 @@ let productSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Site",
     },
+    ExpirationDate: {
+      type: Date,
+      required: false,
+    }
+    ,
     supplier: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",

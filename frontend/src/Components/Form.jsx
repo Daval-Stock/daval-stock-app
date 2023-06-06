@@ -20,6 +20,7 @@ const Form = ({
   confirmPassword,
   site,
   sites,
+  ExpirationDate,
   role,
   name,
   buttonLabel,
@@ -81,10 +82,27 @@ const Form = ({
           className=""
           type="number"
           name="quantity"
-          placeholder="Nombre de produits"
+          placeholder="Quantité du produit"
           value={formValues.quantity}
           onChange={handleInputChange}
         />
+      )}
+      
+      {ExpirationDate && (
+        <div className="flex items-center gap-2" >
+        <label htmlFor="ExpirationDate" className="px-6">
+          Date d'expiration: 
+       
+        </label>
+           <Input
+          className=""
+          type="date"
+          name="ExpirationDate"
+          placeholder="Date d'expiration"
+          value={formValues.ExpirationDate}
+          onChange={handleInputChange}
+        />
+        </div>
       )}
 
       {category && (
