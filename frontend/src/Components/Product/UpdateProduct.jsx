@@ -1,239 +1,284 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate, useLocation, Link } from "react-router-dom";
-import { TextField, Button, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import axiosInstance from "../axiosInstance";
 import Navbar from "../Navbar/Navbar";
-import FooterLink from "../Footer/FooterLink";
-import logoDaval from "../../assets/logoDaval.png";
-import Container from "../Container";
-import Layout from "../Layout";
-import Loader from "../Loader";
-import FormCard from "../FormCard";
-import Form from "../Form";
-import { toast } from "react-toastify";
 
-export default function UpdateUser() {
-  const location = useLocation();
-  const user = location.state;
-  const [isLoading, setIsLoading] = useState(true);
-  const [profileImage, setProfileImage] = useState(null);
-  const navigateTo = useNavigate();
-  const [passwordComplexity, setPasswordComplexity] = useState("");
-  const [role, setRole] = useState(user?.role);
-  const [site, setSite] = useState(user?.site?.name);
-  const [sites, setSites] = useState([]);
-  const [formValues, setFormValues] = useState({
-    name: user?.name,
-    email: user?.email,
-    mobile: user?.mobile,
-    site: user?.site?.name,
-    role: role,
-    password: "",
-    confirmPassword: "",
-  });
-  const [formErrors, setFormErrors] = useState({
-    name: "",
-    email: "",
-    mobile: "",
-    password: "",
-    confirmPassword: "",
-  });
+export default function UpdateProduct() {
+  // const { id } = useParams();
+  // const location = useLocation();
+  // const product = location.state;
+  // const [productName, setProductName] = useState("");
+  // const [quantite, setQuantite] = useState(0);
+  // const [price, setPrice] = useState(0);
+  // const [categorie, setCategorie] = useState("");
+  // const [productImage, setProductImage] = useState("");
+  // const [description, setDescription] = useState("");
+  // const [isAdmin, setIsAdmin] = useState(user?.role === "admin" ? true : false);
+  // const [formValues, setFormValues] = useState({
+  //     userName: product?.user?.name,
+  //     productName: product?.productName,
+  //     category: product?.category,
+  //     quantity: product?.quantity,
+  //     price: product?.price,
+  //     description: product?.description,
+  // })
+  // const [formErrors, setFormErrors] = useState({
+  //     productName:"",
+  //     category:"",
+  //     quantity:"",
+  //     price:"",
+  //     description:"",
+  //   });
 
-  const validateForm = () => {
-    let errors = {};
-    let isValid = true;
+  //   const validateForm = () => {
+  //     let errors = {};
+  //     let isValid = true;
 
-    if (!formValues.username) {
-      errors.username = "Le nom d'utilisateur est requis";
-      isValid = false;
-    } else if (formValues.username.length < 4) {
-      errors.username =
-        "Le nom d'utilisateur doit contenir au moins 4 caractères!";
-      isValid = false;
-    }
-    if (!formValues.email) {
-      errors.email = "L'adresse e-mail est requise";
-      isValid = false;
-    }
+  //     if (!formValues.productName) {
+  //         errors.productName = "Le nom du produit est requis";
+  //         isValid = false;
+  //       } else if (formValues.productName.length < 3) {
+  //         errors.productName =
+  //           "Le nom du produit doit contenir au moins 3 caractères!";
+  //         isValid = false;
+  //     }
+  //     if (!formValues.quantity) {
+  //         errors.quantity = "La quantité est requise";
+  //         isValid = false;
+  //       }else if (formValues.quantity == 0){
+  //         errors.quantity = "La quantité ne peut pas être nulle";
+  //         isValid = false;
+  //       }
+  //       if (!formValues.price) {
+  //         errors.price = "Le prix est requis";
+  //         isValid = false;
+  //       }else if (formValues.price == 0){
+  //         errors.price = "Le prix ne peut pas être nul";
+  //         isValid = false;
+  //       }
+  //       if (!formValues.category) {
+  //         errors.category = "Veuillez choisir une catégorie";
+  //         isValid = false;
+  //       }
+  //       if (!formValues.description) {
+  //         errors.description = "Veuillez mettre la description du produit";
+  //         isValid = false;
+  //       }
 
-    if (!formValues.mobile) {
-      errors.mobile = "Le numéro de téléphone mobile est requis";
-      isValid = false;
-    } else if (!/^(\+33|0)[1-9](\d{2}){4}$/.test(formValues.mobile)) {
-      errors.mobile = "Le numéro de téléphone mobile est invalide";
-      isValid = false;
-    }
+  //     setFormErrors(errors);
+  //     return isValid;
+  // }
 
-    if (!formValues.password) {
-      //errors.password = "Le mot de passe est requis";
-      //isValid = false;
-    } else if (
-      !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(
-        formValues.password
-      )
-    ) {
-      errors.password =
-        "Le mot de passe doit contenir au moins 8 caractères, dont une majuscule, une minuscule, un chiffre et un caractère spécial (@$!%*?&)";
-      //isValid = false;
-    }
+  // const handleSubmit = (e) => {
+  //     e.preventDefault();
+  //     if (validateForm()) {
+  //       const formData = new FormData();
+  //       formData.append("productName", formValues.productName);
+  //       formData.append("category", formValues.category);
+  //       formData.append("quantity", formValues.quantity);
+  //       formData.append("price", formValues.price);
+  //       formData.append("description", formValues.description);
 
-    if (formValues.password !== formValues.confirmPassword) {
-      errors.confirmPassword = "Les mots de passe ne correspondent pas";
-      //isValid = false;
-    }
+  //       if (productImage) {
+  //         formData.append("productImage", productImage);
+  //       }
 
-    setFormErrors(errors);
-    return isValid;
-  };
+  //       axiosInstance
+  //         .put(`/products/${id}`, formData)
+  //         .then((response) => {
+  //             console.log("Produit mis à jour avec succès")
+  //         })
+  //         .catch((error) => {
+  //             console.error("Erreur lors de la mise à jour du produit")
+  //         });
+  //     }
+  // }
 
-  useEffect(() => {
-    axiosInstance
-      .get("/sites/")
-      .then((Response) => {
-        setSites(Response.data);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        setIsLoading(false);
-        console.log("Erreur lors de la récupération des sites :", error);
-      });
-  }, []);
+  // const handleInputChange = (event) => {
+  //     const { name, value } = event.target;
+  //     setFormValues({ ...formValues, [name]: value });
+  // };
 
-  const handleSubmit = (e) => {
-    console.log(formValues);
-    e.preventDefault();
-    if (true) {
-      const formData = new FormData();
-      const data = {
-        name: formValues.name,
-        email: formValues.email,
-        mobile: formValues.mobile,
-        siteName: formValues.site,
-        password: formValues.password,
-        role: formValues.role,
-      };
-      formData.append("name", formValues.name);
-      formData.append("email", formValues.email);
-      formData.append("mobile", formValues.mobile);
-      formData.append("siteName", formValues.site);
-      formData.append("password", formValues.password);
+  // const handleCategoryChange = (event) => {
+  //     const { name, value } = event.target;
+  //     setFormValues({ ...formValues, [name]: value });
+  // };
 
-      if (profileImage) {
-        data.append("profileImage", profileImage);
-        formData.append("profileImage", profileImage);
-      }
-      console.log("first name :", formValues.name);
+  // useEffect(() => {
+  //     axiosInstance
+  //     .get("/products/${id}")
+  //     .then(() => {
+  //         setProductName(Response.data.nomProduit);
+  //         setQuantite(Response.data.quantite);
+  //         setPrice(Response.data.prix);
+  //         setCategorie(Response.data.categorie);
+  //         setImage(Response.data.image);
+  //         setDescription(Response.data.description);
+  //     })
+  //     .catch((error) => {
+  //         console.log("erreur de la récupération des détails du produit")
+  //     });
+  // }, [id]);
 
-      axiosInstance
-        .put("users/edit-user/" + user?._id, data)
-        .then((response) => {
-          toast.success("Utilisateur mis à jour avec succès");
-          navigateTo("/UsersUI");
-        })
-        .catch((error) => {
-          console.log("Axios error:", error);
-          console.log("Axios error response:", error.response);
-          if (error.response && error.response.data) {
-            formErrors.message = "Cet utilisateur existe déjà!";
-            setFormErrors({ ...formErrors, ...error.response.data.errors });
-          }
-        });
-    }
-  };
-
-  const updatePasswordComplexity = (password) => {
-    if (
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(
-        password
-      )
-    ) {
-      setPasswordComplexity("strong");
-    } else if (/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/.test(password)) {
-      setPasswordComplexity("medium");
-    } else {
-      setPasswordComplexity("weak");
-    }
-  };
-
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setFormValues({ ...formValues, [name]: value });
-  };
-
-  const handleImageChange = (event) => {
-    const file = event.target.files[0];
-    console.log("Image:", event.target.files[0]);
-    if (file) {
-      setProfileImage(file);
-    }
-  };
   return (
-    <Layout>
-      <Container>
-        {isLoading ? (
-          <Loader />
-        ) : (
-          <FormCard>
-            <div className="px-6 py-4">
-              <div className="flex justify-center mx-auto">
-                <Link to="/">
-                  <img className="w-auto h-7 sm:h-8" src={logoDaval} alt="" />
-                </Link>
+    <>
+      {/* <Navbar/>
+        <div className="isolate bg-white dark:bg-gray-900 px-6 py-24 sm:py-32 lg:px-8">
+        <div
+          className="absolute inset-x-0 top-[-10rem] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[-20rem]"
+          aria-hidden="true"
+        >
+          <div
+            className="relative left-1/2 -z-10 aspect-[1155/678] w-[36.125rem] max-w-none -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-40rem)] sm:w-[72.1875rem]"
+            style={{
+              clipPath:
+                "polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)",
+            }}
+          />
+        </div>
+        <div className="mx-auto max-w-2xl">
+          <h3 className="text-xl text-center dark:text-gray-100 font-bold tracking-tight text-gray-800 sm:text-2xl">
+            Modifier le Produit
+          </h3>
+          <form onSubmit={handleSubmit}>
+            <div className="space-y-12">
+              <div className=" pb-12">
+                <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                  
+                    <div className="sm:col-span-3">
+                        <label
+                        htmlFor="product-name"
+                        className="block text-sm dark:text-gray-100 font-medium leading-6 text-gray-900"
+                        >
+                        Nom du Produit
+                        </label>
+                        <div className="mt-2">
+                        <input
+                            type="text"
+                            name="product-name"
+                            value={productName}
+                            onChange={handleInputChange}
+                            className="block w-full dark:text-gray-400 rounded-md border-0  py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 dark:bg-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-200 sm:text-sm sm:leading-6"
+                        />
+                        </div>
+                    </div>
+
+                  <div className="sm:col-span-3">
+                    <label
+                      htmlFor="category"
+                      className="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-100"
+                    >
+                      Quantité
+                    </label>
+                    <div className="mt-2">
+                      <input
+                        type="text"
+                        name="quantity"
+                        value={quantite}
+                        onChange={handleInputChange}
+                        className="block w-full dark:bg-gray-900 dark:text-gray-400 text-center rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm sm:leading-6"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="sm:col-span-3">
+                    <label
+                      htmlFor="price"
+                      className="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-100"
+                    >
+                      Prix du produit
+                    </label>
+                    <div className="mt-2">
+                      <input
+                        type="text"
+                        name="price"
+                        value={price}
+                        onChange={handleInputChange}
+                        className="block dark:bg-gray-900 dark:text-gray-400 text-center w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm sm:leading-6"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="sm:col-span-3">
+                    <label
+                      htmlFor="category"
+                      className="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-100"
+                    >
+                      Catégorie
+                    </label>
+                    <div className="mt-2">
+                      <select
+                        name="category"
+                        value={categorie}
+                        onChange={handleCategoryChange}
+                        className="block w-full text-center dark:bg-gray-900 dark:text-gray-400 rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                      >
+                        <option> choisir une catégorie</option>
+                        {categories.map(category => (
+                            <option
+                            key={category.id}
+                            value={category.id}>{category.name}</option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="col-span-full">
+                  <label
+                htmlFor="dropzone-file"
+                className="flex items-center px-3 py-3 mx-auto mt-6 text-center bg-white border-2 border-dashed rounded-lg cursor-pointer dark:border-gray-600 dark:bg-gray-900"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-6 h-6 text-gray-300 dark:text-gray-500"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
+                  />
+                </svg>
+
+                <h2 className="mx-3 text-gray-400">Photo du produit</h2>
+
+                <input id="dropzone-file" type="file" className="hidden" />
+              </label>
+                  </div>
+
+                  <div className="col-span-full">
+                    <label
+                      htmlFor="about"
+                      className="block text-sm font-medium leading-6 text-gray-900"
+                    >
+                      Description
+                    </label>
+                    <div className="mt-2">
+                      <textarea
+                        id="description"
+                        name="description"
+                        rows={3}
+                        className="block w-full rounded-md text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:py-1.5 sm:text-sm sm:leading-6"
+                        defaultValue={""}
+                      />
+                    </div>
+                  </div>
+                  
+                </div>
+                <div class="mt-6 flex items-center justify-end gap-x-6">
+                  <Link to="/Product">
+                    <button type="button" class="text-sm font-semibold leading-6 text-gray-900">Annuler</button>
+                  </Link>
+                  <button type="submit" class="rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">Enregistrer</button>
+                </div>
               </div>
-
-              <h3 className="mt-3 text-xl font-medium text-center text-gray-600 dark:text-gray-200">
-                Mettre à jour un compte
-              </h3>
-
-              <p className="mt-1 text-center text-gray-500 dark:text-gray-400">
-                Remplissez le formulaire en renseignant les informations !
-              </p>
-              {formErrors.serverError}
-              <Form
-                formValues={formValues}
-                handleSubmit={handleSubmit}
-                name={true}
-                email={true}
-                mobile={true}
-                handleImageChange={handleImageChange}
-                handleInputChange={handleInputChange}
-                password={true}
-                confirmPassword={true}
-                buttonLabel="Modifier"
-                errors={formErrors}
-                site={true}
-                setSite={setSite}
-                setRole={setRole}
-                role={true}
-                sites={sites}
-                dropFile={true}
-                method="post"
-                encType="multipart/form-data"
-              />
             </div>
-          </FormCard>
-        )}
-
-        {/* <div className="relative">
-          <div className="flex center p-3">
-            <label htmlFor="isAdmin" className="px-6">
-              Rôle:{" "}
-            </label>
-
-            <select
-              value={role}
-              onChange={(e) => {
-                setRole(e.target.value);
-              }}
-              className="relative appearance-none inline-block h-[30px] w-[120px] cursor-pointer rounded-full bg-slate-300 shadow-md px-5 transition-all"
-            >
-              <option value="admin">Admin</option>
-              <option value="user">User</option>
-              <option value="supplier">Supplier</option>
-            </select>
-          </div>
-        </div> */}
-      </Container>
-    </Layout>
+          </form>
+    </div>
+    </div> */}
+    </>
   );
 }

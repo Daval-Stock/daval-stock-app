@@ -1,17 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import Input from "./Input";
 import { Link } from "react-router-dom";
 import Button from "./Button";
 
 const Form = ({
-  formValues,
   handleSubmit,
-  productName,
-  quantity,
-  price,
-  description,
-  category,
-  categories,
   mobile,
   email,
   handleInputChange,
@@ -19,8 +12,8 @@ const Form = ({
   password,
   confirmPassword,
   site,
+  setSite,
   sites,
-  role,
   name,
   buttonLabel,
   encType,
@@ -28,17 +21,6 @@ const Form = ({
   method,
   errors,
 }) => {
-  const [showPassword, setShowPassword] = useState({
-    password: false,
-    confirmPassword: false,
-  });
-
-  const togglePasswordVisibility = (e, name) => {
-    setShowPassword({
-      ...showPassword,
-      [name]: !showPassword[name],
-    });
-  };
   return (
     <form onSubmit={handleSubmit} encType={encType} method={method}>
       {name && (
@@ -48,107 +30,79 @@ const Form = ({
           name="username"
           placeholder="Nom d'utilisateur"
           ariaLabel="username"
-          value={formValues.name}
+          value={name}
           onChange={handleInputChange}
           error={errors.email}
-        />
-      )}
-
-      {productName && (
-        <Input
-          className=""
-          type="text"
-          name="productName"
-          placeholder="Libellé du produit"
-          value={formValues.productName}
-          onChange={handleInputChange}
-        />
-      )}
-
-      {price && (
-        <Input
-          className=""
-          type="number"
-          name="price"
-          placeholder="Prix du produit"
-          value={formValues.price}
-          onChange={handleInputChange}
-        />
-      )}
-
-      {quantity && (
-        <Input
-          className=""
-          type="number"
-          name="quantity"
-          placeholder="Nombre de produits"
-          value={formValues.quantity}
-          onChange={handleInputChange}
-        />
-      )}
-
-      {category && (
-        <div className="flex items-center gap-2">
-          <label htmlFor="category" className="px-6">
-            Categories:{" "}
-          </label>
-          <div className="sm:col-span-3">
-            <select
-              name="category"
-              value={formValues.category}
-              onChange={handleInputChange}
-              className="block w-[700px] mt-4 text-center bg-gray-900text-gray-400 rounded-md border-0 py-3 shadow-sm ring-1 ring-inset text-gray-600 bg-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:max-w-xs sm:text-sm sm:leading-6"
-            >
-              <option> choisir une catégorie</option>
-              {categories.map((categorie) => (
-                <option key={categorie?._id} value={categorie?.name}>
-                  {categorie?.name}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-      )}
-
-      {email && (
-        <Input
-          className=""
-          type="email"
-          name="email"
-          placeholder="Adresse Email"
-          ariaLabel="Email Address"
-          value={formValues.email}
-          onChange={handleInputChange}
-          error={errors.email}
-        />
-      )}
-
-      {mobile && (
-        <Input
-          className=""
-          type="text"
-          name="mobile"
-          placeholder="Téléphone"
-          value={formValues.mobile}
-          onChange={handleInputChange}
-          error={errors.mobile}
         />
       )}
 
       {dropFile && (
-        <Input type="file" onChange={handleImageChange} name="image" />
+        <label
+          htmlFor="dropzone-file"
+          className="flex items-center px-3 py-3 mx-auto mt-6 text-center bg-white border-2 border-dashed rounded-lg cursor-pointer dark:border-gray-600 dark:bg-gray-900"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-6 h-6 text-gray-300 dark:text-gray-500"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
+            />
+          </svg>
+
+          <h2 className="mx-3 text-gray-400">Photo profil</h2>
+
+          <input
+            id="dropzone-file"
+            type="file"
+            onChange={handleImageChange}
+            className=""
+            name="image"
+          />
+        </label>
       )}
+
+      <Input
+        className=""
+        type="email"
+        name="email"
+        placeholder="Adresse Email"
+        ariaLabel="Email Address"
+        value={email}
+        onChange={handleInputChange}
+        error={errors.email}
+      />
+
+      <Input
+        className=""
+        type="text"
+        name="mobile"
+        placeholder="Téléphone"
+        value={mobile}
+        onChange={handleInputChange}
+        error={errors.mobile}
+      />
+
       {site && (
-        <div className="flex items-center gap-2">
-          <label htmlFor="isAdmin" className="px-6">
-            Site:{" "}
+        <div className="sm:col-span-3">
+          <label
+            htmlFor="site"
+            className="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-100"
+          >
+            Site
           </label>
-          <div className="sm:col-span-3">
+          <div className="mt-2">
             <select
               name="site"
-              value={formValues.site}
-              onChange={handleInputChange}
-              className="block w-[700px] mt-4 text-center bg-gray-900text-gray-400 rounded-md border-0 py-3 shadow-sm ring-1 ring-inset text-gray-600 bg-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:max-w-xs sm:text-sm sm:leading-6"
+              value={site}
+              onChange={(e) => setSite(e.target.value)}
+              className="block w-full text-center dark:bg-gray-900 dark:text-gray-400 rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:max-w-xs sm:text-sm sm:leading-6"
             >
               <option> choisir une site</option>
               {sites.map((site) => (
@@ -161,69 +115,40 @@ const Form = ({
         </div>
       )}
 
-      {description && (
-        <Input
-          className=""
-          type="textarea"
-          name="description"
-          placeholder="Description"
-          value={formValues.description}
-          onChange={handleInputChange}
-        />
-      )}
+      <Input
+        className=""
+        type="password"
+        name="password"
+        placeholder="Mot de Passe"
+        aria-label="Password"
+        value={password}
+        onChange={handleInputChange}
+        error={errors.password}
+      />
 
-      {password && (
-        <Input
-          className=""
-          type="password"
-          name="password"
-          placeholder="Mot de Passe"
-          aria-label="Password"
-          value={formValues.password}
-          onChange={handleInputChange}
-          error={errors.password}
-          showPassword={showPassword.password}
-          setShowPassword={setShowPassword}
-          togglePasswordVisibility={(e) =>
-            togglePasswordVisibility(e, "password")
-          }
-        />
-      )}
+      <Input
+        className=""
+        type="password"
+        name="confirmPassword"
+        placeholder="Confirmez le Mot de Passe"
+        value={confirmPassword}
+        onChange={handleInputChange}
+        error={errors.confirmPassword}
+      />
 
-      {confirmPassword && (
-        <Input
-          className=""
-          type="password"
-          name="confirmPassword"
-          placeholder="Confirmez le Mot de Passe"
-          value={formValues.confirmPassword}
-          onChange={handleInputChange}
-          error={errors.confirmPassword}
-          showPassword={showPassword.confirmPassword}
-          setShowPassword={setShowPassword}
-          togglePasswordVisibility={(e) =>
-            togglePasswordVisibility(e, "confirmPassword")
-          }
-        />
-      )}
-
-      {role && (
-        <Input
-          type="select"
-          name="role"
-          value={formValues.role}
-          roleChange={handleInputChange}
-        />
-      )}
-
-      <div className="flex flex-col items-center justify-between gap-y-4 mt-4">
+      <div className="flex items-center justify-between mt-4">
+        <Link
+          href="#"
+          className="text-sm text-gray-600 dark:text-gray-200 hover:text-gray-500"
+        >
+          Mot de Passe oublié ?
+        </Link>
         <Button
+          label={buttonLabel}
           type="submit"
           onClick={() => {}}
           className="px-6 py-2 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-500 rounded-lg hover:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50"
-        >
-          {buttonLabel}
-        </Button>
+        />
       </div>
     </form>
   );

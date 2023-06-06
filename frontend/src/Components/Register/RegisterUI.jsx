@@ -7,10 +7,6 @@ import logoDaval from "../../assets/logoDaval.png";
 import Container from "../Container";
 import FormCard from "../FormCard";
 import Form from "../Form";
-import Layout from "../Layout";
-import { toast } from "react-toastify";
-import { postRegisterUser } from "../../api/authentication";
-import Loader from "../Loader";
 
 export default function RegisterUI() {
   const [formValues, setFormValues] = useState({
@@ -29,9 +25,11 @@ export default function RegisterUI() {
     password: "",
     confirmPassword: "",
   });
+  const [passwordComplexity, setPasswordComplexity] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [site, setSite] = useState("");
   const [sites, setSites] = useState([]);
   const [profileImage, setProfileImage] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
 
   const navigateTo = useNavigate();
 
@@ -89,39 +87,40 @@ export default function RegisterUI() {
       .get("/sites/")
       .then((Response) => {
         setSites(Response.data);
-        setIsLoading(false);
       })
       .catch((error) => {
         console.log("Erreur lors de la récupération des sites :", error);
-        setIsLoading(false);
       });
   }, []);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setIsLoading(true);
     if (validateForm()) {
       const formData = new FormData();
       formData.append("name", formValues.username);
       formData.append("email", formValues.email);
       formData.append("mobile", formValues.mobile);
-      formData.append("siteName", formValues.site);
+      formData.append("siteName", site);
       formData.append("password", formValues.password);
       console.log("formValue: ", formValues);
       if (profileImage) {
         formData.append("image", profileImage); // Ajoutez l'image avec le bon nom de champ ici
       }
 
-      const { data, error } = await postRegisterUser(formData);
-      if (data) {
-        toast.success("Compte créé avec succès");
-        navigateTo("/");
-        setIsLoading(false);
-      }
-      if (error) {
-        toast.error("Erreur lors de la création du compte");
-        setIsLoading(false);
-      }
+      axiosInstance
+        .post("users/register", formData)
+        .then((response) => {
+          navigateTo("/");
+        })
+        .catch((error) => {
+          console.log("Axios error:", error);
+          console.log("Axios error response:", error.response);
+          if (error.response && error.response.data) {
+            console.log("Erreur: ", error);
+            formErrors.message = "Cet utilisateur existe déjà!";
+            setFormErrors({ ...formErrors, ...error.response.data.errors });
+          }
+        });
     }
   };
 
@@ -137,6 +136,9 @@ export default function RegisterUI() {
     } else {
       setPasswordComplexity("weak");
     }
+  };
+  const togglePasswordVisibility = () => {
+    setShowPassword((prevState) => !prevState);
   };
 
   const handleInputChange = (event) => {
@@ -156,62 +158,70 @@ export default function RegisterUI() {
   };
 
   return (
-    <Layout>
-      <Container>
-        {isLoading ? (
-          <Loader />
-        ) : (
-          <FormCard>
-            <div className="px-6 py-4">
-              <div className="flex justify-center mx-auto">
-                <Link to="/">
-                  <img className="w-auto h-7 sm:h-8" src={logoDaval} alt="" />
-                </Link>
-              </div>
+    <Container>
+      <FormCard>
+        <h2 className="text-3xl text-center font-bold tracking-tight text-gray-900 sm:text-4xl">
+          Créer un compte
+        </h2>
+        <p className="mt-2 text-lg text-center leading-8 text-gray-600">
+          Remplissez le formulaire en renseignat toutes les informations !
+        </p>
 
-              <h3 className="mt-3 text-xl font-medium text-center text-gray-600 dark:text-gray-200">
-                Créer un compte
-              </h3>
-
-              <p className="mt-1 text-center text-gray-500 dark:text-gray-400">
-                Remplissez le formulaire en renseignant toutes les informations
-                !
-              </p>
-              <Form
-                formValues={formValues}
-                handleSubmit={handleSubmit}
-                name={true}
-                email={true}
-                mobile={true}
-                handleImageChange={handleImageChange}
-                handleInputChange={handleInputChange}
-                password={true}
-                confirmPassword={true}
-                buttonLabel="S'inscrire"
-                errors={formErrors}
-                site={true}
-                sites={sites}
-                dropFile={true}
-                method="post"
-                encType="multipart/form-data"
-              />
+        <section className="">
+          <div className="flex items-center justify-center min-h-screen px-6 mx-auto">
+            <div className="flex justify-center mx-auto">
+              <img className="w-auto h-7 sm:h-8" src={logoDaval} alt="" />
             </div>
 
-            <div className="flex items-center justify-center rounded-b-lg py-4 text-center bg-gray-200 dark:bg-gray-800">
-              <span className="text-sm text-gray-600 dark:text-gray-200">
-                Vous avez déjà un compte?{" "}
-              </span>
-
+            <div className="flex items-center justify-center mt-6">
               <Link
                 to="/ConnexionUI"
-                className="mx-2 text-sm font-bold text-blue-500 dark:text-blue-400 hover:underline"
+                href="#"
+                className="w-1/3 pb-4 font-medium text-center text-gray-500 capitalize border-b dark:border-gray-400 dark:text-gray-300"
               >
-                Se connecter
+                Connexion
+              </Link>
+
+              <a
+                href="#"
+                className="w-1/3 pb-4 font-medium text-center text-gray-800 capitalize border-b-2 border-blue-500 dark:border-blue-400 dark:text-white"
+              >
+                S'inscrire
+              </a>
+            </div>
+            {formErrors.message && (
+              <p className="mt-2 text-sm text-red-500">{formErrors.message}</p>
+            )}
+            <Form
+              handleSubmit={handleSubmit}
+              name={formValues.username}
+              email={formValues.email}
+              mobile={formValues.mobile}
+              handleInputChange={handleInputChange}
+              password={formValues.password}
+              confirmPassword={formValues.confirmPassword}
+              buttonLabel="S'inscrire"
+              errors={formErrors}
+              site={site}
+              setSite={setSite}
+              sites={sites}
+              dropFile={true}
+              method="post"
+              encType="multipart/form-data"
+            />
+
+            <div className="mt-6 text-center ">
+              <Link
+                to="/ConnexionUI"
+                href="#"
+                className="text-sm text-blue-500 hover:underline dark:text-blue-400"
+              >
+                Vous avez déjà un compte?
               </Link>
             </div>
-          </FormCard>
-        )}
-      </Container>
-    </Layout>
+          </div>
+        </section>
+      </FormCard>
+    </Container>
   );
 }

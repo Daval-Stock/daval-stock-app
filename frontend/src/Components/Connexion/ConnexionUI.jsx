@@ -11,9 +11,6 @@ import Button from "../Button";
 import Container from "../Container";
 import Form from "../Form";
 import FormCard from "../FormCard";
-import Layout from "../Layout";
-import { postLoginUser } from "../../api/authentication";
-import { toast } from "react-toastify";
 
 export default function ConnexionUI() {
   // State pour stocker les valeurs du formulaire et les erreurs
@@ -39,17 +36,28 @@ export default function ConnexionUI() {
   };
 
   // Fonction appelée lorsque le formulaire est soumis
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) {
       // Envoyer les données du formulaire au serveur
-      const { data, error } = await postLoginUser(formValues);
-      if (data) {
-        navigateTo("/");
-      }
-      if (error) {
-        toast.error(error);
-      }
+      axiosInstance
+        .post("users/login", {
+          email: formValues.email,
+          password: formValues.password,
+        })
+        .then((response) => {
+          const { token } = response.data;
+          localStorage.setItem("authToken", token);
+          navigateTo("/");
+        })
+        .catch((error) => {
+          let errors = {};
+
+          errors.serverError = "Email ou mot de passe incorrect";
+          setFormErrors(errors);
+          console.log("Axios error: ", error);
+          console.log("Axios error response: ", error.response);
+        });
     }
   };
 
@@ -63,50 +71,47 @@ export default function ConnexionUI() {
   };
 
   return (
-    <Layout>
-      <Container>
-        <FormCard>
-          <div className="px-8 py-4 my-6">
-            <div className="flex justify-center mx-auto">
-              <Link to="/">
-                <img className="w-auto h-7 sm:h-8" src={logoDaval} alt="" />
-              </Link>
-            </div>
-
-            <h3 className="mt-3 text-xl font-medium text-center text-gray-600 dark:text-gray-200">
-              Se connecter
-            </h3>
-
-            <p className="mt-1 text-center text-gray-500 dark:text-gray-400">
-              en seulement deux clics
-            </p>
-            {formErrors.serverError}
-            <Form
-              formValues={formValues}
-              handleSubmit={handleSubmit}
-              email={true}
-              handleInputChange={handleInputChange}
-              password={true}
-              buttonLabel="Se connecter"
-              errors={formErrors}
-            />
-          </div>
-
-          <div className="flex items-center justify-center rounded-b-lg py-3 text-center bg-gray-200 dark:bg-gray-800">
-            <span className="text-sm text-gray-600 dark:text-gray-200">
-              Vous n'avez pas de compte ?{" "}
-            </span>
-
-            <Link
-              to="/RegisterUI"
-              href="#"
-              className="mx-2 text-sm font-bold text-blue-500 dark:text-blue-400 hover:underline"
-            >
-              S'inscrire
+    <Container>
+      <FormCard>
+        <div className="px-6 py-4">
+          <div className="flex justify-center mx-auto">
+            <Link to="/">
+              <img className="w-auto h-7 sm:h-8" src={logoDaval} alt="" />
             </Link>
           </div>
-        </FormCard>
-      </Container>
-    </Layout>
+
+          <h3 className="mt-3 text-xl font-medium text-center text-gray-600 dark:text-gray-200">
+            Se connecter
+          </h3>
+
+          <p className="mt-1 text-center text-gray-500 dark:text-gray-400">
+            en seulement deux clics
+          </p>
+          {formErrors.serverError}
+          <Form
+            handleSubmit={handleSubmit}
+            email={formValues.email}
+            handleInputChange={handleInputChange}
+            password={formValues.password}
+            buttonLabel="Se connecter"
+            errors={formErrors}
+          />
+        </div>
+
+        <div className="flex items-center justify-center py-4 text-center bg-gray-200 dark:bg-gray-800">
+          <span className="text-sm text-gray-600 dark:text-gray-200">
+            Vous n'avez pas de compte ?{" "}
+          </span>
+
+          <Link
+            to="/RegisterUI"
+            href="#"
+            className="mx-2 text-sm font-bold text-blue-500 dark:text-blue-400 hover:underline"
+          >
+            S'inscrire
+          </Link>
+        </div>
+      </FormCard>
+    </Container>
   );
 }

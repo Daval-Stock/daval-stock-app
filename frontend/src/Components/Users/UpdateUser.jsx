@@ -5,35 +5,27 @@ import axiosInstance from "../axiosInstance";
 import Navbar from "../Navbar/Navbar";
 import FooterLink from "../Footer/FooterLink";
 import logoDaval from "../../assets/logoDaval.png";
-import Container from "../Container";
-import Layout from "../Layout";
-import Loader from "../Loader";
-import FormCard from "../FormCard";
-import Form from "../Form";
-import { toast } from "react-toastify";
 
 export default function UpdateUser() {
   const location = useLocation();
   const user = location.state;
-  const [isLoading, setIsLoading] = useState(true);
   const [profileImage, setProfileImage] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const navigateTo = useNavigate();
   const [passwordComplexity, setPasswordComplexity] = useState("");
   const [role, setRole] = useState(user?.role);
-  const [site, setSite] = useState(user?.site?.name);
   const [sites, setSites] = useState([]);
   const [formValues, setFormValues] = useState({
-    name: user?.name,
+    username: user?.name,
     email: user?.email,
     mobile: user?.mobile,
     site: user?.site?.name,
-    role: role,
+    role: user?.role,
     password: "",
     confirmPassword: "",
   });
   const [formErrors, setFormErrors] = useState({
-    name: "",
+    username: "",
     email: "",
     mobile: "",
     password: "",
@@ -92,28 +84,25 @@ export default function UpdateUser() {
       .get("/sites/")
       .then((Response) => {
         setSites(Response.data);
-        setIsLoading(false);
       })
       .catch((error) => {
-        setIsLoading(false);
         console.log("Erreur lors de la récupération des sites :", error);
       });
   }, []);
 
   const handleSubmit = (e) => {
-    console.log(formValues);
     e.preventDefault();
-    if (true) {
+    if (validateForm()) {
       const formData = new FormData();
       const data = {
-        name: formValues.name,
+        name: formValues.username,
         email: formValues.email,
         mobile: formValues.mobile,
         siteName: formValues.site,
         password: formValues.password,
-        role: formValues.role,
+        role: role,
       };
-      formData.append("name", formValues.name);
+      formData.append("name", formValues.username);
       formData.append("email", formValues.email);
       formData.append("mobile", formValues.mobile);
       formData.append("siteName", formValues.site);
@@ -123,12 +112,10 @@ export default function UpdateUser() {
         data.append("profileImage", profileImage);
         formData.append("profileImage", profileImage);
       }
-      console.log("first name :", formValues.name);
 
       axiosInstance
         .put("users/edit-user/" + user?._id, data)
         .then((response) => {
-          toast.success("Utilisateur mis à jour avec succès");
           navigateTo("/UsersUI");
         })
         .catch((error) => {
@@ -155,6 +142,9 @@ export default function UpdateUser() {
       setPasswordComplexity("weak");
     }
   };
+  const togglePasswordVisibility = () => {
+    setShowPassword((prevState) => !prevState);
+  };
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -169,72 +159,334 @@ export default function UpdateUser() {
     }
   };
   return (
-    <Layout>
-      <Container>
-        {isLoading ? (
-          <Loader />
-        ) : (
-          <FormCard>
-            <div className="px-6 py-4">
+    <>
+      <Navbar />
+      <div className="relative isolate px-6 pt-12 lg:px-16">
+        <div
+          className="absolute inset-x-0 top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
+          aria-hidden="true"
+        >
+          <div
+            className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
+            style={{
+              clipPath:
+                "polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)",
+            }}
+          />
+        </div>
+        <section className=" dark:bg-gray-900 pb-10">
+          <div className="container flex items-center justify-center min-h-screen px-6 mx-auto">
+            <form
+              className="w-full max-w-md"
+              onSubmit={handleSubmit}
+              action="/register"
+              method="post"
+              encType="multipart/form-data"
+            >
               <div className="flex justify-center mx-auto">
-                <Link to="/">
-                  <img className="w-auto h-7 sm:h-8" src={logoDaval} alt="" />
-                </Link>
+                <img className="w-auto h-7 sm:h-8" src={logoDaval} alt="" />
               </div>
 
-              <h3 className="mt-3 text-xl font-medium text-center text-gray-600 dark:text-gray-200">
-                Mettre à jour un compte
-              </h3>
+              <div className="flex items-center justify-center mt-6">
+                <Typography
+                  variant="h2"
+                  className=" pb-4 font-medium text-center text-gray-800 capitalize border-b-2 border-blue-500 dark:border-blue-400 dark:text-white"
+                >
+                  Modification
+                </Typography>
+              </div>
+              {formErrors.message && (
+                <p className="mt-2 text-sm text-red-500">
+                  {formErrors.message}
+                </p>
+              )}
+              {/* User name */}
+              <div className="relative flex items-center mt-8">
+                <span className="absolute">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-6 h-6 mx-3 text-gray-300 dark:text-gray-500"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                    />
+                  </svg>
+                </span>
 
-              <p className="mt-1 text-center text-gray-500 dark:text-gray-400">
-                Remplissez le formulaire en renseignant les informations !
-              </p>
-              {formErrors.serverError}
-              <Form
-                formValues={formValues}
-                handleSubmit={handleSubmit}
-                name={true}
-                email={true}
-                mobile={true}
-                handleImageChange={handleImageChange}
-                handleInputChange={handleInputChange}
-                password={true}
-                confirmPassword={true}
-                buttonLabel="Modifier"
-                errors={formErrors}
-                site={true}
-                setSite={setSite}
-                setRole={setRole}
-                role={true}
-                sites={sites}
-                dropFile={true}
-                method="post"
-                encType="multipart/form-data"
-              />
-            </div>
-          </FormCard>
-        )}
+                <input
+                  label="Nom d'utilisateur"
+                  type="text"
+                  name="username"
+                  value={formValues.username}
+                  onChange={handleInputChange}
+                  className="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                  placeholder="Nom d'utilisateur"
+                />
+                {formErrors.username && (
+                  <p className="mt-2 text-sm text-red-500">
+                    {formErrors.username}
+                  </p>
+                )}
+              </div>
+              {/* User image */}
+              <label
+                htmlFor="dropzone-file"
+                className="flex items-center px-3 py-3 mx-auto mt-6 text-center bg-white border-2 border-dashed rounded-lg cursor-pointer dark:border-gray-600 dark:bg-gray-900"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-6 h-6 text-gray-300 dark:text-gray-500"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
+                  />
+                </svg>
 
-        {/* <div className="relative">
-          <div className="flex center p-3">
-            <label htmlFor="isAdmin" className="px-6">
-              Rôle:{" "}
-            </label>
+                <h2 className="mx-3 text-gray-400">Photo profil</h2>
 
-            <select
-              value={role}
-              onChange={(e) => {
-                setRole(e.target.value);
-              }}
-              className="relative appearance-none inline-block h-[30px] w-[120px] cursor-pointer rounded-full bg-slate-300 shadow-md px-5 transition-all"
-            >
-              <option value="admin">Admin</option>
-              <option value="user">User</option>
-              <option value="supplier">Supplier</option>
-            </select>
+                <input
+                  id="dropzone-file"
+                  type="file"
+                  onChange={handleImageChange}
+                  className=""
+                  name="image"
+                />
+              </label>
+              {/* User email */}
+              <div className="relative flex items-center mt-6">
+                <span className="absolute">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-6 h-6 mx-3 text-gray-300 dark:text-gray-500"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                    />
+                  </svg>
+                </span>
+
+                <input
+                  type="email"
+                  name="email"
+                  value={formValues.email}
+                  onChange={handleInputChange}
+                  className="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                  placeholder="Adresse Email"
+                />
+                {formErrors.email && (
+                  <p className="mt-2 text-sm text-red-500">
+                    {formErrors.email}
+                  </p>
+                )}
+              </div>
+              {/* User phone */}
+              <div className="relative flex items-center mt-6">
+                <span className="absolute">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-6 h-6 mx-3 text-gray-300 dark:text-gray-500"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3"
+                    />
+                  </svg>
+                </span>
+
+                <input
+                  type="mobile"
+                  name="mobile"
+                  value={formValues.mobile}
+                  onChange={handleInputChange}
+                  className="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                  placeholder="Mobile"
+                />
+                {formErrors.mobile && (
+                  <p className="mt-2 text-sm text-red-500">
+                    {formErrors.mobile}
+                  </p>
+                )}
+              </div>
+
+              <div className="sm:col-span-3">
+                <label
+                  htmlFor="site"
+                  className="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-100"
+                >
+                  Site
+                </label>
+                <div className="mt-2">
+                  <select
+                    name="site"
+                    value={formValues.site}
+                    onChange={handleInputChange}
+                    className="block w-full text-center dark:bg-gray-900 dark:text-gray-400 rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                  >
+                    <option> choisir une site</option>
+                    {sites.map((site) => (
+                      <option key={site?._id} value={site?.name}>
+                        {site?.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              {/* Password  */}
+              <div className="relative flex items-center mt-4">
+                <span className="absolute">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-6 h-6 mx-3 text-gray-300 dark:text-gray-500"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                    />
+                  </svg>
+                </span>
+
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  value={formValues.password}
+                  onChange={handleInputChange}
+                  className={`block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40 ${
+                    passwordComplexity === "strong"
+                      ? "border-green-500"
+                      : passwordComplexity === "medium"
+                      ? "border-yellow-500"
+                      : "border-red-500"
+                  }`}
+                  placeholder="Mot de passe"
+                />
+                <button
+                  type="button"
+                  onClick={togglePasswordVisibility}
+                  className="absolute right-3 top-3 text-gray-500 focus:outline-none"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-6 h-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    {showPassword ? (
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M10 12a2 2 0 11-4 0 2 2 0 014 0zm2 0a2 2 0 104 0 2 2 0 00-4 0zm-6 0a6 6 0 1112 0 6 6 0 01-12 0z"
+                      />
+                    ) : (
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M12 7a5 5 0 00-9.975 1.975A9.994 9.994 0 0112 4c4.764 0 8.863 2.686 9.975 6.975A5 5 0 0012 7zm0 2a3 3 0 015.292 2.295A9.005 9.005 0 0112 18.938 9.005 9.005 0 016.708 11.295 3 3 0 015 9zm-3 3a1 1 0 100 2 1 1 0 000-2zm8 0a1 1 0 100 2 1 1 0 000-2z"
+                      />
+                    )}
+                  </svg>
+                </button>
+
+                {formErrors.password && (
+                  <p className="mt-2 text-sm text-red-500">
+                    {formErrors.password}
+                  </p>
+                )}
+              </div>
+              {/* Confirm password */}
+              <div className="relative flex items-center mt-4">
+                <span className="absolute">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-6 h-6 mx-3 text-gray-300 dark:text-gray-500"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                    />
+                  </svg>
+                </span>
+
+                <input
+                  type="password"
+                  name="confirmPassword"
+                  value={formValues.confirmPassword}
+                  onChange={handleInputChange}
+                  className="block w-full px-10 py-3 text-gray-700 bg-white border rounded-lg dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                  placeholder="Confirmez le mot de passe"
+                />
+
+                {formErrors.confirmPassword && (
+                  <p className="mt-2 text-sm text-red-500">
+                    {formErrors.confirmPassword}
+                  </p>
+                )}
+              </div>
+
+              <div className="relative">
+                <div className="flex center p-3">
+                  <label htmlFor="isAdmin" className="px-6">
+                    Rôle:{" "}
+                  </label>
+
+                  <select
+                    value={role}
+                    onChange={(e) => {
+                      setRole(e.target.value);
+                    }}
+                    className="relative appearance-none inline-block h-[30px] w-[120px] cursor-pointer rounded-full bg-slate-300 shadow-md px-5 transition-all"
+                  >
+                    <option value="admin">Admin</option>
+                    <option value="user">User</option>
+                    <option value="supplier">Supplier</option>
+                  </select>
+                </div>
+              </div>
+              <div className="mt-6">
+                <button className="w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-500 rounded-lg hover:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50">
+                  Modifier
+                </button>
+              </div>
+            </form>
           </div>
-        </div> */}
-      </Container>
-    </Layout>
+        </section>
+      </div>
+      ;
+    </>
   );
 }

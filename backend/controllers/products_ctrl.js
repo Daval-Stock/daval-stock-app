@@ -5,7 +5,6 @@ const Category = require("../models/category"); // Importez le modèle Category
 const fs = require("fs");
 const path = require("path");
 const Sites = require("../models/sites");
-const JsBarcode = require("jsbarcode");
 
 const getDefaultCategoryId = async () => {
   let defaultCategory = await Category.findOne({ name: "autres" });
@@ -19,7 +18,6 @@ const getDefaultSiteId = async () => {
 
 //pour ajouter un produit
 const createProduct = asyncHandler(async (req, res) => {
-  console.log(req.body);
   const sku = req.body.sku;
   const findSku = await Product.findOne({ sku });
   if (!findSku) {
@@ -48,8 +46,8 @@ const createProduct = asyncHandler(async (req, res) => {
     const categoryId = category ? category._id : await getDefaultCategoryId();
     req.body.category = categoryId;
 
+
     req.body.site = user?.site;
-<<<<<<< HEAD
 
     let productData = { ...req.body };
 
@@ -62,8 +60,6 @@ const createProduct = asyncHandler(async (req, res) => {
     }
 
 
-=======
->>>>>>> aa7ee6d68af34083f201125773752a43bf61589a
     try {
       const findProduct = await Product.findOne({
         name: req.body.name,
@@ -72,11 +68,11 @@ const createProduct = asyncHandler(async (req, res) => {
       if (!findProduct) {
         const product = await Product.create(productData);
 
+        console.log("Le produit n'existait pas!");
         res.status(201).json({
           _id: product?._id,
           userName: product?.user?.name,
           name: product?.name,
-          barcode: product?.barcode,
           sku: product?.sku,
           category: product?.category?.name,
           quantity: product?.quantity,
@@ -135,7 +131,7 @@ const getProducts = asyncHandler(async (req, res) => {
         site: siteName,
       };
     });
-
+    
     res.status(200).json(formattedProducts);
   } catch (error) {
     console.log(error);
@@ -269,6 +265,7 @@ const deleteProduct = asyncHandler(async (req, res) => {
 const productImage = asyncHandler(async (req, res) => {
   const imageName = req.params.imageName;
   const imagePath = path.join(__dirname, "..", "uploads", imageName + ".jpg");
+  console.log(imagePath);
   // console.log(imagePath);
   if (fs.existsSync(imagePath)) {
     res.sendFile(imagePath);

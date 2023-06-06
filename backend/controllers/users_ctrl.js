@@ -10,7 +10,8 @@ const path = require("path");
 const fs = require("fs");
 
 const getDefaultSiteId = async () => {
-  return await Sites.findOne({ name: "Metz" });
+  let defaultSiteId = await Sites.findOne({ name: "Metz" });
+  return defaultSiteId;
 };
 
 const getAllUsers = asyncHandler(async (req, res) => {
@@ -23,26 +24,28 @@ const getAllUsers = asyncHandler(async (req, res) => {
 });
 
 const createUser = asyncHandler(async (req, res) => {
-  const { email } = req.body;
+  const email = req.body.email;
   const findUser = await User.findOne({ email });
-  if (findUser) {
+  if (!findUser) {
+    const site = await Sites.findOne({ name: req.body.siteName });
+    if (!site) {
+      res.status(404);
+      throw new Error("Site not found");
+      return;
+    }
+    const siteId = site ? site._id : await getDefaultSiteId();
+    req.body.site = siteId;
+
+    if (req.file) {
+      // console.log(req.file.path);
+      req.body.profileImage = req.file.path;
+    }
+    const newUser = await User.create(req.body);
+
+    res.json(newUser);
+  } else {
     throw new Error("User Already Exists");
   }
-  const site = await Sites.findOne({ name: req.body.siteName });
-  if (!site) {
-    res.status(404);
-    throw new Error("Site not found");
-  }
-  const siteId = site ? site._id : await getDefaultSiteId();
-  req.body.site = siteId;
-
-  if (req.file) {
-    // console.log(req.file.path);
-    req.body.profileImage = req.file.path;
-  }
-  const newUser = await User.create(req.body);
-
-  res.json(newUser);
 });
 
 const loginUserCtrl = asyncHandler(async (req, res) => {
@@ -82,14 +85,11 @@ const loginUserCtrl = asyncHandler(async (req, res) => {
 
 const handleRefreshToken = asyncHandler(async (req, res) => {
   const cookie = req.cookies;
-  if (!cookie?.refreshToken) {
-    throw new Error("No Refresh Token in Cookies");
-  }
-  const { refreshToken } = cookie;
+  if (!cookie?.refreshToken) throw new Error("No Refresh Token in Cookies");
+  const refreshToken = cookie.refreshToken;
   const user = await User.findOne({ refreshToken });
-  if (!user) {
+  if (!user)
     throw new Error("No Refresh Token is present in db or not matched");
-  }
   jwt.verify(refreshToken, process.env.JWT_SECRET, (err, decoded) => {
     if (err || user.id !== decoded.id) {
       throw new Error("There is something wrong with refresh token");
@@ -103,10 +103,8 @@ const handleRefreshToken = asyncHandler(async (req, res) => {
 
 const logout = asyncHandler(async (req, res) => {
   const cookie = req.cookies;
-  if (!cookie?.refreshToken) {
-    throw new Error("No Refresh Token in Cookies");
-  }
-  const { refreshToken } = cookie;
+  if (!cookie?.refreshToken) throw new Error("No Refresh Token in Cookies");
+  const refreshToken = cookie.refreshToken;
   const user = await User.findOne({ refreshToken });
   if (!user) {
     res.clearCookie("refreshToken", {
@@ -139,7 +137,7 @@ const getUserById = asyncHandler(async (req, res) => {
 const userProfile = asyncHandler(async (req, res) => {
   try {
     // Récupérez l'utilisateur depuis la requête (ajouté par le middleware d'authentification)
-    const { user } = req;
+    const user = req.user;
     // console.log(user);
     // Renvoyez les informations de l'utilisateur
     res.json(user);
@@ -200,9 +198,7 @@ const deleteUser = asyncHandler(async (req, res) => {
 
 const updatePwdUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
-  if (!user) {
-    return res.status(404).send("User not found.");
-  }
+  if (!user) return res.status(404).send("User not found.");
   const validPassword = await bcrypt.compare(
     req.body.current_password,
     user.password
@@ -227,7 +223,7 @@ const updatePwdUser = asyncHandler(async (req, res) => {
 });
 
 const userImage = asyncHandler(async (req, res) => {
-  const { imageName } = req.params;
+  const imageName = req.params.imageName;
   const imagePath = path.join(__dirname, "..", "uploads", imageName + ".png");
   // console.log(imagePath);
   if (fs.existsSync(imagePath)) {
@@ -272,17 +268,6 @@ const unblockUser = asyncHandler(async (req, res) => {
   }
 });
 
-const verifyIfTokenIsValid = asyncHandler(async (req, res) => {
-  const { token } = req.params;
-  const decoded = jwt.verify(token, process.env.JWT_SECRET);
-  const user = await User.findById(decoded.id);
-  if (!user) {
-    throw new Error("Invalid Token");
-  }
-  res.json(user);
-  // console.log(user);
-});
-
 module.exports = {
   createUser,
   getAllUsers,
@@ -297,5 +282,4 @@ module.exports = {
   updatePwdUser,
   userImage,
   logout,
-  verifyIfTokenIsValid,
 };

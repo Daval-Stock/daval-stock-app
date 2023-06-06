@@ -1,8 +1,6 @@
-const Articles = () => {
-  return <></>;
-};
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
-<<<<<<< HEAD
 import {
   RiDashboardFill
 } from "react-icons/ri";
@@ -302,6 +300,3 @@ function Articles({ showNavbar }) {
 }
 
 export default Articles;
-=======
-export default Articles;
->>>>>>> aa7ee6d68af34083f201125773752a43bf61589a

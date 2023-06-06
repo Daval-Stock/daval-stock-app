@@ -13,7 +13,6 @@ const {
   handleRefreshToken,
   logout,
   updatePwdUser,
-  verifyIfTokenIsValid,
   userImage,
   userProfile,
 } = require("../controllers/users_ctrl");
@@ -39,7 +38,6 @@ router.get("/profile-image/:imageName", userImage);
 router.get("/profile", authMiddleware, userProfile);
 router.put("/change-password", authMiddleware, updatePwdUser);
 router.delete("/delete/:id", authMiddleware, isAdmin, deleteUser);
-router.post("/tokenIsValid", authMiddleware, verifyIfTokenIsValid);
 router.get("/all-user", authMiddleware, isAdmin, getAllUsers);
 router.get("/:id", authMiddleware, isAdmin, getUserById);
 router.put("/edit-user/:id", authMiddleware, isAdmin, updateUser);
