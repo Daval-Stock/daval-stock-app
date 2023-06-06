@@ -104,7 +104,7 @@ export default function Sidebar({ children }) {
                   </div>
                 </Link>
 
-              )}
+              
 
               <Link to="/Product">
                 <div className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
@@ -167,14 +167,7 @@ export default function Sidebar({ children }) {
                   href="#"
                   className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth="1.5"
-                    stroke="currentColor"
-                    className="w-6 h-6"
-                  >
+                  
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
