@@ -130,6 +130,9 @@ export default function Product() {
                     Prix
                   </th>
                   <th scope="col" className="px-6 py-3">
+                      Date d'expiration
+                    </th>
+                  <th scope="col" className="px-6 py-3">
                     Description
                   </th>
                   <th scope="col" className="px-6 py-3">
@@ -146,6 +149,7 @@ export default function Product() {
                     p.name.toLowerCase().includes(search.toLowerCase())
                   )
                   .map((item) => (
+              
                     <tr
                       key={item._id}
                       className="bg-white border-b dark:bg-gray-900 dark:border-gray-700 hover:bg-blue-0"
@@ -160,6 +164,8 @@ export default function Product() {
                       <td className="px-6 py-4 text-center">{item.category}</td>
                       <td className="px-6 py-4 text-center">{item.quantity}</td>
                       <td className="px-6 py-4 text-center">{item.price}</td>
+                      <td className="px-6 py-4 text-center">{item.ExpirationDate?
+                       new Date(item?.ExpirationDate).toLocaleDateString(): " "}</td>
                       <td className="px-6 py-4 text-center">
                         {item.description}
                       </td>
