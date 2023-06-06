@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import ProductCard from "./ProductCard";
 import Quagga from 'quagga';
 
-
 /* import {
   RiDashboardFill,
   CiUser,
@@ -231,7 +230,7 @@ export default function Product() {
                       <td className="px-6 py-4 text-center">
                         {item.description}
                       </td>
-                      <td className="px-6 py-4 text-center">{item.ExpirationDate? new Date(item?.ExpirationDate).toLocaleDateString(): " "}</td>
+                      <td className="px-6 py-4 text-center">{item?.user}</td>
                       <td className="px-6 py-4 text-center">{item?.site}</td>
                       <td className="px-6 py-4">
                         <div className="flex justify-center items-center gap-4">
@@ -284,9 +283,6 @@ export default function Product() {
             >
               Scan Barcode
             </button>
-            
-             
-            
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {products.map((product) => (
                   <ProductCard key={product._id} product={product} />
