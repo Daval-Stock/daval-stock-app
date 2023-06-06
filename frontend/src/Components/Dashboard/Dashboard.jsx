@@ -1,5 +1,5 @@
 import React from "react";
-import {
+/* import {
   GrStatusGood,
   GoPackage,
   RiDashboardFill,
@@ -7,7 +7,7 @@ import {
   FiPackage,
   TbFileInvoice,
   BsDatabaseCheck,
-} from "react-icons/all.js";
+} from "react-icons/all.js"; */
 import { Link } from "react-router-dom";
 import Navbar from "../Navbar/Navbar";
 import Sidebar from "../Sidebar/Sidebar";

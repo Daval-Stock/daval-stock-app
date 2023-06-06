@@ -52,6 +52,10 @@ let productSchema = new mongoose.Schema(
     ref: 'User',
     required: false, // Rendre facultatif si certains produits n'ont pas de fournisseur spécifique
   },
+    ExpirationDate:{
+      type:Date,
+      required:false,
+    }
   },
   {
     //jfdj

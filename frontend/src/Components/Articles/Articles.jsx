@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 import {
-  RiDashboardFill,
-  CiUser,
-  FiPackage,
-  TbFileInvoice,
-  BsDatabaseCheck,
-} from "react-icons/all.js";
+  RiDashboardFill
+} from "react-icons/ri";
+import {CiUser} from "react-icons/ci";
+import {BsDatabaseCheck} from "react-icons/bs";
+import {FiPackage} from "react-icons/fi";
+import {GoPackage} from "react-icons/go";
 import Navbar from "../Navbar/Navbar";
 import logoDaval from "../../assets/logoDaval.png";
 import alamine from "../../assets/alamine.png";

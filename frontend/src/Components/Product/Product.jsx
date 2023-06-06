@@ -5,13 +5,13 @@ import { Link } from "react-router-dom";
 import ProductCard from "./ProductCard";
 import Quagga from 'quagga';
 
-import {
+/* import {
   RiDashboardFill,
   CiUser,
   FiPackage,
   TbFileInvoice,
   BsDatabaseCheck,
-} from "react-icons/all.js";
+} from "react-icons/all.js"; */
 
 import { RiDeleteBinLine } from "react-icons/ri";
 import { BiCartAdd } from "react-icons/bi";
@@ -200,6 +200,9 @@ export default function Product() {
                       Description
                     </th>
                     <th scope="col" className="px-6 py-3">
+                      Date d'expiration
+                    </th>
+                    <th scope="col" className="px-6 py-3">
                       Site
                     </th>
                     <th scope="col" className="px-6 py-3">
@@ -227,6 +230,7 @@ export default function Product() {
                       <td className="px-6 py-4 text-center">
                         {item.description}
                       </td>
+                      <td className="px-6 py-4 text-center">{item.ExpirationDate? new Date(item?.ExpirationDate).toLocaleDateString(): " "}</td>
                       <td className="px-6 py-4 text-center">{item?.site}</td>
                       <td className="px-6 py-4">
                         <div className="flex justify-center items-center gap-4">

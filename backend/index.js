@@ -18,6 +18,7 @@ const categoryRoutes = require("./routes/category_routes");
 const siteRoutes = require("./routes/sites_routes");
 const saleRoutes= require("./routes/sales_routes");
 const UserInventoryRoutes = require("./routes/UserInventory_route");
+const transactionRoutes = require("./routes/transactions_routes");
 
 // cors
 const cors = require("cors");
@@ -68,6 +69,9 @@ app.use("/sales", saleRoutes);
 
 //route inventaire;
 app.use("/userInventory", UserInventoryRoutes);
+
+//route transactions;
+app.use("/transactions", transactionRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
 import axiosInstance from "../axiosInstance";
 import { Link, useNavigate } from "react-router-dom";
-import { AiFillDelete } from "react-icons/all.js";
-import {
-  RiDashboardFill,
-  CiUser,
-  FiPackage,
-  TbFileInvoice,
-  BsDatabaseCheck,
-} from "react-icons/all.js";
+import { AiFillDelete } from "react-icons/ai";
+import {  RiDashboardFill} from "react-icons/ri";
+import {  BsFillPersonFill} from "react-icons/bs";
+import {  BsFillPersonPlusFill} from "react-icons/bs";
+import {CiUser} from "react-icons/ci";
+import {  FiPackage} from "react-icons/fi";
+import {  GrStatusGood} from "react-icons/gr";
+import {  TbFileInvoice} from "react-icons/tb";
+import {  BsDatabaseCheck} from "react-icons/bs";
 import Navbar from "../Navbar/Navbar";
 import logoDaval from "../../assets/logoDaval.png";
 import alamine from "../../assets/alamine.png";

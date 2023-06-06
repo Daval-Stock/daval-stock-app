@@ -1,5 +1,8 @@
 import React from "react";
-import { FiPackage, TbFileInvoice, BsDatabaseCheck, BsDashCircle } from "react-icons/all.js";
+import { BsDatabaseCheck, BsDashCircle } from "react-icons/bs";
+import {MdSell} from "react-icons/md"
+import { FiPackage} from "react-icons/fi";
+import {TbFileInvoice } from "react-icons/tb";
 import { Link } from "react-router-dom";
 import Navbar from "../Navbar/Navbar";
 import { useState, useEffect } from "react";
@@ -130,6 +133,18 @@ export default function Sidebar() {
                   <BsDashCircle className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-200 group-hover:text-gray-900 dark:group-hover:text-white" />
                   <span className="flex-1 ml-3 whitespace-nowrap">
                     Trashboard
+                  </span>
+                </Link>
+              </li>
+
+               <li>
+                <Link
+                to="/Sales"
+                                  className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                >
+                  <MdSell className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-200 group-hover:text-gray-900 dark:group-hover:text-white" />
+                  <span className="flex-1 ml-3 whitespace-nowrap">
+                   Sale
                   </span>
                 </Link>
               </li>

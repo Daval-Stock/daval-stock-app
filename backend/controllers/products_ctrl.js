@@ -49,13 +49,24 @@ const createProduct = asyncHandler(async (req, res) => {
 
     req.body.site = user?.site;
 
+    let productData = { ...req.body };
+
+    // Vérifiez si ExpirationDate est fourni et qu'il n'est pas 'undefined'
+    if (req.body.ExpirationDate && req.body.ExpirationDate !== 'undefined') {
+      productData.ExpirationDate = req.body.ExpirationDate;
+    } else {
+      // Si ExpirationDate n'est pas fourni ou qu'il est 'undefined', il sera supprimé de l'objet productData
+      delete productData.ExpirationDate;
+    }
+
+
     try {
       const findProduct = await Product.findOne({
         name: req.body.name,
         category: categoryId,
       });
       if (!findProduct) {
-        const product = await Product.create(req.body);
+        const product = await Product.create(productData);
 
         console.log("Le produit n'existait pas!");
         res.status(201).json({
@@ -114,6 +125,7 @@ const getProducts = asyncHandler(async (req, res) => {
         quantity: product.quantity,
         price: product.price,
         productImage: product.productImage,
+        ExpirationDate:product.ExpirationDate,
         description: product.description,
         createdAt: product.createdAt,
         site: siteName,

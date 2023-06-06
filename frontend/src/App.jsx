@@ -23,6 +23,8 @@ import UpdateProduct from "./Components/Product/UpdateProduct.jsx";
 import ProductCard from "./Components/Product/ProductCard.jsx";
 import StockStatus from "./Components/Stock_Status/Stock_Status.jsx";
 import Trashboard from "./Components/Trashboard/Trashboard.jsx";
+import Sale from "./Components/Sales/AddSales.jsx";
+import Sales from "./Components/Sales/Sales.jsx";
 
 const App = () => {
   return (
@@ -51,6 +53,8 @@ const App = () => {
         <Route path="/ProductCard" element={<ProductCard />} />
         <Route path="/Stock_Status" element={<StockStatus/>}/>  
         <Route path="/Trash" element={<Trashboard />} />
+        <Route path="/AddSale" element={<Sale/>}></Route>
+        <Route path="/Sales" element={<Sales/>} ></Route>
       </Routes>
     </div>
   );
