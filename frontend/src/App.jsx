@@ -21,14 +21,34 @@ import PrivacyPolicy from "./Components/PrivacyPolicy/PrivacyPolicy.jsx";
 import Testimonial from "./Components/Testimonial/Testimonial.jsx";
 import UpdateProduct from "./Components/Product/UpdateProduct.jsx";
 import ProductCard from "./Components/Product/ProductCard.jsx";
+
+import SidebarUI from "./Components/Sidebar/SidebarUI.jsx";
+
 import StockStatus from "./Components/Stock_Status/Stock_Status.jsx";
 import Trashboard from "./Components/Trashboard/Trashboard.jsx";
+<<<<<<< HEAD
 import Sale from "./Components/Sales/AddSales.jsx";
 import Sales from "./Components/Sales/Sales.jsx";
+=======
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+>>>>>>> aa7ee6d68af34083f201125773752a43bf61589a
 
 const App = () => {
   return (
     <div>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/Sidebar" element={<Sidebar />} />
@@ -51,7 +71,10 @@ const App = () => {
         <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
         <Route path="/Testimonial" element={<Testimonial />} />
         <Route path="/ProductCard" element={<ProductCard />} />
-        <Route path="/Stock_Status" element={<StockStatus/>}/>  
+
+        <Route path="/SidebarUI" element={<SidebarUI />} />
+
+        <Route path="/Stock_Status" element={<StockStatus />} />
         <Route path="/Trash" element={<Trashboard />} />
         <Route path="/AddSale" element={<Sale/>}></Route>
         <Route path="/Sales" element={<Sales/>} ></Route>

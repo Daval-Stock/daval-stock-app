@@ -20,6 +20,10 @@ let productSchema = new mongoose.Schema(
       unique: true,
       trim: true,
     },
+    barcode: {
+      type: String,
+      unique: true, // s'assurer que chaque code-barre est unique
+    },
 
     category: {
       type: mongoose.Schema.Types.ObjectId,
@@ -48,6 +52,7 @@ let productSchema = new mongoose.Schema(
       ref: "Site",
     },
     supplier: {
+<<<<<<< HEAD
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: false, // Rendre facultatif si certains produits n'ont pas de fournisseur spécifique
@@ -56,6 +61,12 @@ let productSchema = new mongoose.Schema(
       type:Date,
       required:false,
     }
+=======
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: false, // Rendre facultatif si certains produits n'ont pas de fournisseur spécifique
+    },
+>>>>>>> aa7ee6d68af34083f201125773752a43bf61589a
   },
   {
     //jfdj
