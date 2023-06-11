@@ -53,7 +53,7 @@ const createProduct = asyncHandler(async (req, res) => {
     let productData = { ...req.body };
 
     // Vérifiez si ExpirationDate est fourni et qu'il n'est pas 'undefined'
-    if (req.body.ExpirationDate && req.body.ExpirationDate !== 'undefined') {
+    if (req.body.ExpirationDate  !== 'undefined') {
       productData.ExpirationDate = req.body.ExpirationDate;
     } else {
       // Si ExpirationDate n'est pas fourni ou qu'il est 'undefined', il sera supprimé de l'objet productData

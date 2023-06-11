@@ -18,12 +18,14 @@ export default function AddProductForm() {
     category: "",
     description: "",
     site: "",
-    ExpirationDate:Date,
+    ExpirationDate:null,
+    supplier:"",
   });
   const [categories, setCategories] = useState([]);
   const [productImage, setProductImage] = useState(null);
   const [sites, setSites] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [users, setUsers] = useState([]);
 
   const navigateTo = useNavigate();
 
@@ -54,10 +56,16 @@ export default function AddProductForm() {
     formData.append("name", formValues.productName);
     formData.append("quantity", formValues.quantity);
     formData.append("price", formValues.price);
-    formData.append("ExpirationDate",formValues.ExpirationDate);
+
+     if (formValues.ExpirationDate !== null) {
+    formData.append("ExpirationDate", formValues.ExpirationDate);
+  }
     formData.append("description", formValues.description);
     formData.append("categoryName", formValues.category);
     formData.append("sku", generateProductSKU());
+    if (formValues.supplier !== "") {
+    formData.append("supplier", formValues.supplier);
+    }
     if (productImage) {
       formData.append("image", productImage); // Ajoutez l'image avec le bon nom de champ ici
     }
@@ -101,6 +109,19 @@ export default function AddProductForm() {
       });
   }, []);
 
+useEffect(() => {
+    // Récupérer la liste des utilisateurs avec le rôle "Supplier"
+    axiosInstance
+      .get("/users?role=Supplier")
+      .then((response) => {
+        setUsers(response.data);
+      })
+      .catch((error) => {
+        console.log("Erreur lors de la récupération des utilisateurs :", error);
+      });
+  }, []);
+
+
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setFormValues({ ...formValues, [name]: value });
@@ -141,8 +162,10 @@ export default function AddProductForm() {
                   handleInputChange={handleInputChange}
                   category={true}
                   description={true}
+                  supplier={true}
                   buttonLabel="Enregistrer"
                   categories={categories}
+                  users={users}
                   dropFile={true}
                   method="post"
                   encType="multipart/form-data"

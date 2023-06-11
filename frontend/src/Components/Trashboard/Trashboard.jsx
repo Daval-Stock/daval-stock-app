@@ -11,12 +11,17 @@ import {
 import Container from "../Container";
 import Layout from "../Layout";
 import StockStatus from "../Stock_Status/Stock_Status";
+import {FcExpired} from 'react-icons/fc';
+import {MdSell} from 'react-icons/md';
+
 
 function Trashboard() {
   const [products, setProducts] = useState([]);
   const [totalQuantity, setTotalQuantity] = useState(0);
   const [totalValue, setTotalValue] = useState(0);
   const [outOfStock, setOutOfStock] = useState(0);
+  const [expiredProducts, setExpiredProducts] = useState(0);
+  const [totalProductsSold, setTotalProductsSold] = useState(0);
 
   useEffect(() => {
     axiosInstance
@@ -26,20 +31,38 @@ function Trashboard() {
         let quantity = 0;
         let value = 0;
         let outOfStockCount = 0;
+         let expiredProductsCount = 0;
         response.data.forEach((product) => {
           quantity += product.quantity;
           value += product.quantity * product.price;
           if (product.quantity === 0) {
             outOfStockCount++;
           }
+          if (new Date(product.ExpirationDate) < new Date()) {
+                expiredProductsCount++;
+            }
+
         });
         setTotalQuantity(quantity);
         setTotalValue(value);
         setOutOfStock(outOfStockCount);
+        setExpiredProducts(expiredProductsCount);
       })
       .catch((error) => {
         console.log(error);
       });
+  }, []);
+  useEffect(() => {
+    async function fetchData() {
+      const { data, error } = await getSales();
+      if (data) {
+        setTotalProductsSold(data.data);
+      
+      } else {
+        console.log(error);
+      }
+    }
+    fetchData();
   }, []);
 
   const data = [
@@ -88,15 +111,30 @@ function Trashboard() {
                   <p>{products.length}</p>
                 </div>
               </div>
+              <div className="p-4 border rounded shadow flex items-center">
+                <MdSell className="text-purple-500 text-3xl mr-2" />
+                <div>
+                    <h3 className="text-xl font-semibold">Total Sold</h3>
+                        <p>{totalProductsSold.length}</p>
+                </div>
+              </div>
+
+              <div className="p-4 border rounded shadow flex items-center">
+                <FcExpired className="text-red-500 text-3xl mr-2" />
+                <div>
+                   <h3 className="text-xl font-semibold">Expired Products</h3>
+                       <p>{expiredProducts}</p>
+                </div>
+              </div>
             </div>
-            <div className="flex items-center gap-2">
-              <div className="p-2 text-center">
-                <PieChart width={400} height={500}>
+            <div className=" flex items-center gap-2">
+              <div className="container p-2 text-center">
+                <PieChart width={700} height={500}>
                   <Pie
                     data={data}
-                    cx={200}
+                    cx={250}
                     cy={200}
-                    labelLine={false}
+                    labelLine={true}
                     label={({ name, percent }) =>
                       `${name}: ${(percent * 100).toFixed(0)}%`
                     }
@@ -114,11 +152,13 @@ function Trashboard() {
                   <Tooltip />
                 </PieChart>
               </div>
-              <div>
-                <StockStatus />
-              </div>
+             
             </div>
+            
           </div>
+           <div>
+                <StockStatus />
+            </div>
         </div>
       </Container>
     </Layout>
