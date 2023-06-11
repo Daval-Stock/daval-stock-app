@@ -59,14 +59,14 @@ const getSales = asyncHandler(async (req, res) => {
   try {
     const sales = await Sale.find()
       .populate("product")
-      .populate("user")
+      .populate("user","name")
       .populate("site");
 
     const formattedSales = sales.map((sale) => {
       return {
         _id: sale._id,
-        product: sale.product.name,
-        user: sale.user.name,
+        product: sale.product,
+        user: sale.user,
         quantity: sale.quantity,
         totalPrice: sale.totalPrice,
         site: sale.site.name,

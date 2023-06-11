@@ -6,6 +6,7 @@ import { BiSearch } from "react-icons/bi";
 import { GoGraph } from "react-icons/go";
 import { BsGraphUpArrow } from "react-icons/bs";
 import Box from "./Box";
+import { MdSell } from "react-icons/md";
 import SidebarItem from "./SidebarItem";
 import logoDaval from "../assets/logoDaval.png";
 import { Link } from "react-router-dom";
@@ -48,6 +49,12 @@ const Sidebar = ({ children }) => {
       active: pathname === "/Product",
       href: "/Product",
       icon: FiPackage,
+    },
+    {
+      label: "Ventes",
+      active: pathname === "/Sales",
+      href: "/Sales",
+      icon: MdSell,
     },
     {
       label: "Etat du stock",

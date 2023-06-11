@@ -28,6 +28,8 @@ const Form = ({
   dropFile,
   method,
   errors,
+  supplier,
+  users,
 }) => {
   const [showPassword, setShowPassword] = useState({
     password: false,
@@ -168,10 +170,33 @@ const Form = ({
               onChange={handleInputChange}
               className="block w-[700px] mt-4 text-center bg-gray-900text-gray-400 rounded-md border-0 py-3 shadow-sm ring-1 ring-inset text-gray-600 bg-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:max-w-xs sm:text-sm sm:leading-6"
             >
-              <option> choisir une site</option>
+              <option> choisir un site</option>
               {sites.map((site) => (
                 <option key={site?._id} value={site?.name}>
                   {site?.name}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+      )}
+
+      {supplier && (
+        <div className="flex items-center gap-2">
+          <label htmlFor="isAdmin" className="px-6">
+            Fournisseur:{" "}
+          </label>
+          <div className="sm:col-span-3">
+            <select
+              name="fournisseur"
+              value={formValues.supplier}
+              onChange={handleInputChange}
+              className="block w-[700px] mt-4 text-center bg-gray-900text-gray-400 rounded-md border-0 py-3 shadow-sm ring-1 ring-inset text-gray-600 bg-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:max-w-xs sm:text-sm sm:leading-6"
+            >
+              <option> choisir un fournisseur</option>
+              {users.map((user) => (
+                <option key={user?._id} value={user?.name}>
+                  {user?.name}
                 </option>
               ))}
             </select>

@@ -31,7 +31,7 @@ const Input = ({
           >
             <AiOutlineDownload className="w-6 h-6 text-gray-300 dark:text-gray-500" />
 
-            <h2 className="mx-3 text-gray-400">Photo profil</h2>
+            <h2 className="mx-3 text-gray-400">Image</h2>
 
             <input
               type={type}

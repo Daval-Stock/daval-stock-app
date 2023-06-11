@@ -21,7 +21,8 @@ import PrivacyPolicy from "./Components/PrivacyPolicy/PrivacyPolicy.jsx";
 import Testimonial from "./Components/Testimonial/Testimonial.jsx";
 import UpdateProduct from "./Components/Product/UpdateProduct.jsx";
 import ProductCard from "./Components/Product/ProductCard.jsx";
-
+import AddSale from "./Components/Sales/AddSale.jsx";
+import Sales from "./Components/Sales/Sales.jsx"; 
 import SidebarUI from "./Components/Sidebar/SidebarUI.jsx";
 
 import StockStatus from "./Components/Stock_Status/Stock_Status.jsx";
@@ -68,6 +69,8 @@ const App = () => {
         <Route path="/ProductCard" element={<ProductCard />} />
 
         <Route path="/SidebarUI" element={<SidebarUI />} />
+        <Route path="/AddSale" element={<AddSale />} />
+        <Route path="/Sales" element={<Sales />} />
 
         <Route path="/Stock_Status" element={<StockStatus />} />
         <Route path="/Trash" element={<Trashboard />} />
