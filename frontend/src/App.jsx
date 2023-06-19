@@ -29,6 +29,7 @@ import StockStatus from "./Components/Stock_Status/Stock_Status.jsx";
 import Trashboard from "./Components/Trashboard/Trashboard.jsx";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Homepage from "./Components/Home/Homepage.jsx";
 
 const App = () => {
   return (
@@ -46,7 +47,7 @@ const App = () => {
         theme="dark"
       />
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Homepage />} />
         <Route path="/Sidebar" element={<Sidebar />} />
         <Route path="/ConnexionUI" element={<ConnexionUI />} />
         <Route path="/Dashboard" element={<Dashboard />} />

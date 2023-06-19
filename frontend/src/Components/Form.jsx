@@ -117,7 +117,7 @@ const Form = ({
               name="category"
               value={formValues.category}
               onChange={handleInputChange}
-              className="block w-[700px] mt-4 text-center bg-gray-900text-gray-400 rounded-md border-0 py-3 shadow-sm ring-1 ring-inset text-gray-600 bg-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:max-w-xs sm:text-sm sm:leading-6"
+              className="block w-[700px] mt-4 text-center bg-gray-900 text-gray-400 rounded-md border-0 py-3 shadow-sm ring-1 ring-inset text-gray-600 bg-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:max-w-xs sm:text-sm sm:leading-6"
             >
               <option> choisir une catégorie</option>
               {categories.map((categorie) => (
@@ -132,7 +132,7 @@ const Form = ({
 
       {email && (
         <Input
-          className=""
+          className="dark:bg-white dark:text-gray-700"
           type="email"
           name="email"
           placeholder="Adresse Email"
@@ -217,7 +217,7 @@ const Form = ({
 
       {password && (
         <Input
-          className=""
+          className="dark:bg-white dark:text-gray-700"
           type="password"
           name="password"
           placeholder="Mot de Passe"
@@ -245,7 +245,7 @@ const Form = ({
           showPassword={showPassword.confirmPassword}
           setShowPassword={setShowPassword}
           togglePasswordVisibility={(e) =>
-            togglePasswordVisibility(e, "confirmPassword")
+          togglePasswordVisibility(e, "confirmPassword")
           }
         />
       )}

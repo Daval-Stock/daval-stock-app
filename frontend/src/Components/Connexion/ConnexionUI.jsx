@@ -45,7 +45,7 @@ export default function ConnexionUI() {
       // Envoyer les données du formulaire au serveur
       const { data, error } = await postLoginUser(formValues);
       if (data) {
-        navigateTo("/");
+        navigateTo("/Trash");
       }
       if (error) {
         toast.error(error);
@@ -63,11 +63,9 @@ export default function ConnexionUI() {
   };
 
   return (
-    <Layout>
-      <Container>
-        <FormCard>
-          <div className="px-8 py-4 my-6">
-            <div className="flex justify-center mx-auto">
+    <>
+          <div className="">
+           {/*  <div className="flex justify-center mx-auto">
               <Link to="/">
                 <img className="w-auto h-7 sm:h-8" src={logoDaval} alt="" />
               </Link>
@@ -79,7 +77,7 @@ export default function ConnexionUI() {
 
             <p className="mt-1 text-center text-gray-500 dark:text-gray-400">
               en seulement deux clics
-            </p>
+            </p> */}
             {formErrors.serverError}
             <Form
               formValues={formValues}
@@ -92,8 +90,8 @@ export default function ConnexionUI() {
             />
           </div>
 
-          <div className="flex items-center justify-center rounded-b-lg py-3 text-center bg-gray-200 dark:bg-gray-800">
-            <span className="text-sm text-gray-600 dark:text-gray-200">
+          <div className="flex pt-6 justify-center rounded-b-lg py-3 text-center">
+            <span className="text-sm text-gray-600">
               Vous n'avez pas de compte ?{" "}
             </span>
 
@@ -105,8 +103,6 @@ export default function ConnexionUI() {
               S'inscrire
             </Link>
           </div>
-        </FormCard>
-      </Container>
-    </Layout>
+          </>
   );
 }

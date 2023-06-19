@@ -12,7 +12,7 @@ function LogoutUI() {
     localStorage.removeItem('authToken');
 
     // Redirigez l'utilisateur vers la page de connexion
-    navigate('/ConnexionUI'); 
+    navigate('/'); 
   };
 
   return (

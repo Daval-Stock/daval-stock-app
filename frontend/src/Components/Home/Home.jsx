@@ -18,6 +18,7 @@ export default function Home() {
           <h1 className="text-4xl font-semiBold tracking-tight text-gray-900 dark:text-gray-300 sm:text-6xl">
             Bienvenue sur l'application Daval Stock
           </h1>
+          
         </div>
         <div className="w-96">
           <Search />
